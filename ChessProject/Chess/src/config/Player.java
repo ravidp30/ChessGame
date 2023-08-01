@@ -1,6 +1,6 @@
 package config;
 
-public class Player {//dd
+public class Player {//qqqqqqqqqqqqqqqq
 	
 	private int playerId;
 	private int status; // 0 - in lobby, 1 - ready, 2 - in game
