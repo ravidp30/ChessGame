@@ -6,7 +6,7 @@ public class ConnectedClient {
 	private String ip;
 	private String clientname;
 	private ConnectionToClient client;
-	private int id;
+	private Player player;
 
 	/**
 	 * Constructor for creating a ConnectedClient object with the specified IP and
@@ -15,11 +15,19 @@ public class ConnectedClient {
 	 * @param ip         The IP address of the connected client.
 	 * @param clientname The client name of the connected client.
 	 */
-	public ConnectedClient(String ip, String clientname, ConnectionToClient client, int id) {
+	public ConnectedClient(String ip, String clientname, ConnectionToClient client, Player player) {
 		this.ip = ip;
 		this.clientname = clientname;
 		this.client = client;
-		this.id = id;
+		this.player = player;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 
 	/**
@@ -79,17 +87,8 @@ public class ConnectedClient {
 	 *
 	 * @return the role of the client
 	 */
-	public int getID() {
-		return id;
-	}
-
-	/**
-	 * Sets the role of the client.
-	 *
-	 * @param role the role of the client to set
-	 */
-	public void setID(int id) {
-		this.id = id;
+	public String getID() {
+		return player.getPlayerId();
 	}
 	
 }

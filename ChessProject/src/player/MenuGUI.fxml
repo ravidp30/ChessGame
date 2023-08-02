@@ -6,9 +6,10 @@
 
 <Pane prefHeight="600.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="player.MenuController">
    <children>
-      <Button fx:id="exitBtn" layoutX="432.0" layoutY="225.0" text="Exit" onAction="#onClickExit"/>
+      <Button fx:id="exitBtn" layoutX="432.0" layoutY="225.0" onAction="#onClickExit" text="Exit" />
       <Label layoutX="432.0" layoutY="56.0" prefHeight="37.0" prefWidth="35.0" text="Menu" />
-      <Button fx:id="readyBtn" layoutX="424.0" layoutY="150.0" mnemonicParsing="false" text="Ready" onAction="#onClickReady"/>
+      <Button fx:id="readyBtn" layoutX="424.0" layoutY="150.0" mnemonicParsing="false" onAction="#onClickReady" text="Ready" />
       <Label fx:id="playersReady" layoutX="500.0" layoutY="144.0" prefHeight="37.0" prefWidth="28.0" text="0/2" />
+      <Button fx:id="StartGameBtn" layoutX="629.0" layoutY="200.0" mnemonicParsing="false" onAction="#onClickStartGame" text="StartGame" />
    </children>
 </Pane>

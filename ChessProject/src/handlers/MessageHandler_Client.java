@@ -1,14 +1,17 @@
 package handlers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
 import ClientAndServerLogin.ClientConnectController;
+import config.Player;
+import player.MenuController;
 
 
 public class MessageHandler_Client {
-
-	private static int playerId = -1;
+	
+	private static Player player;
 
 	/**
 	 * Handles the received message based on its type.
@@ -35,11 +38,44 @@ public class MessageHandler_Client {
 	        case MAP_STRING_STRING:
 	            handleMapStringStringValueMessage((Map<String, String>) msg);
 	            break;
+	            
+	        case ARRAY_LIST_PLAYER:
+	        	handlePlayerArrayListMessage((ArrayList<Player>) msg);
+	            break;
 	        default:
 	            //System.out.println("Message type does not exist");
 	            break;
 	    }
 	}
+
+
+
+	private static void handlePlayerArrayListMessage(ArrayList<Player> arrayList) {
+
+        ArrayList<Player> arrayListPlayer = (ArrayList<Player>) arrayList;
+		//System.out.println(arrayListStr);
+        String messageType = arrayListPlayer.get(0).getPlayerId();
+        try {
+        	
+
+	        switch (messageType) {
+			
+				case "GameStarting":
+					
+					 // 1 - Opponent player
+					
+					MenuController.getInstance().startGame(arrayListPlayer.get(1));
+	        }
+        
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
+				
+				
+	}
+	
 
 
 
@@ -66,7 +102,10 @@ public class MessageHandler_Client {
 				// Check the type of the first element and return the corresponding MessageType.
 				if (firstElement instanceof String) {
 					return MessageType.ARRAY_LIST_STRING;
-			}
+				}
+				if (firstElement instanceof Player) {
+					return MessageType.ARRAY_LIST_PLAYER;
+				}
 		}
 		// Check if the message is a Map.
 		else if (msg instanceof Map) {
@@ -103,7 +142,31 @@ public class MessageHandler_Client {
     	
     	try {
 	    	switch (message) {
-
+	    	
+	    	case "First Ready":
+	    		
+	    		MenuController.getInstance().setPlayerReady(1);
+	    		
+	    		break;
+	    		
+	    	case "Second Ready":
+	    		
+	    		MenuController.getInstance().setPlayerReady(1);
+	    		
+	    		break;
+	    		
+	    	case "UnReady":
+	    		
+	    		MenuController.getInstance().setPlayerReady(0);
+	    		
+	    		break;
+	    		
+	    	case "too many players are ready":
+	    		
+	    		System.out.println("Too many players are ready (only 2 can play). please wait...");
+	    		
+	    		break;
+	    		
 	    	}
 	    	
     	}catch (Exception e) {
@@ -129,11 +192,19 @@ public class MessageHandler_Client {
 	            	
 	            	System.out.println("your ID: " + arrayList.get(1));
 	            	
-	            	playerId = Integer.parseInt((String) arrayList.get(1));
+	            	player = new Player((String) arrayList.get(1));
 	            	
-	            	ClientConnectController.saveIdForPlayer(playerId);
+	            	ClientConnectController.saveIdForPlayer(player.getPlayerId());
 	            	
 	            	break;
+	            	
+		    	case "ChangePlayersReady":
+		    		// 1 - counter of players that are ready
+		    		
+		    		MenuController.getInstance().changePlayersReady(arrayListStr.get(1));
+		    		
+		    		break;
+		    		
 	            }       
 	            
             }catch (Exception e) {

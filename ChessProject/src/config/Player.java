@@ -1,7 +1,13 @@
 package config;
 
-public class Player {//
+import java.io.Serializable;
+
+public class Player implements Serializable{//
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String playerId;
 	private int status; // 0 - in lobby, 1 - ready, 2 - in game
 	
@@ -24,6 +30,11 @@ public class Player {//
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	
+	public String toString() {
+		return "id: " + playerId + "status: " + status;
+		
 	}
 
 }

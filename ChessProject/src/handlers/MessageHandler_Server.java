@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import ClientAndServerLogin.ServerController;
+import config.ConnectedClient;
 import config.Player;
+import javafx.collections.ObservableList;
 import ocsf.server.ConnectionToClient;
 import server.EchoServer;
 import server.ServerUI;
@@ -16,6 +18,7 @@ public class MessageHandler_Server {
 	private static int playeridCounter = 0;
 	private static int playersReady = 0;
 	
+	private static ObservableList<ConnectedClient> connectedClients;
 	
 	/**
 	 * Handles the received message and performs the necessary actions based on the message type.
@@ -67,22 +70,105 @@ public class MessageHandler_Server {
 			    		playersReady ++;
 			    		System.out.println("Player" + arrayListPlayer.get(1).getPlayerId() + "is ready!");
 			    		System.out.println("total players ready: " + playersReady);
-			    		client.sendToClient("you are ready and waiting for another player");
+			    		
+			    		// set player status = 1 (ready)
+			    		connectedClients = ServerController.getConnectedClients();
+						for(int i = 0; i < connectedClients.size(); i++) {
+							if(connectedClients.get(i).getPlayer().getPlayerId().equals(arrayListPlayer.get(1).getPlayerId())) {
+								connectedClients.get(i).getPlayer().setStatus(1);
+							}
+						}    		
+			    		client.sendToClient("First Ready");
+			    		
+			    		ArrayList<String> arr = new ArrayList<>();
+			    		arr.add("ChangePlayersReady");
+			    		arr.add(Integer.toString(playersReady));
+						EchoServer.getInstance(5555).sendToAllClients(arr);
 			    		
 			    	}
 			    	else if(playersReady == 1) {
 			    		playersReady ++;
 			    		System.out.println("Player" + arrayListPlayer.get(1).getPlayerId() + "is ready!");
 			    		System.out.println("total players ready: " + playersReady);
-						client.sendToClient("you and another player are ready and the game starting");
+			    		
+						
+			    		// set player status = 1 (ready)
+			    		connectedClients = ServerController.getConnectedClients();
+						for(int i = 0; i < connectedClients.size(); i++) {
+							if(connectedClients.get(i).getPlayer().getPlayerId().equals(arrayListPlayer.get(1).getPlayerId())) {
+								connectedClients.get(i).getPlayer().setStatus(1);
+							}
+						}    		
+						client.sendToClient("Second Ready");
+			    		
+			    		ArrayList<String> arr = new ArrayList<>();
+			    		arr.add("ChangePlayersReady");
+			    		arr.add(Integer.toString(playersReady));
+						EchoServer.getInstance(5555).sendToAllClients(arr);
+						
+						
 			    	}
 			    	else {
 			    		System.out.println("total players ready: " + playersReady);
 			    		System.out.println("too many");
-			    		client.sendToClient("too many players so you cannot play yet. please wait.");
+			    		client.sendToClient("too many players are ready");
 			    	}
 			    	
 			    	break;
+			    	
+				case "PlayerClickedOnUnReady":
+					playersReady --;
+		    		System.out.println("Player" + arrayListPlayer.get(1).getPlayerId() + "is Unready!");
+		    		System.out.println("total players ready: " + playersReady);
+							
+		    		// set player status = 0 (unready)
+		    		connectedClients = ServerController.getConnectedClients();
+					for(int i = 0; i < connectedClients.size(); i++) {
+						if(connectedClients.get(i).getPlayer().getPlayerId().equals(arrayListPlayer.get(1).getPlayerId())) {
+							connectedClients.get(i).getPlayer().setStatus(0);
+						}
+					}    		
+					client.sendToClient("UnReady");
+		    		
+		    		ArrayList<String> arr = new ArrayList<>();
+		    		arr.add("ChangePlayersReady");
+		    		arr.add(Integer.toString(playersReady));
+					EchoServer.getInstance(5555).sendToAllClients(arr);
+			    	
+			    	break;
+			    	
+				case "PlayerClickedOnStartGame":
+					// 1 - the player clicked on start game
+					Player currPlayer = arrayListPlayer.get(1);
+					currPlayer.setStatus(2);
+					if(playersReady == 2) {
+						ArrayList<Player> players_arr = new ArrayList<>();
+						players_arr.add(new Player("GameStarting"));
+						connectedClients = ServerController.getConnectedClients();
+						for(int i = 0; i < connectedClients.size(); i++) {
+							if(connectedClients.get(i).getPlayer().getStatus() == 1) { // all the ready players
+								connectedClients.get(i).getPlayer().setStatus(2); // set the status of the 2 players that are ready to 2 (in game)
+								// send every player (2 players total) the player who play against
+								if(!connectedClients.get(i).getPlayer().getPlayerId().equals(currPlayer.getPlayerId())) {
+									players_arr.add(currPlayer);
+									connectedClients.get(i).getClient().sendToClient(players_arr);
+									players_arr.set(1, connectedClients.get(i).getPlayer());
+									client.sendToClient(players_arr);
+									
+									System.out.println("Game started between: \n" + currPlayer + " AND " + connectedClients.get(i).getPlayer());
+									
+									break;
+								}
+							}
+						}    
+					}
+					else {
+						System.out.println("2 players have to be ready before starting a game!!! - server");
+						client.sendToClient("2 players have to be ready before starting a game!!! - player");
+					}
+					
+					
+					break;
             }
     	
         }catch (IOException e) {
@@ -140,8 +226,11 @@ public class MessageHandler_Server {
         // Handle string messages
     	try {
 	    	switch (message) {
-			    case "":
-			    	//client.sendToClient();
+			    case "UpdateCounterOfReadyPlayers":
+			    	ArrayList<String> arr = new ArrayList<>();
+			    	arr.add("ChangePlayersReady");
+			    	arr.add(String.valueOf(playersReady));
+			    	client.sendToClient(arr);
 			    	break;
 			    	
 			    default:
@@ -170,7 +259,7 @@ public class MessageHandler_Server {
 	            switch (messageType) {
 	                case "ClientConnecting":
 	                    // Handle ClientConnecting message
-						ServerController.addConnectedClient(arrayListStr.get(1), arrayListStr.get(2), client, playeridCounter);
+						ServerController.addConnectedClient(arrayListStr.get(1), arrayListStr.get(2), client, new Player(String.valueOf(playeridCounter)));
 						ArrayList<String> clientConnected_arr = new ArrayList<>();
 						clientConnected_arr.add("connected");
 						clientConnected_arr.add(String.valueOf(playeridCounter)); // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ the id of the player sent to him back

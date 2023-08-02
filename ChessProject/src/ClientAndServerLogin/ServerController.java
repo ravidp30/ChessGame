@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 
 import config.ConnectedClient;
+import config.Player;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -87,10 +88,10 @@ public class ServerController implements Initializable {
 	 * @param userHostName The hostname of the connected client
 	 * @param userIP The IP address of the connected client
 	 */
-	public static void addConnectedClient(String userHostName, String userIP, ConnectionToClient client, int id) {
+	public static void addConnectedClient(String userHostName, String userIP, ConnectionToClient client, Player player) {
 	    try {
 	        // Create a new instance of ConnectedClient with the provided hostname and IP
-	        connectedClients.add(new ConnectedClient(userHostName, userIP, client, id));
+	        connectedClients.add(new ConnectedClient(userHostName, userIP, client, player));
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
