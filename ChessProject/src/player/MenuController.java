@@ -30,9 +30,10 @@ public class MenuController implements Initializable{
 	
 	
 	public void onClickReady(ActionEvent event) throws Exception {
-		ArrayList<String> clickOnReady_arr = new ArrayList<>();
-		clickOnReady_arr.add("PlayerClickedOnReady");
-		clickOnReady_arr.add(String.valueOf(player.getPlayerId()));
+		ArrayList<Player> clickOnReady_arr = new ArrayList<>();
+		clickOnReady_arr.add(new Player("PlayerClickedOnReady"));
+		//clickOnReady_arr.add(String.valueOf(player.getPlayerId()));
+		clickOnReady_arr.add(player);
 		ClientUI.chat.accept(clickOnReady_arr);
 	}
 	
@@ -41,7 +42,7 @@ public class MenuController implements Initializable{
 	}
 	
 	
-	public static void start(int pId) throws IOException {
+	public static void start(String pId) throws IOException {
 		player = new Player(pId);
 		SceneManagment.createNewStage("/player/MenuGUI.fxml", null, "Menu").show();
 	}

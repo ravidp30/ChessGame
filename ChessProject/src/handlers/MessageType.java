@@ -24,7 +24,9 @@ public enum MessageType {
     /**
      * Represents a map with string keys and string values message.
      */
-    MAP_STRING_STRING
+    MAP_STRING_STRING,
+    
+    ARRAY_LIST_PLAYER
 
 
 }

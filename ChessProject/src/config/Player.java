@@ -2,19 +2,19 @@ package config;
 
 public class Player {//
 	
-	private int playerId;
+	private String playerId;
 	private int status; // 0 - in lobby, 1 - ready, 2 - in game
 	
-	public Player(int playerId) {
+	public Player(String playerId) {
 		this.playerId = playerId;
 		status = 0;
 	}
 
-	public int getPlayerId() {
+	public String getPlayerId() {
 		return playerId;
 	}
 
-	public void setPlayerId(int playerId) {
+	public void setPlayerId(String playerId) {
 		this.playerId = playerId;
 	}
 

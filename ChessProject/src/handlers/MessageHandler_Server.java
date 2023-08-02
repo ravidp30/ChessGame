@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import ClientAndServerLogin.ServerController;
+import config.Player;
 import ocsf.server.ConnectionToClient;
 import server.EchoServer;
 import server.ServerUI;
@@ -43,10 +44,52 @@ public class MessageHandler_Server {
 	        case MAP_STRING_STRING:
 	            handleMapStringStringValueMessage((Map<String, String>) msg, client);
 	            break;
+	        case ARRAY_LIST_PLAYER:
+	        	handlePlayerArrayListMessage((ArrayList<Player>) msg, client);
+	        	break;
 	        default:
 	            //System.out.println("Message type does not exist");
 	            break;
 	    }
+	}
+
+	private static void handlePlayerArrayListMessage(ArrayList<Player> arrayList, ConnectionToClient client) {
+
+        ArrayList<Player> arrayListPlayer = (ArrayList<Player>) arrayList;
+		//System.out.println(arrayListStr);
+        String messageType = arrayListPlayer.get(0).getPlayerId();
+        try {
+            switch (messageType) {
+            
+				case "PlayerClickedOnReady":
+			    	// 1 - player
+			    	if(playersReady == 0) {
+			    		playersReady ++;
+			    		System.out.println("Player" + arrayListPlayer.get(1).getPlayerId() + "is ready!");
+			    		System.out.println("total players ready: " + playersReady);
+			    		client.sendToClient("you are ready and waiting for another player");
+			    		
+			    	}
+			    	else if(playersReady == 1) {
+			    		playersReady ++;
+			    		System.out.println("Player" + arrayListPlayer.get(1).getPlayerId() + "is ready!");
+			    		System.out.println("total players ready: " + playersReady);
+						client.sendToClient("you and another player are ready and the game starting");
+			    	}
+			    	else {
+			    		System.out.println("total players ready: " + playersReady);
+			    		System.out.println("too many");
+			    		client.sendToClient("too many players so you cannot play yet. please wait.");
+			    	}
+			    	
+			    	break;
+            }
+    	
+        }catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+        }
+		
 	}
 
 	/**
@@ -65,6 +108,9 @@ public class MessageHandler_Server {
 	            Object firstElement = arrayList.get(0);
 	            if (firstElement instanceof String) {
 	                return MessageType.ARRAY_LIST_STRING;
+	            }
+	            if (firstElement instanceof Player) {
+	                return MessageType.ARRAY_LIST_PLAYER;
 	            }
 			}
 	    } else if (msg instanceof Map) {
@@ -145,31 +191,6 @@ public class MessageHandler_Server {
 						client.sendToClient("quit");
 						
 	                    break;
-	                    
-	                case "PlayerClickedOnReady":
-	                	// 1 - playerId
-	                	if(playersReady == 0) {
-	                		playersReady ++;
-	                		System.out.println(playersReady);
-	                		System.out.println(playersReady + " readyqwe");
-	                		client.sendToClient("you are ready and waiting for another player");
-	                		
-	                	}
-	                	else if(playersReady == 1) {
-	                		playersReady ++;
-							System.out.println(playersReady);
-							System.out.println(playersReady + " readyasd");
-							client.sendToClient("you and another player are ready and the game starting");
-	                	}
-	                	else {
-	                		System.out.println(playersReady + " readyaggg");
-	                		System.out.println("too many");
-	                		client.sendToClient("too many players so you cannot play yet. please wait.");
-	                	}
-	                	
-	                	break;
-	                    
-	                
 
 				}
             }catch (IOException e) {

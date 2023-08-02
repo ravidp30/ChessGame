@@ -25,7 +25,7 @@ import player.MenuController;
 
 public class ClientConnectController implements Initializable {
 	
-	private static int playerId = -1;
+	private static String playerId = "-1";
 
 	@FXML
 	private TextField txtPort;
@@ -145,7 +145,7 @@ public class ClientConnectController implements Initializable {
 	    }
 	}
 
-	public static void saveIdForPlayer(int pId) throws IOException {
+	public static void saveIdForPlayer(String pId) throws IOException {
         Platform.runLater(() -> {
 			playerId = pId;
 			((Node) currEvent.getSource()).getScene().getWindow().hide(); // hiding primary window
