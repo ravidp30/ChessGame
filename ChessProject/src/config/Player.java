@@ -33,7 +33,7 @@ public class Player implements Serializable{//
 	}
 	
 	public String toString() {
-		return "id: " + playerId + "status: " + status;
+		return "id: " + playerId + ", status: " + status;
 		
 	}
 
