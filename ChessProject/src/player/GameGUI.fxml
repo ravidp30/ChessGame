@@ -4,7 +4,7 @@
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane prefHeight="600.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="player.GameController">
+<Pane fx:id="chessboardPane" prefHeight="600.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="player.GameController">
    <children>
  		<Label fx:id="ChessHeadLineLbl" layoutX="323.0" layoutY="38.0" prefHeight="57.0" prefWidth="311.0" text="Chess Game:" />
    </children>
