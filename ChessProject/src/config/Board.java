@@ -2,8 +2,6 @@ package config;
 
 import java.util.ArrayList;
 
-import player.Piece;
-
 public class Board {
 	
 	private int x, y;
@@ -29,7 +27,7 @@ public class Board {
 		for (Piece p:pieces)
 			if(p.getX()==oldX && p.getY()==oldY) Kill();//kill
 		this.x=newX; //move the piece to new location
-		this.y=oldX;
+		this.y=newY;
 	}
 	
 	

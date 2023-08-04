@@ -1,13 +1,13 @@
-package player;
+package config;
 
 import java.util.LinkedList;
 
 public class Piece {
-	int x;
-	int y;
-	String name;
-	boolean isWhite;
-	LinkedList<Piece> piecesList;
+	private int x;
+	private int y;
+	private String name;
+	private boolean isWhite;
+	private LinkedList<Piece> piecesList;
 	
 	public  Piece(int x,int y, String name,Boolean isWhite/*, LinkedList<Piece> piecesList*/) {
 		this.x=x;
@@ -26,16 +26,12 @@ public class Piece {
 		return y;
 	}
 
-	public void Move(int x,int y) {//move function
-		
-		for (Piece p:piecesList)
-			if(p.x==x && p.y==y) Kill();//kill
-		this.x=x; //move the piece to new location
-		this.y=y;
+	public void setX(int newX) {
+		x=newX;
+	}
+	public void setY(int newY) {
+		y=newY;
 	}
 	
 	
-	public void Kill() {// Kill function
-		piecesList.remove(this);//remove the killed piece from the list 
-	}
 }

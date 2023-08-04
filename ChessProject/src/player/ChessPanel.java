@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import config.Piece;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
