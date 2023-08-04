@@ -24,15 +24,33 @@ public class Board {
 	
 	public void Move(int oldX,int oldY, int newX, int newY) {//move function
 		
-		for (Piece p:pieces)
-			if(p.getX()==oldX && p.getY()==oldY) Kill();//kill
-		this.x=newX; //move the piece to new location
-		this.y=newY;
+		for (Piece p:pieces) {
+			if(p.getX()==oldX && p.getY()==oldY) {
+				Kill();//kill
+				return;
+			}
+		}
+		try {
+		System.out.println("6\n\n");
+		System.out.println(getPiece(oldX, oldY).getX());
+		System.out.println(getPiece(oldX, oldY).getY());
+    	getPiece(oldX, oldY).setX(newX);
+    	System.out.println("7");
+    	getPiece(oldX, oldY).setY(newY);
+    	System.out.println("8");
+		}catch(NullPointerException e) {
+    		System.out.println(90);
+    	}
+		
+		
+		
+
+		
 	}
 	
 	
 	public void Kill() {// Kill function
-		pieces.remove(this);//remove the killed piece from the list 
+		pieces.remove(this);//remove the killed piece fromï¿½theï¿½listï¿½
 	}
 
 }

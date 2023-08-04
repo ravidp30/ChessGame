@@ -13,17 +13,17 @@ public class Piece {
 		this.x=x;
 		this.y=y;
 		this.name=name;
-		this.isWhite=isWhite;
+		this.setWhite(isWhite);
 		//this.piecesList=piecesList;
 		//piecesList.add(this);//adding new piece
 	}
 	
 	public int getX() {
-		return x;
+		return this.x;
 	}
 	
 	public int getY() {
-		return y;
+		return this.y;
 	}
 
 	public void setX(int newX) {
@@ -31,6 +31,14 @@ public class Piece {
 	}
 	public void setY(int newY) {
 		y=newY;
+	}
+
+	public boolean isWhite() {
+		return isWhite;
+	}
+
+	public void setWhite(boolean isWhite) {
+		this.isWhite = isWhite;
 	}
 	
 	

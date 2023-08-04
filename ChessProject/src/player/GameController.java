@@ -18,6 +18,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -34,7 +35,7 @@ public class GameController implements Initializable {
     private Board board;
     private ImageView[][] imageViews = new ImageView[8][8];
     private int squareSize = 54;
-    private Piece currPiece;
+    private Piece firstPieceSelected;
     private Piece piece;
     private ArrayList<Piece> pieces = new ArrayList<>();
     private LinkedList<Piece> pieceL = new LinkedList<>();
@@ -92,7 +93,10 @@ public class GameController implements Initializable {
                     public void handle(MouseEvent event) {
                         handleClickOnMoveTo(square);
                     }
-                });                
+                });  
+               
+
+               
                 chessboardPane.getChildren().add(square);
                 
                 //setup pieces
@@ -153,13 +157,13 @@ public class GameController implements Initializable {
         imageViews[x][y].setLayoutY(y * squareSize);
         
      // Attach a click event handler to each Image
-        imageViews[x][y].setOnMouseClicked(new EventHandler<MouseEvent>() {
+       /* imageViews[x][y].setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                handleClickOnPiece(piece);
+                handleClickOnPiece(imageViews[x][y]);
                 System.out.println("ASas: " + piece.getX() + " " + piece.getY());
             }
-        });
+        });*/
         
         
         chessboardPane.getChildren().add(imageViews[x][y]);
@@ -170,27 +174,59 @@ public class GameController implements Initializable {
 
     }
     
-    private void handleClickOnPiece(Piece piece) {
-    	System.out.println("from clicked: x = " + piece.getX() + ", y = " + piece.getY());
-    	currPiece=piece;
+   /* private void handleClickOnPiece(ImageView imageViews) {
+    	System.out.println("from clicked: x = " + imageViews.getX() + ", y = " + imageViews.getY());
+    	currPiece=board.getPiece((int)imageViews.getX(), (int)imageViews.getY());
     	
     	System.out.println("test: " + currPiece.getX() + " " + currPiece.getY());
        
-    }
+    }*/
     
-    private void handleClickOnMoveTo(Rectangle square) {
+   /* private void handleClickOnMoveTo(int x, int y) {
     	try {
-        System.out.println("to clicked: x = " + square.getLayoutX() + ", y = " +square.getLayoutY());
+        System.out.println("to clicked: x = " + x + ", y = " + y);
         //check if EMPTY \ KILL
         //.....
-        movePiece(currPiece.getX(), currPiece.getY(),(int)square.getLayoutX(),(int)square.getLayoutY());
-        piece.setX((int)square.getLayoutX());
-        piece.setY((int)square.getLayoutY());
+        movePiece(currPiece.getX(), currPiece.getY(), x, y);
+        piece.setX(x);
+        piece.setY(y);
     	}
     	catch(NullPointerException e) {
     		System.out.println("error");
     	}
+    }*/
+    
+    private void handleClickOnMoveTo(Rectangle cell) {
+    	
+    	
+    	
+        double x = cell.getX() / squareSize;
+        double y = cell.getY() / squareSize;
+        
+        piece = board.getPiece((int)x, (int)y);
+        
+        if(piece != null && piece.isWhite()) { // our
+        	firstPieceSelected = piece;
+        	System.out.println("1");
+        	//flag = 1;
+        }
+        else if(piece == null && firstPieceSelected != null) {
+        	System.out.println("2");
+        	System.out.println(" " + firstPieceSelected.getX()+" " +  firstPieceSelected.getY()+" " +   (int)x+" " +   (int)y);
+        	movePiece(firstPieceSelected.getX(), firstPieceSelected.getY(), (int)x, (int)y);
+        	System.out.println("4");
+        	firstPieceSelected = null;
+        	System.out.println("3");
+        	
+        }
+        else {
+        	System.out.println("not our");
+        }
+        
+        System.out.println("Clicked on square at coordinates: (" + x + ", " + y + ")");
     }
+
+
     
     public void movePiece(int oldX, int oldY, int newX, int newY) {
     	board.Move(oldX, oldX, newX, newY);
