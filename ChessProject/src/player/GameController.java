@@ -61,9 +61,10 @@ public class GameController implements Initializable {
         
         Piece piece;
         ArrayList<Piece> pieces = new ArrayList<>();
-        ImageView imageView = new ImageView();
-        imageView.setFitWidth(squareSize);
-        imageView.setFitHeight(squareSize);
+        
+        ImageView imageView;
+        Image image;
+
         
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
@@ -72,26 +73,41 @@ public class GameController implements Initializable {
                 
                 
                 if ((x + y) % 2 == 0) {
-                    imageView.setStyle("-fx-background-color: white;");
+                	square.setFill(Color.WHITE);
                 } else {
-                    imageView.setStyle("-fx-background-color: green;");
+                	square.setFill(Color.GREEN);
                 }
                 
             	if(y == 6 && (x >= 0 && x < 8)) {
             		piece = new Piece(x, y, "soldier", true);
-                    Image image = new Image(getClass().getResourceAsStream("/player/KingWhite.png"));
+            		
+            		imageView = new ImageView();
+            		
+                    image = new Image(getClass().getResourceAsStream("/player/KingWhite.png"));
                     imageView.setImage(image);
+                    
+                    imageView.setFitWidth(squareSize);
+                    imageView.setFitHeight(squareSize);
+                    
+                    // Add the ImageView to the chessboardPane's childrens
+                    chessboardPane.getChildren().add(imageView);
+                    
+
             		
             		pieces.add(piece);
             	}
             	
-                // Add the ImageView to the chessboardPane's children
-                chessboardPane.getChildren().add(imageView);
+
+                chessboardPane.getChildren().add(square);
+            	
+                
+                
 
 
                 
             }
         }
+        
         chessboardPane.setPrefWidth(8 * squareSize);
         chessboardPane.setPrefHeight(8 * squareSize);
         board = new Board(8 * squareSize, 8 * squareSize, pieces);
