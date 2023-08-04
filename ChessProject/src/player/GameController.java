@@ -62,49 +62,41 @@ public class GameController implements Initializable {
         Piece piece;
         ArrayList<Piece> pieces = new ArrayList<>();
         
-        ImageView imageView;
-        Image image;
-
+        ImageView[][] imageViews = new ImageView[8][8];
         
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-            	
                 Rectangle square = new Rectangle(x * squareSize, y * squareSize, squareSize, squareSize);
                 
-                
+                Color color;
                 if ((x + y) % 2 == 0) {
-                	square.setFill(Color.WHITE);
+                    color = Color.WHITE;
                 } else {
-                	square.setFill(Color.GREEN);
+                    color = Color.GREEN;
                 }
                 
-            	if(y == 6 && (x >= 0 && x < 8)) {
-            		piece = new Piece(x, y, "soldier", true);
-            		
-            		imageView = new ImageView();
-            		
-                    image = new Image(getClass().getResourceAsStream("/player/KingWhite.png"));
-                    imageView.setImage(image);
-                    
-                    imageView.setFitWidth(squareSize);
-                    imageView.setFitHeight(squareSize);
-                    
-                    // Add the ImageView to the chessboardPane's childrens
-                    chessboardPane.getChildren().add(imageView);
-                    
-
-            		
-            		pieces.add(piece);
-            	}
-            	
-
+                square.setFill(color);
                 chessboardPane.getChildren().add(square);
-            	
                 
-                
-
-
-                
+                if (y == 6 && (x >= 0 && x < 8)) {
+                	
+                	
+                    piece = new Piece(x, y, "soldier", true);
+                    
+                    imageViews[x][y] = new ImageView();
+                    imageViews[x][y].setFitWidth(squareSize);
+                    imageViews[x][y].setFitHeight(squareSize);
+                    
+                    Image image = new Image(getClass().getResourceAsStream("/player/test.png"));
+                    imageViews[x][y].setImage(image);
+                    
+                    imageViews[x][y].setLayoutX(x * squareSize);
+                    imageViews[x][y].setLayoutY(y * squareSize);
+                    
+                    chessboardPane.getChildren().add(imageViews[x][y]);
+                    
+                    pieces.add(piece);
+                }
             }
         }
         
