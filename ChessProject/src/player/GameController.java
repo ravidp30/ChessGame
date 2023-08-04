@@ -200,24 +200,22 @@ public class GameController implements Initializable {
     	
     	
     	
-        double x = cell.getX() / squareSize;
-        double y = cell.getY() / squareSize;
+        int x = (int)cell.getX() / squareSize;
+        int y =	(int)cell.getY() / squareSize;
         
-        piece = board.getPiece((int)x, (int)y);
+        piece = board.getPiece(x,y);
         
-        if(piece != null && piece.isWhite()) { // our
+        if(piece != null && piece.isWhite()) { // our piece
         	firstPieceSelected = piece;
-        	System.out.println("1");
-        	//flag = 1;
-        }
-        else if(piece == null && firstPieceSelected != null) {
-        	System.out.println("2");
-        	System.out.println(" " + firstPieceSelected.getX()+" " +  firstPieceSelected.getY()+" " +   (int)x+" " +   (int)y);
-        	movePiece(firstPieceSelected.getX(), firstPieceSelected.getY(), (int)x, (int)y);
-        	System.out.println("4");
-        	firstPieceSelected = null;
-        	System.out.println("3");
+        	System.out.println("old piece: "+ piece.getX()+","+ piece.getY());
         	
+        }
+        
+        else if(piece == null && firstPieceSelected != null) {//move our piece to empty place
+        	System.out.println("check available- from:" + firstPieceSelected.getX()+", " +  firstPieceSelected.getY()+"  |  to:" +   (int)x+", " +   (int)y);
+        	movePiece(firstPieceSelected.getX(), firstPieceSelected.getY(), x,y);
+        	
+        	//firstPieceSelected = null;
         }
         else {
         	System.out.println("not our");
@@ -229,11 +227,12 @@ public class GameController implements Initializable {
 
     
     public void movePiece(int oldX, int oldY, int newX, int newY) {
-    	board.Move(oldX, oldX, newX, newY);
+    	System.out.println("old piece: "+ oldX+","+ oldY);
+    	System.out.println("new piece: "+ newX+ ","+ newY);
+    	board.Move(oldX, oldX, newX, newY );
     	imageViews[oldX][oldY].setLayoutX(newX * squareSize);
     	imageViews[oldX][oldY].setLayoutY(newY * squareSize);
-        System.out.println("from: x = " + oldX + " y:" + oldY);
-        System.out.println("to: x = " + newX + " y:" + newY);
+       
 
 
     }

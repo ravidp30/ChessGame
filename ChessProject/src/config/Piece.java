@@ -40,6 +40,8 @@ public class Piece {
 	public void setWhite(boolean isWhite) {
 		this.isWhite = isWhite;
 	}
-	
+	public String getname() {
+		return this.name;
+	}
 	
 }

@@ -16,6 +16,7 @@ public class Board {
 	public Piece getPiece(int x, int y) {
 		for(Piece piece : pieces) {
 			if(piece.getX() == x && piece.getY() == y) {
+				System.out.println("piece "+ piece.getname()+" in position: " + piece.getX() + "," +piece.getY());
 				return piece;
 			}
 		}
@@ -23,34 +24,26 @@ public class Board {
 	}
 	
 	public void Move(int oldX,int oldY, int newX, int newY) {//move function
-		
 		for (Piece p:pieces) {
-			if(p.getX()==oldX && p.getY()==oldY) {
-				Kill();//kill
-				return;
-			}
-		}
-		try {
-		System.out.println("6\n\n");
-		System.out.println(getPiece(oldX, oldY).getX());
-		System.out.println(getPiece(oldX, oldY).getY());
-    	getPiece(oldX, oldY).setX(newX);
-    	System.out.println("7");
-    	getPiece(oldX, oldY).setY(newY);
-    	System.out.println("8");
-		}catch(NullPointerException e) {
-    		System.out.println(90);
-    	}
-		
-		
-		
+			System.out.println("location of:" + p.getname() +" in: " + p.getX()+ ", " +p.getY());
+			System.out.println("old:" + oldX+","+ oldY );
+			System.out.println("new:" + newX+","+ newY );
 
-		
+			if(p.getX()==newX && p.getY()==newY) {//found piece there already
+				if(p.isWhite()) {System.out.println("cant move there- somone is there");return;}
+				else {Kill();System.out.println("kill");return;}//KILL
+			}
+			if(p.getX()==oldX && p.getY()==oldY){//found the current piece
+					System.out.println("1");
+				p.setX(newX);//change the location
+				p.setY(newY);
+				System.out.println("new location of " + p.getname() +" in: " + p.getX()+","+p.getY());
+			}	
+		}
 	}
-	
-	
+    	
 	public void Kill() {// Kill function
-		pieces.remove(this);//remove the killed piece from�the�list�
+		pieces.remove(this);//remove the killed piece from list
 	}
 
 }
