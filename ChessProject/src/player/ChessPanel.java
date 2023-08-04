@@ -14,7 +14,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.security.acl.Acl;
 import java.util.LinkedList;
 import javafx.scene.image.Image;
 
