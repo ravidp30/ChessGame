@@ -35,6 +35,8 @@ public class GameController implements Initializable {
     private int squareSize = 54;
     private int currX;
     private int currY;    
+    private Piece piece;
+    private ArrayList<Piece> pieces = new ArrayList<>();
     private LinkedList<Piece> pieceL = new LinkedList<>();
     
     @FXML
@@ -63,8 +65,6 @@ public class GameController implements Initializable {
     
     private void drawChessboard() throws IOException {
         
-        Piece piece;
-        ArrayList<Piece> pieces = new ArrayList<>();
         
         
         for (int y = 0; y < 8; y++) {
@@ -81,8 +81,8 @@ public class GameController implements Initializable {
                
                 square.setFill(color);
                 
-                final int finalX = x; // Create a final variable for x
-                final int finalY = y; // Create a final variable for y
+                int finalX = x; // Create a final variable for x
+                int finalY = y; // Create a finalï¿½variableï¿½forï¿½y
              // Attach a click event handler to each square
                 square.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
@@ -95,117 +95,35 @@ public class GameController implements Initializable {
                 if (y == 6 && (x >= 0 && x < 8)) {//soldier White
                 	
                 	
-                    piece = new Piece(x, y, "SoldierWhite", true);
-                    
-                    imageViews[x][y] = new ImageView();
-                    imageViews[x][y].setFitWidth(squareSize);
-                    imageViews[x][y].setFitHeight(squareSize);
-                    
-                    Image image = new Image(getClass().getResourceAsStream("/player/soldierW.png"));
-                    imageViews[x][y].setImage(image);
-                    
-                    imageViews[x][y].setLayoutX(x * squareSize);
-                    imageViews[x][y].setLayoutY(y * squareSize);
-                    
-                 // Attach a click event handler to each square
-                    imageViews[x][y].setOnMouseClicked(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent event) {
-                            handleClickOnPiece(finalX, finalY);
-                        }
-                    });
-                    
-                    
-                    chessboardPane.getChildren().add(imageViews[x][y]);
-                    
-                    pieces.add(piece);
+                	placePiece(x, y, "soldierW", true);
+                	
                 }
                 
                 if (y == 7 && (x ==0  || x == 7)) {//Rook White
-                	piece = new Piece(x, y, "RookWhite", true);
-                    
-                    imageViews[x][y] = new ImageView();
-                    imageViews[x][y].setFitWidth(squareSize);
-                    imageViews[x][y].setFitHeight(squareSize);
-                    
-                    Image image = new Image(getClass().getResourceAsStream("/player/RookW.png"));
-                    imageViews[x][y].setImage(image);
-                    
-                    imageViews[x][y].setLayoutX(x * squareSize);
-                    imageViews[x][y].setLayoutY(y * squareSize);
-                    
-                    chessboardPane.getChildren().add(imageViews[x][y]);
-                    
-                    pieces.add(piece);
+                	
+                	placePiece(x, y, "RookW", true);
+
                 }
                 if (y == 7 && (x ==1  || x == 6)) {//Knight White
-                	piece = new Piece(x, y, "KnightWhite", true);
-                    
-                    imageViews[x][y] = new ImageView();
-                    imageViews[x][y].setFitWidth(squareSize);
-                    imageViews[x][y].setFitHeight(squareSize);
-                    
-                    Image image = new Image(getClass().getResourceAsStream("/player/KnightW.png"));
-                    imageViews[x][y].setImage(image);
-                    
-                    imageViews[x][y].setLayoutX(x * squareSize);
-                    imageViews[x][y].setLayoutY(y * squareSize);
-                    
-                    chessboardPane.getChildren().add(imageViews[x][y]);
-                    
-                    pieces.add(piece);
+                	
+                	placePiece(x, y, "KnightW", true);
+                	
                 }
                 
                 if (y == 7 && (x ==2  || x == 5)) {//Bishop White
-                	piece = new Piece(x, y, "BishopW", true);
-                    
-                    imageViews[x][y] = new ImageView();
-                    imageViews[x][y].setFitWidth(squareSize);
-                    imageViews[x][y].setFitHeight(squareSize);
-                    
-                    Image image = new Image(getClass().getResourceAsStream("/player/BishopW.png"));
-                    imageViews[x][y].setImage(image);
-                    
-                    imageViews[x][y].setLayoutX(x * squareSize);
-                    imageViews[x][y].setLayoutY(y * squareSize);
-                    
-                    chessboardPane.getChildren().add(imageViews[x][y]);
-                    
-                    pieces.add(piece);
+                	
+                	placePiece(x, y, "BishopW", true);
+
                 }
                 if (y == 7 && x ==3) {//King White
-                	piece = new Piece(x, y, "KingW", true);
-                    
-                    imageViews[x][y] = new ImageView();
-                    imageViews[x][y].setFitWidth(squareSize);
-                    imageViews[x][y].setFitHeight(squareSize);
-                    
-                    Image image = new Image(getClass().getResourceAsStream("/player/KingW.png"));
-                    imageViews[x][y].setImage(image);
-                    
-                    imageViews[x][y].setLayoutX(x * squareSize);
-                    imageViews[x][y].setLayoutY(y * squareSize);
-                    
-                    chessboardPane.getChildren().add(imageViews[x][y]);
-                    
-                    pieces.add(piece);
+                	
+                	placePiece(x, y, "KingW", true);
+                	
                 }
                 if (y == 7 && x ==4) {//Queen White
-                	piece = new Piece(x, y, "QueenWhite", true);
-                    
-                    imageViews[x][y] = new ImageView();
-                    imageViews[x][y].setFitWidth(squareSize);
-                    imageViews[x][y].setFitHeight(squareSize);
-                    
-                    Image image = new Image(getClass().getResourceAsStream("/player/QueenW.png"));
-                    imageViews[x][y].setImage(image);
-                    
-                    imageViews[x][y].setLayoutX(x * squareSize);
-                    imageViews[x][y].setLayoutY(y * squareSize);
-                    
-                    chessboardPane.getChildren().add(imageViews[x][y]);
-                    
-                    pieces.add(piece);
+                	
+                	placePiece(x, y, "QueenW", true);
+                	
                 }
                 
                
@@ -218,8 +136,38 @@ public class GameController implements Initializable {
         board = new Board(8 * squareSize, 8 * squareSize, pieces);
     }
     
+    public void placePiece(int x, int y, String name, boolean isWhite) {
+    	
+    	
+        piece = new Piece(x, y, name, true);
+        
+        imageViews[x][y] = new ImageView();
+        imageViews[x][y].setFitWidth(squareSize);
+        imageViews[x][y].setFitHeight(squareSize);
+        
+        Image image = new Image(getClass().getResourceAsStream("/player/" + name + ".png"));
+        imageViews[x][y].setImage(image);
+        
+        imageViews[x][y].setLayoutX(x * squareSize);
+        imageViews[x][y].setLayoutY(y * squareSize);
+        
+     // Attach a click event handler to each square
+        imageViews[x][y].setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                handleClickOnPiece(x, y);
+            }
+        });
+        
+        
+        chessboardPane.getChildren().add(imageViews[x][y]);
+        
+        pieces.add(piece);
+    	
+    }
+    
     private void handleClickOnPiece(int x, int y) {
-        System.out.println("from clicked: x = " + x + ", y = " + y);
+    	System.out.println("from clicked: x = " + currX + ", y = " + currY);
         currX = x;
         currY = y;
     }
@@ -233,5 +181,7 @@ public class GameController implements Initializable {
     	board.Move(oldX, oldX, newX, newY);
     	imageViews[oldX][oldY].setLayoutX(newX * squareSize);
     	imageViews[oldX][oldY].setLayoutY(newY * squareSize);
+    	currX = newX;
+    	currY = newY;
     }
    }
