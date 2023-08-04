@@ -9,13 +9,21 @@ public class Piece {
 	boolean isWhite;
 	LinkedList<Piece> piecesList;
 	
-	public  Piece(int x,int y, String name,Boolean isWhite, LinkedList<Piece> piecesList) {
+	public  Piece(int x,int y, String name,Boolean isWhite/*, LinkedList<Piece> piecesList*/) {
 		this.x=x;
 		this.y=y;
 		this.name=name;
 		this.isWhite=isWhite;
-		this.piecesList=piecesList;
-		piecesList.add(this);//adding new piece
+		//this.piecesList=piecesList;
+		//piecesList.add(this);//adding new piece
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
 	}
 
 	public void Move(int x,int y) {//move function
