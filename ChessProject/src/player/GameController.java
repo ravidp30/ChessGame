@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import ClientAndServerLogin.SceneManagment;
 import client.ClientUI;
 import config.Board;
+import config.King;
 import config.Piece;
 import config.Player;
 import javafx.event.EventHandler;
@@ -156,9 +157,22 @@ public class GameController implements Initializable {
     }
     
     public void setUpPiece(int x, int y, String name, boolean isWhite) {
-    	
-    	
-        piece = new Piece(x, y, name, true);
+    	switch (name) {
+        case "kingW":
+        	piece = new King(x, y, name, true);
+            break;
+        case "KnightW":
+            System.out.println("You chose Option 2");
+            break;
+       /* case 3:
+            System.out.println("You chose Option 3");
+            break; 
+        */    
+        default:
+            System.out.println("Invalid choice");
+    }
+    	if(name.equals("KingW"))
+        //piece = new Piece(x, y, name, true);
         
         imageViews[x][y] = new ImageView();
         imageViews[x][y].setFitWidth(squareSize);
@@ -255,15 +269,16 @@ public class GameController implements Initializable {
         
     	if(check==1) {//available to move the image (KILL OR EMPTY SPACE)
     		ChangePiqtureLocation(oldX,oldY,tempPiece);
+    		
+    		// send to the server the piece was changed (old piece and new piece)
+    		ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
+    		updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
+    		updatePieceMoce_arr.add(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
+    		updatePieceMoce_arr.add(tempPiece); // new piece
+    		updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
+    		ClientUI.chat.accept(updatePieceMoce_arr);
     	}
     	
-    	// send to the server the piece was changed (old piece and new piece)
-    	ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
-    	updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
-    	updatePieceMoce_arr.add(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
-    	updatePieceMoce_arr.add(tempPiece); // new piece
-    	updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
-    	ClientUI.chat.accept(updatePieceMoce_arr);
     	
     	return;
     }
