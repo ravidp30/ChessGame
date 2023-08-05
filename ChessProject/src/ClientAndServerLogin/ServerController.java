@@ -89,12 +89,14 @@ public class ServerController implements Initializable {
 	 * @param userIP The IP address of the connected client
 	 */
 	public static void addConnectedClient(String userHostName, String userIP, ConnectionToClient client, Player player) {
+		 synchronized (connectedClients) {
 	    try {
 	        // Create a new instance of ConnectedClient with the provided hostname and IP
 	        connectedClients.add(new ConnectedClient(userHostName, userIP, client, player));
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
+		 }
 	}
 
 	/**
@@ -103,7 +105,9 @@ public class ServerController implements Initializable {
 	 @return the ObservableList of ConnectedClient objects representing the connected clients
 	 */
 	public static ObservableList<ConnectedClient> getConnectedClients() {
+		synchronized (connectedClients) {
 		return connectedClients;
+		}
 	}
 
 	/**
@@ -274,6 +278,31 @@ public class ServerController implements Initializable {
 	    ipColumn.setCellValueFactory(new PropertyValueFactory<ConnectedClient, String>("ip"));
 	   
 	    tableView.setItems(connectedClients);
+	}
+
+	public static void setPlayerStatus(Player player, int i) {
+		synchronized (connectedClients) {
+		for(int idx = 0; idx < connectedClients.size(); idx++) {
+			if(connectedClients.get(idx).getPlayer().getPlayerId().equals(player.getPlayerId())) {
+				connectedClients.get(idx).getPlayer().setStatus(i);
+				System.out.println("asdasd::: " + connectedClients.get(idx).getPlayer().getStatus());
+				break;
+				
+			}
+		}
+		
+		for(int idx = 0; idx < connectedClients.size(); idx++) {
+			System.out.println("-----------");
+			System.out.println("id: " + connectedClients.get(idx).getPlayer().getPlayerId());
+			System.out.println("status: " + connectedClients.get(idx).getPlayer().getStatus());
+			System.out.println("name: " + connectedClients.get(idx).getClient().getName());
+			System.out.println("address: " + connectedClients.get(idx).getClient().getInetAddress());
+			System.out.println("-----------");
+				
+			
+		}
+		}
+		
 	}
 	
 	

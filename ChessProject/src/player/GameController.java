@@ -61,6 +61,7 @@ public class GameController implements Initializable {
 
     public static void start(Player player_temp, Player opponent_temp) throws IOException {
         player = player_temp;
+        System.out.println(player.getStatus() + "asdasdsadsadsa");
         opponent = opponent_temp;
         SceneManagment.createNewStage("/player/GameGUI.fxml", null, "Game").show();
     }
@@ -210,7 +211,7 @@ public class GameController implements Initializable {
     
     private void handleClickOnMoveTo(Rectangle cell) {
     	
-    	
+    	synchronized (board) {
     	
         int x = (int)cell.getX() / squareSize;
         int y =	(int)cell.getY() / squareSize;
@@ -236,12 +237,14 @@ public class GameController implements Initializable {
         else {
         	System.out.println("not our");
         }
+    	}
         
     }
 
 
     //function that move the specific piece 
     public void movePiece(Piece firstPieceSelected ,Piece piece , int newX, int newY) {
+    	
     	int check=0;
     	int oldX, oldY;
     	Piece tempPiece=null;
@@ -267,6 +270,7 @@ public class GameController implements Initializable {
     
     //function that change the piece picture to new location
     public void ChangePiqtureLocation(int oldX, int oldY, Piece piece) {
+    	
         imageViews[oldX][oldY].setLayoutX((double)piece.getX() * squareSize);
         imageViews[oldX][oldY].setLayoutY((double)piece.getY() * squareSize);
         imageViews[piece.getX()][piece.getY()] = imageViews[oldX][oldY];
@@ -287,6 +291,8 @@ public class GameController implements Initializable {
     
     public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
     	
+    	synchronized (board) {
+    	
     	board.getPiece(oldPiece.getX(), oldPiece.getY()).setX(newPiece.getX());
     	board.getPiece(oldPiece.getX(), oldPiece.getY()).setY(newPiece.getY());
     	
@@ -297,6 +303,8 @@ public class GameController implements Initializable {
         imageViews[newPiece.getX()][newPiece.getY()] = imageViews[oldPiece.getX()][oldPiece.getY()];
         imageViews[newPiece.getX()][newPiece.getY()].toFront();
         imageViews[oldPiece.getX()][oldPiece.getY()]=null;
+        
+    	}
         
 
    }

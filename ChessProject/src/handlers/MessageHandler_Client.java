@@ -65,7 +65,7 @@ public class MessageHandler_Client {
 			case "OponentPieceWasMoved":
 				// 1 - old piece
 				// 2 - new piece
-
+				System.out.println("moved");
 				GameController.getInstance().ChangePieceLocationForOponent(arrayListPiece.get(1), arrayListPiece.get(2));
 				break;
 		}
@@ -191,6 +191,12 @@ public class MessageHandler_Client {
 	    	case "too many players are ready":
 	    		
 	    		System.out.println("Too many players are ready (only 2 can play). please wait...");
+	    		
+	    		break;
+	    		
+	    	case "piece moved sucssefully":
+	    		
+	    		System.out.println("testttttttt");
 	    		
 	    		break;
 	    		

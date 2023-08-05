@@ -18,6 +18,7 @@ public class MessageHandler_Server {
 	
 	private static int playeridCounter = 0;
 	private static int playersReady = 0;
+	//ServerController serverController = new ServerController();
 	
 	private static ObservableList<ConnectedClient> connectedClients;
 	
@@ -72,28 +73,56 @@ public class MessageHandler_Server {
 				// 1 - old piece
 				// 2 - new piece
 				// 3 - current playerId - piece's name
-				
 				connectedClients = ServerController.getConnectedClients();
+
 				for(int i = 0; i < connectedClients.size(); i++) {
-					if(connectedClients.get(i).getPlayer().getStatus() == 2 && connectedClients.get(i).getPlayer().getPlayerId() != 
-							arrayListPiece.get(3).getname()) {
+					
+					System.out.println("id: " + connectedClients.get(i).getPlayer().getPlayerId());
+					System.out.println("status: " + connectedClients.get(i).getPlayer().getStatus());
+					System.out.println("address: " + connectedClients.get(i).getClient().getInetAddress());
+					
+					System.out.println("from: " + arrayListPiece.get(3).getname());
+					
+					System.out.println("client: " + connectedClients.get(i).getClient());
+
+					//if(connectedClients.get(i).getPlayer().getStatus() == 2) {
+
+						if(!connectedClients.get(i).getPlayer().getPlayerId().equals(arrayListPiece.get(3).getname())) {
+							System.out.println(arrayListPiece.get(3).getname() + " " + connectedClients.get(i).getPlayer().getPlayerId());
 						try {
-							System.out.println("asdasdsad" + connectedClients.get(i).getPlayer().getPlayerId());
+							System.out.println(12 + " " + client);
 							ArrayList<Piece> pieceMoved_arr_toOponent = new ArrayList<>();
 							pieceMoved_arr_toOponent.add(new Piece(0, 0, "OponentPieceWasMoved", true));
 							pieceMoved_arr_toOponent.add(arrayListPiece.get(1));
 							pieceMoved_arr_toOponent.add(arrayListPiece.get(2));
-							connectedClients.get(i).getClient().sendToClient(pieceMoved_arr_toOponent);
 							
-							client.sendToClient("piece moved sucssefully");
+
+							if (connectedClients.get(i).getClient() != null && connectedClients.get(i).getClient().isAlive()) {
+								connectedClients.get(i).getClient().sendToClient(pieceMoved_arr_toOponent);
+							} else {
+							    System.out.println("@@@");
+							
+							}
+							
+							connectedClients.get(i).getClient().sendToClient(pieceMoved_arr_toOponent);
+							break;
+							
+							
 
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-					}
+						
+						}
+					//}
 				}  
-				
+			try {
+				client.sendToClient("piece moved sucssefully");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 				
 				
 				break;
@@ -121,7 +150,8 @@ public class MessageHandler_Server {
 			    		connectedClients = ServerController.getConnectedClients();
 						for(int i = 0; i < connectedClients.size(); i++) {
 							if(connectedClients.get(i).getPlayer().getPlayerId().equals(arrayListPlayer.get(1).getPlayerId())) {
-								connectedClients.get(i).getPlayer().setStatus(1);
+								ServerController.setPlayerStatus(connectedClients.get(i).getPlayer(), 1);
+								//connectedClients.get(i).getPlayer().setStatus(1);//
 							}
 						}    		
 			    		client.sendToClient("First Ready");
@@ -142,9 +172,10 @@ public class MessageHandler_Server {
 			    		connectedClients = ServerController.getConnectedClients();
 						for(int i = 0; i < connectedClients.size(); i++) {
 							if(connectedClients.get(i).getPlayer().getPlayerId().equals(arrayListPlayer.get(1).getPlayerId())) {
-								connectedClients.get(i).getPlayer().setStatus(1);
+								ServerController.setPlayerStatus(connectedClients.get(i).getPlayer(), 1);
+								connectedClients.get(i).getPlayer().setStatus(1);//
 							}
-						}    		
+						}		
 						client.sendToClient("Second Ready");
 			    		
 			    		ArrayList<String> arr = new ArrayList<>();
@@ -171,7 +202,8 @@ public class MessageHandler_Server {
 		    		connectedClients = ServerController.getConnectedClients();
 					for(int i = 0; i < connectedClients.size(); i++) {
 						if(connectedClients.get(i).getPlayer().getPlayerId().equals(arrayListPlayer.get(1).getPlayerId())) {
-							connectedClients.get(i).getPlayer().setStatus(0);
+							ServerController.setPlayerStatus(connectedClients.get(i).getPlayer(), 0);
+							connectedClients.get(i).getPlayer().setStatus(0);//
 						}
 					}    		
 					client.sendToClient("UnReady");
@@ -186,16 +218,21 @@ public class MessageHandler_Server {
 				case "PlayerClickedOnStartGame":
 					// 1 - the player clicked on start game
 					Player currPlayer = arrayListPlayer.get(1);
-					currPlayer.setStatus(2);
+					//currPlayer.setStatus(2);
 					if(playersReady == 2) {
 						ArrayList<Player> players_arr = new ArrayList<>();
 						players_arr.add(new Player("GameStarting"));
 						connectedClients = ServerController.getConnectedClients();
 						for(int i = 0; i < connectedClients.size(); i++) {
 							if(connectedClients.get(i).getPlayer().getStatus() == 1) { // all the ready players
-								connectedClients.get(i).getPlayer().setStatus(2); // set the status of the 2 players that are ready to 2 (in game)
+								ServerController.setPlayerStatus(connectedClients.get(i).getPlayer(), 2);
+								System.out.println("rara: " + connectedClients.get(i).getPlayer().getPlayerId());
+								System.out.println("dadada: " + ServerController.getConnectedClients().get(i).getPlayer().getStatus());
+								System.out.println("tqtqtq: " + ServerController.getConnectedClients().get(i).getClient());
+								//connectedClients.get(i).getPlayer().setStatus(2); // set the status of the 2 players that are ready to 2 (in game)
 								// send every player (2 players total) the player who play against
 								if(!connectedClients.get(i).getPlayer().getPlayerId().equals(currPlayer.getPlayerId())) {
+									currPlayer.setStatus(2);
 									players_arr.add(currPlayer);
 									connectedClients.get(i).getClient().sendToClient(players_arr);
 									players_arr.set(1, connectedClients.get(i).getPlayer());
@@ -203,7 +240,7 @@ public class MessageHandler_Server {
 									
 									System.out.println("Game started between: \n" + currPlayer + " AND " + connectedClients.get(i).getPlayer());
 									
-									break;
+									//break;
 								}
 							}
 						}    
