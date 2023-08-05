@@ -26,7 +26,9 @@ public enum MessageType {
      */
     MAP_STRING_STRING,
     
-    ARRAY_LIST_PLAYER
+    ARRAY_LIST_PLAYER,
+    
+    ARRAY_LIST_PIECE
 
 
 }

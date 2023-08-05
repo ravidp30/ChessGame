@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import ClientAndServerLogin.ClientConnectController;
+import config.Piece;
 import config.Player;
+import player.GameController;
 import player.MenuController;
 
 
@@ -42,10 +44,32 @@ public class MessageHandler_Client {
 	        case ARRAY_LIST_PLAYER:
 	        	handlePlayerArrayListMessage((ArrayList<Player>) msg);
 	            break;
+	        case ARRAY_LIST_PIECE:
+	        	handlePieceArrayListMessage((ArrayList<Piece>) msg);
+	            break;
 	        default:
 	            //System.out.println("Message type does not exist");
 	            break;
 	    }
+	}
+
+
+
+	private static void handlePieceArrayListMessage(ArrayList<Piece> arrayList) {
+
+		ArrayList<Piece> arrayListPiece = (ArrayList<Piece>) arrayList;
+		//System.out.println(arrayListStr);
+        String messageType = arrayListPiece.get(0).getname();
+        switch (messageType) {
+		
+			case "OponentPieceWasMoved":
+				// 1 - old piece
+				// 2 - new piece
+
+				GameController.getInstance().ChangePieceLocationForOponent(arrayListPiece.get(1), arrayListPiece.get(2));
+				break;
+		}
+		
 	}
 
 
@@ -105,6 +129,9 @@ public class MessageHandler_Client {
 				}
 				if (firstElement instanceof Player) {
 					return MessageType.ARRAY_LIST_PLAYER;
+				}
+				if (firstElement instanceof Piece) {
+					return MessageType.ARRAY_LIST_PIECE;
 				}
 		}
 		// Check if the message is a Map.

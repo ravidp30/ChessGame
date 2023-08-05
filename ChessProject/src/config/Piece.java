@@ -1,8 +1,13 @@
 package config;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Piece {
+public class Piece implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int x;
 	private int y;
 	private String name;

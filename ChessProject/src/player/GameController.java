@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 
 import ClientAndServerLogin.SceneManagment;
+import client.ClientUI;
 import config.Board;
 import config.Piece;
 import config.Player;
@@ -34,9 +35,12 @@ public class GameController implements Initializable {
     private static Player opponent;
     private Board board;
     private ImageView[][] imageViews = new ImageView[8][8];
-    private int squareSize = 54;
+    private int squareSize = 64;
     private Piece firstPieceSelected;
     private Piece piece;
+    private Piece tempPiece;
+    private static GameController instance;
+
     private ArrayList<Piece> pieces = new ArrayList<>();
     private LinkedList<Piece> pieceL = new LinkedList<>();
   
@@ -45,6 +49,15 @@ public class GameController implements Initializable {
 
     @FXML
     private Pane chessboardPane;
+    
+    public GameController() {
+    	instance = this;
+    }
+    
+    public static GameController getInstance() {
+    	return instance;
+    }
+    
 
     public static void start(Player player_temp, Player opponent_temp) throws IOException {
         player = player_temp;
@@ -152,7 +165,6 @@ public class GameController implements Initializable {
         
         Image image = new Image(getClass().getResourceAsStream("/player/" + name + ".png"));
         imageViews[x][y].setImage(image);
-        System.out.println("123");
         imageViews[x][y].setLayoutX(x * squareSize);
         imageViews[x][y].setLayoutY(y * squareSize);
         
@@ -204,36 +216,91 @@ public class GameController implements Initializable {
         int y =	(int)cell.getY() / squareSize;
         
         piece = board.getPiece(x,y);
-        
+        //first click + our piece
         if(piece != null && piece.isWhite()) { // our piece
-        	firstPieceSelected = piece;
-        	System.out.println("old piece: "+ piece.getX()+","+ piece.getY());
-        	
+        	firstPieceSelected = piece;//save the first Click on the piece
+        	return;
         }
-        
+        //second click
         else if(piece == null && firstPieceSelected != null) {//move our piece to empty place
-        	System.out.println("check available- from:" + firstPieceSelected.getX()+", " +  firstPieceSelected.getY()+"  |  to:" +   (int)x+", " +   (int)y);
-        	movePiece(firstPieceSelected.getX(), firstPieceSelected.getY(), x,y);
+        	movePiece(firstPieceSelected,piece,x,y);
+            firstPieceSelected=null;
+
+        	//	System.out.println("piece before change: " + piece.getname() + " | " + piece.getX() + ","+ piece.getY());
+        //	System.out.println("firstPieceSelected before change: " + firstPieceSelected.getname() + " | " + firstPieceSelected.getX() + ","+ firstPieceSelected.getY());
+
         	
-        	//firstPieceSelected = null;
+        	//System.out.println("/n piece after change: " + piece.getname() + " | " + piece.getX() + ","+ piece.getY());
+        	//System.out.println("firstPieceSelected after change: " + firstPieceSelected.getname() + " | " + firstPieceSelected.getX() + ","+ firstPieceSelected.getY());          	//firstPieceSelected = null;
         }
         else {
         	System.out.println("not our");
         }
         
-        System.out.println("Clicked on square at coordinates: (" + x + ", " + y + ")");
     }
 
 
+    //function that move the specific piece 
+    public void movePiece(Piece firstPieceSelected ,Piece piece , int newX, int newY) {
+    	int check=0;
+    	int oldX, oldY;
+    	Piece tempPiece=null;
+    	oldX=firstPieceSelected.getX();
+    	oldY=firstPieceSelected.getY();
+    	tempPiece=new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
+        check=board.MoveCheck(firstPieceSelected,tempPiece);//check if available to move
+        
+    	if(check==1) {//available to move the image (KILL OR EMPTY SPACE)
+    		ChangePiqtureLocation(oldX,oldY,tempPiece);
+    	}
+    	
+    	// send to the server the piece was changed (old piece and new piece)
+    	ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
+    	updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
+    	updatePieceMoce_arr.add(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
+    	updatePieceMoce_arr.add(tempPiece); // new piece
+    	updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
+    	ClientUI.chat.accept(updatePieceMoce_arr);
+    	
+    	return;
+    }
     
-    public void movePiece(int oldX, int oldY, int newX, int newY) {
-    	System.out.println("old piece: "+ oldX+","+ oldY);
-    	System.out.println("new piece: "+ newX+ ","+ newY);
-    	board.Move(oldX, oldX, newX, newY );
-    	imageViews[oldX][oldY].setLayoutX(newX * squareSize);
-    	imageViews[oldX][oldY].setLayoutY(newY * squareSize);
-       
-
-
-    }
+    //function that change the piece picture to new location
+    public void ChangePiqtureLocation(int oldX, int oldY, Piece piece) {
+        imageViews[oldX][oldY].setLayoutX((double)piece.getX() * squareSize);
+        imageViews[oldX][oldY].setLayoutY((double)piece.getY() * squareSize);
+        imageViews[piece.getX()][piece.getY()] = imageViews[oldX][oldY];
+        imageViews[piece.getX()][piece.getY()].toFront();
+        imageViews[oldX][oldY]=null;
+        
+     /*   System.out.println("--------------------\n");
+        for (int i=0 ; i<8; i++)
+        	for (int j=0 ; j<8; j++) {
+        		if(imageViews[i][j]!=null) 
+        			System.out.println(" image in:" + (double)imageViews[i][j].getLayoutX() + "," + (double)imageViews[i][j].getLayoutY());
+        		if(board.getPiece(i, j)!=null) {
+        			System.out.println("piece in i,j: "+ board.getPiece(i,j).getname() + " in location: "+ i+"," + j);
+        		}
+        	}*/
    }
+    
+    
+    public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
+    	
+    	board.getPiece(oldPiece.getX(), oldPiece.getY()).setX(newPiece.getX());
+    	board.getPiece(oldPiece.getX(), oldPiece.getY()).setY(newPiece.getY());
+    	
+    	
+    	
+        imageViews[oldPiece.getX()][oldPiece.getY()].setLayoutX((double)newPiece.getX() * squareSize);
+        imageViews[oldPiece.getX()][oldPiece.getY()].setLayoutY((double)newPiece.getY() * squareSize);
+        imageViews[newPiece.getX()][newPiece.getY()] = imageViews[oldPiece.getX()][oldPiece.getY()];
+        imageViews[newPiece.getX()][newPiece.getY()].toFront();
+        imageViews[oldPiece.getX()][oldPiece.getY()]=null;
+        
+
+   }
+    
+    
+    
+}

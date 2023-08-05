@@ -6,6 +6,7 @@ import java.util.Map;
 
 import ClientAndServerLogin.ServerController;
 import config.ConnectedClient;
+import config.Piece;
 import config.Player;
 import javafx.collections.ObservableList;
 import ocsf.server.ConnectionToClient;
@@ -50,10 +51,55 @@ public class MessageHandler_Server {
 	        case ARRAY_LIST_PLAYER:
 	        	handlePlayerArrayListMessage((ArrayList<Player>) msg, client);
 	        	break;
+	        case ARRAY_LIST_PIECE:
+	        	handlePieceArrayListMessage((ArrayList<Piece>) msg, client);
+	        	break;
 	        default:
 	            //System.out.println("Message type does not exist");
 	            break;
 	    }
+	}
+
+	private static void handlePieceArrayListMessage(ArrayList<Piece> arrayList, ConnectionToClient client) {
+
+		
+        ArrayList<Piece> arrayListPiece = (ArrayList<Piece>) arrayList;
+		//System.out.println(arrayListStr);
+        String messageType = arrayListPiece.get(0).getname();
+        switch (messageType) {
+		
+			case "PieceWasMoved":
+				// 1 - old piece
+				// 2 - new piece
+				// 3 - current playerId - piece's name
+				
+				connectedClients = ServerController.getConnectedClients();
+				for(int i = 0; i < connectedClients.size(); i++) {
+					if(connectedClients.get(i).getPlayer().getStatus() == 2 && connectedClients.get(i).getPlayer().getPlayerId() != 
+							arrayListPiece.get(3).getname()) {
+						try {
+							System.out.println("asdasdsad" + connectedClients.get(i).getPlayer().getPlayerId());
+							ArrayList<Piece> pieceMoved_arr_toOponent = new ArrayList<>();
+							pieceMoved_arr_toOponent.add(new Piece(0, 0, "OponentPieceWasMoved", true));
+							pieceMoved_arr_toOponent.add(arrayListPiece.get(1));
+							pieceMoved_arr_toOponent.add(arrayListPiece.get(2));
+							connectedClients.get(i).getClient().sendToClient(pieceMoved_arr_toOponent);
+							
+							client.sendToClient("piece moved sucssefully");
+
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}  
+				
+				
+				
+				break;
+		}
+		
+		
 	}
 
 	private static void handlePlayerArrayListMessage(ArrayList<Player> arrayList, ConnectionToClient client) {
@@ -197,6 +243,9 @@ public class MessageHandler_Server {
 	            }
 	            if (firstElement instanceof Player) {
 	                return MessageType.ARRAY_LIST_PLAYER;
+	            }
+	            if (firstElement instanceof Piece) {
+	                return MessageType.ARRAY_LIST_PIECE;
 	            }
 			}
 	    } else if (msg instanceof Map) {
