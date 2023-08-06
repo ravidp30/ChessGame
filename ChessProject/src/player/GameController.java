@@ -42,7 +42,7 @@ import javafx.scene.image.Image;
 
 
 public class GameController implements Initializable {
-    
+    private boolean opponentFound =false;
     private static Player player;
     private static Player opponent;
     private Board board;
@@ -61,7 +61,7 @@ public class GameController implements Initializable {
     
 
     private ArrayList<Piece> pieces = new ArrayList<>();
-    private LinkedList<Piece> pieceL = new LinkedList<>();
+//    private LinkedList<Piece> pieceL = new LinkedList<>();
     private ArrayList<Piece> Kpieces = new ArrayList<>();
     private ArrayList<Piece> Spieces = new ArrayList<>();
     private ArrayList<Piece> Qpieces = new ArrayList<>();
@@ -77,7 +77,8 @@ public class GameController implements Initializable {
     private TextField txtChat;
     @FXML
     private Label labelChatArea;
-    
+    @FXML
+    private Button goodLuck;
     @FXML
     private Label ChessHeadLineLbl;
 
@@ -107,7 +108,7 @@ public class GameController implements Initializable {
     	
     	txtChat.setText("");
     	
-    	labelChatArea.setText(textInside + "\n\n(You): " + myText);
+    	labelChatArea.setText(textInside + "\n(You): " + myText);
     	
     	
     	ArrayList<String> messageText_arr = new ArrayList<>();
@@ -117,7 +118,10 @@ public class GameController implements Initializable {
     	ClientUI.chat.accept(messageText_arr);
     }
     
-
+    public void sendGoodLuck(ActionEvent event) throws Exception {
+    	String textInside = labelChatArea.getText();
+    	labelChatArea.setText(textInside +"\n(You): Good luck  :-)");
+    }
 
     public static void start(Player player_temp, Player opponent_temp) throws IOException {
         player = player_temp;
@@ -129,7 +133,7 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ChessHeadLineLbl.setText("Chess Game:\nYou (id: " + player.getPlayerId() + ") VS opponent (id: " + opponent.getPlayerId() + ")");
-        
+        labelChatArea.setStyle("-fx-background-color: gray; -fx-border-color: green; -fx-border-width: 2px;");
         try {
 			drawChessboard();
 		} catch (IOException e) {
@@ -355,27 +359,38 @@ public class GameController implements Initializable {
         if(piece != null && piece.isWhite()) { // our piece
         	firstPieceSelected = piece;//save the first Click on the piece
         	switch (firstPieceSelected.getname()) {
+        	
 	        case "KingW":
 	        	king=(King) firstPieceSelected;
 	        	Kpieces=king.Move();
 	        	MoveOptions(Kpieces,king);
-	        	
 	            break;
+	            
 	        case "QueenW":
 	        	queen=(Queen) firstPieceSelected;
 	        	Qpieces=queen.Move();
 	        	MoveOptions(Qpieces,queen);
-	        	
 	        	break;
+	        	
 	        case "RookW":
-	        	
-	        	break; 
+	        	rook=(Rook) firstPieceSelected;
+	        	Rpieces=rook.Move();
+	        	MoveOptions(Rpieces,rook);
+	           	break; 
+	           	
 	        case "BishopW":
-	        	
+	        	bishop=(Bishop) firstPieceSelected;
+	        	Bpieces=bishop.Move();
+	        	MoveOptions(Bpieces,bishop);
 	        	break; 
-	        case "KnightW":
 	        	
-	        	break;
+//	        case "KnightW":
+//	        	knight=(Knight) firstPieceSelected;
+//	        	KNpieces=knight.Move();
+//	        	MoveOptions(KNpieces,knight);
+//	        	
+//	        	break;
+//	        	
 	        case "soldierW":
 	        	soldier=(Soldier) firstPieceSelected;
 	        	Spieces=soldier.Move();
@@ -475,15 +490,17 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
   }
 
 
-    
+    //function that showing all possibles moves 
     public void MoveOptions(ArrayList<Piece> options , Piece piece) {
     	
     	rectangleListOptions = new ListView<>();
     	Piece tempPiece;
     	 for( Piece p: options) {
     		 tempPiece = board.getPiece(p.getX(), p.getY());
+//    		 int currXPosition=tempPiece.getX();//save the current X position 
+//             int currYPosition=tempPiece.getY();//save the current Y position 
     		 // mark a square only if there are no pieces in the square to move or black piece
-    		 if(tempPiece == null || !tempPiece.isWhite()) {
+    		 if(tempPiece == null && !opponentFound) {
     		 Rectangle squareOption = new Rectangle( p.getX() * squareSize,p.getY() * squareSize, squareSize, squareSize);
     		 	rectangleListOptions.getItems().add(squareOption);
                  Color color;
@@ -501,13 +518,20 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
                  });  
                  
                  chessboardPane.getChildren().add(squareOption);
-                 System.out.println(p.getname() + "move option: " + p.getX() + ","+p.getY());
-                 
-                 
+                 System.out.println(" clear options to move: " + p.getX() + ","+p.getY());
+
                  }
-    	 }
-    	 
+    		 else if(!tempPiece.isWhite() ){	// Opponent piece 
+    			// int opponentXPosition = tempPiece.getX();//save the current X opponent position
+    			 //int opponentYPosition = tempPiece.getY();//save the current X opponent position
+    			
+    			// opponentFound=true;
+    		 
+    		 }
+    		 
+    		
              }
+    }
    /* public List<Rectangle> MoveOptions(ArrayList<Piece> options , Piece piece) {
 		List<Rectangle> square =  (List<Rectangle>) new Rectangle();
     	 int i=0;

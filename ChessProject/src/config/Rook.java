@@ -16,26 +16,26 @@ public class Rook extends Piece{
 		
 		//------------------------------ Right--------------------------
 
-		if(currX<7) 
+		if(currX<=7) 
 			for(int i=1 ; currX+i<8; i++) { 
 				pieces.add(new Piece(currX+i, currY, "RookW", true)); // right
 			}
 		//------------------------------ Left--------------------------
 
-		if(currX>0) 
-			for(int i=1 ; currX-i>0; i++) { 
+		if(currX>=0) 
+			for(int i=1 ; currX-i>=0; i++) { 
 				pieces.add(new Piece(currX-i, currY, "RookW", true));// left
 			}
 		//------------------------------ Up--------------------------
 
-		if(currY<7) 
-			for(int i=1 ; currY-i>0; i++) { 
+		if(currY<=7) 
+			for(int i=1 ; currY-i>=0; i++) { 
 				pieces.add(new Piece(currX, currY-i, "RookW", true));//up
 			}
 		//------------------------------ Down--------------------------
 
-		if(currY>0) 
-			for(int i=1 ; currY-i<8; i++) { 
+		if(currY>=0) 
+			for(int i=1 ; currY+i<8; i++) { 
 				pieces.add(new Piece(currX, currY+i, "RookW", true));// down
 			}
 		

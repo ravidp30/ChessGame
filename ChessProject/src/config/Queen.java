@@ -14,32 +14,32 @@ public class Queen extends Piece{
 		int currY=this.getY();
 		int left = 0,right=0,up=0,down = 0;
 		ArrayList<Piece> pieces = new ArrayList<>();
-		
+		System.out.println("1");
 		//------------------------------ Right--------------------------
 
-		if(currX<7) 
+		if(currX<=7) 
 			for(int i=1 ; currX+i<8; i++) { 
 				pieces.add(new Piece(currX+i, currY, "QueenW", true)); // right
 				right=i;
 			}
 		//------------------------------ Left--------------------------
 
-		if(currX>0) 
-			for(int i=1 ; currX-i>0; i++) { 
+		if(currX>=0) 
+			for(int i=1 ; currX-i>=0; i++) { 
 				pieces.add(new Piece(currX-i, currY, "QueenW", true));// left
 				left=i;
 			}
 		//------------------------------ Up--------------------------
 
-		if(currY<7) 
-			for(int i=1 ; currY-i>0; i++) { 
+		if(currY<=7) 
+			for(int i=1 ; currY-i>=0; i++) { 
 				pieces.add(new Piece(currX, currY-i, "QueenW", true));//up
 				up=i;
 			}
 		//------------------------------ Down--------------------------
 
-		if(currY>0) 
-			for(int i=1 ; currY-i<8; i++) { 
+		if(currY>=0) 
+			for(int i=1 ; currY+i<8; i++) { 
 				pieces.add(new Piece(currX, currY+i, "QueenW", true));// down
 				down=i;
 			}
@@ -84,7 +84,9 @@ public class Queen extends Piece{
 			for(int i=1 ; up-i>=0 ; i++)  
 				pieces.add(new Piece(currX+i, currY-i, "QueenW", true));//up + right			
 		
-		
+		for (Piece p : pieces) {
+		System.out.println(p.getname() + "move option: " + p.getX() + ","+p.getY());
+	}
 		return pieces;
 	}
 	
