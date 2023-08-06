@@ -238,6 +238,12 @@ public class MessageHandler_Client {
 		    		
 		    		break;
 		    		
+		    	case "GettingMessageFromPlayer":
+		    		//  1 - the message sent
+		    		
+		    		GameController.getInstance().getMessageFromOponent(arrayListStr.get(1));
+		    		break;
+		    		
 	            }       
 	            
             }catch (Exception e) {

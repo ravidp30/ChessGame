@@ -394,6 +394,25 @@ public class MessageHandler_Server {
 						client.sendToClient("quit");
 						
 	                    break;
+	                    
+	                case "OponentSentMessage":
+	                	// 1 - text
+	                	// 2 - id player sender
+	                	
+	                	ArrayList<String> message_arr = new ArrayList<>();
+	                	message_arr.add("GettingMessageFromPlayer");
+	                	message_arr.add(arrayListStr.get(1));
+	                	
+	                	if(player1id.equals(arrayListStr.get(2))) {
+	                		player2.sendToClient(message_arr);
+	                	}
+	                	else {
+	                		player1.sendToClient(message_arr);
+	                	}
+	                	
+	                	client.sendToClient("message sent");
+	                	
+	                	break;
 
 				}
             }catch (IOException e) {

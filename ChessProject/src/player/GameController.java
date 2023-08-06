@@ -2,6 +2,8 @@ package player;
 
 import java.awt.image.BufferedImage;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -23,6 +25,7 @@ import config.Queen;
 import config.Rook;
 import config.Soldier;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -57,7 +60,12 @@ public class GameController implements Initializable {
     
     
     private ListView<Rectangle> rectangleListOptions;
-  
+    
+    @FXML
+    private TextField txtChat;
+    @FXML
+    private Label labelChatArea;
+    
     @FXML
     private Label ChessHeadLineLbl;
 
@@ -72,6 +80,27 @@ public class GameController implements Initializable {
     	return instance;
     }
     
+    public void onPlayerClickSend(ActionEvent event) throws Exception {
+    	
+    	String myText = txtChat.getText();
+    	String textInside;
+    	
+    	
+    	textInside = labelChatArea.getText();
+    	
+    	txtChat.setText("");
+    	
+    	labelChatArea.setText(textInside + "\n\n(You): " + myText);
+    	
+    	
+    	ArrayList<String> messageText_arr = new ArrayList<>();
+    	messageText_arr.add("OponentSentMessage");
+    	messageText_arr.add(myText);
+    	messageText_arr.add(player.getPlayerId());
+    	ClientUI.chat.accept(messageText_arr);
+    }
+    
+
 
     public static void start(Player player_temp, Player opponent_temp) throws IOException {
         player = player_temp;
@@ -470,6 +499,20 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
 	        	//System.out.println("firstPieceSelected after change: " + firstPieceSelected.getname() + " | " + firstPieceSelected.getX() + ","+ firstPieceSelected.getY());          	//firstPieceSelected = null;
 	        }
 		
+	}
+
+	public void getMessageFromOponent(String message) {
+		
+		Platform.runLater(() -> {
+		
+    	String textInside;
+    	
+    	textInside = labelChatArea.getText();
+    	
+    	labelChatArea.setText(textInside + "\n\n(Oponent): " + message);
+    	
+		});
+    	
 	}
     
 }
