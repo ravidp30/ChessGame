@@ -1,6 +1,7 @@
 package player;
 
 import java.awt.image.BufferedImage;
+import javafx.scene.control.ListView;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -51,6 +52,8 @@ public class GameController implements Initializable {
     private ArrayList<Piece> pieces = new ArrayList<>();
     private LinkedList<Piece> pieceL = new LinkedList<>();
     private ArrayList<Piece> Kpieces = new ArrayList<>();
+    
+    private ListView<Rectangle> rectangleListOptions;
   
     @FXML
     private Label ChessHeadLineLbl;
@@ -275,11 +278,19 @@ public class GameController implements Initializable {
 	    }
         	return;
         }
-        //second click
+        
+        //---------------- second click ---------------------
+        
         else if(piece == null && firstPieceSelected != null) {//move our piece to empty place
         	movePiece(firstPieceSelected,piece,x,y);
             firstPieceSelected=null;
-
+            
+            for(int j = 0; j < rectangleListOptions.getItems().size(); j++) {
+            	rectangleListOptions.getItems().get(j).setFill(null);
+            	rectangleListOptions.getItems().get(j).setStroke(null);
+            }
+            
+            rectangleListOptions = new ListView<>();
         	//	System.out.println("piece before change: " + piece.getname() + " | " + piece.getX() + ","+ piece.getY());
         //	System.out.println("firstPieceSelected before change: " + firstPieceSelected.getname() + " | " + firstPieceSelected.getX() + ","+ firstPieceSelected.getY());
 
@@ -364,14 +375,23 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
 
     
     public void MoveOptions(ArrayList<Piece> options , Piece piece) {
+    	
+    	rectangleListOptions = new ListView<>();
+    	
     	 for( Piece p: options) {    
-                 Rectangle square = new Rectangle( p.getX() * squareSize,p.getY()*  squareSize, squareSize, squareSize);
+    		 
+    		 Rectangle newSquare = new Rectangle( p.getX() * squareSize,p.getY()*  squareSize, squareSize, squareSize);
+    		 	rectangleListOptions.getItems().add(newSquare);
                  Color color;
-                 color = Color.RED;
-                 square.setFill(color);
-                 square.setVisible(true);
-                 chessboardPane.getChildren().add(square);
+                 color = Color.BLACK;
+                 newSquare.setFill(Color.TRANSPARENT);
+                 newSquare.setStroke(color);
+                 newSquare.setStrokeWidth(4.0);
+                 chessboardPane.getChildren().add(newSquare);
                  System.out.println(p.getname() + "move option: " + p.getX() + ","+p.getY());
+                 
+                 
+                 
                  }
     	 
              }

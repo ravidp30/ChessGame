@@ -40,7 +40,7 @@ public class Queen extends Piece{
 
 		if(currY>0) 
 			for(int i=1 ; currY-i<8; i++) { 
-				pieces.add(new Piece(currX, currY+i, "KingW", true));// down
+				pieces.add(new Piece(currX, currY+i, "QueenW", true));// down
 				down=i;
 			}
 		
