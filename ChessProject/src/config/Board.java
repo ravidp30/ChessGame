@@ -41,8 +41,15 @@ public class Board implements Serializable{
 		for (Piece p:pieces) {
 			
 			if(p.getX()==piece.getX() && p.getY()==piece.getY()) {//found piece there already
-				if(p.isWhite()) {System.out.println("cant move there- somone is there");return 0;}
-				else {Kill();System.out.println("kill");return 1;}//KILL
+				if(p.isWhite()) {
+					System.out.println("cant move there- somone is there");
+					return 0;
+				}
+
+				else {
+					Kill();System.out.println("kill");
+					return 1;
+				}//KILL
 			}
 			if(p.getX()==firstPieceSelected.getX() && p.getY()==firstPieceSelected.getY()){//found the current piece
 				p.setX(piece.getX());//change the location

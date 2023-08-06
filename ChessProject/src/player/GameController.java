@@ -49,9 +49,12 @@ public class GameController implements Initializable {
     private Piece tempPiece;
     private static GameController instance;
     private King king;
+    private Soldier soldier;
     private ArrayList<Piece> pieces = new ArrayList<>();
     private LinkedList<Piece> pieceL = new LinkedList<>();
     private ArrayList<Piece> Kpieces = new ArrayList<>();
+    private ArrayList<Piece> Spieces = new ArrayList<>();
+    
     
     private ListView<Rectangle> rectangleListOptions;
   
@@ -150,6 +153,13 @@ public class GameController implements Initializable {
                 	setUpPiece(x, y, "QueenW", true);
                 }
                 
+                
+                if (y == 1) {//soldier Black
+                	setUpPiece(x, y, "soldierB", false);
+                }
+                if (y == 0 && x ==4) {//King Black
+                	setUpPiece(x, y, "KingB", false);
+                }
                
                 
             }
@@ -186,6 +196,17 @@ public class GameController implements Initializable {
         	piece = new Soldier(x, y, name, true);
         	System.out.println(name+" in position: " + x +","+ y);
         	break; 
+        	
+        case "soldierB":
+        	piece = new Soldier(x, y, name, false);
+        	System.out.println(name+" in position: " + x +","+ y);
+        	break; 
+        	
+        case "KingB":
+        	piece = new King(x, y, name, false);
+        	System.out.println(name+" in position: " + x +","+ y);
+        	break;
+        	
         default:
             System.out.println("Invalid choice");
     }
@@ -243,6 +264,13 @@ public class GameController implements Initializable {
     private void handleClickOnMoveTo(Rectangle cell) {
     	
     	synchronized (board) {
+    		try {
+            for(int j = 0; j < rectangleListOptions.getItems().size(); j++) {
+            	rectangleListOptions.getItems().get(j).setFill(null);
+            	rectangleListOptions.getItems().get(j).setStroke(null);
+            }
+            rectangleListOptions.getItems().clear();
+    		}catch(NullPointerException e) {}
     	
         int x = (int)cell.getX() / squareSize;
         int y =	(int)cell.getY() / squareSize;
@@ -271,7 +299,9 @@ public class GameController implements Initializable {
 	        	
 	        	break;
 	        case "soldierW":
-	        	
+	        	soldier=(Soldier) firstPieceSelected;
+	        	Spieces=soldier.Move();
+	        	MoveOptions(Spieces,soldier);
 	        	break; 
 	        default:
 	            System.out.println("Invalid choice");
@@ -281,23 +311,7 @@ public class GameController implements Initializable {
         
         //---------------- second click ---------------------
         
-        else if(piece == null && firstPieceSelected != null) {//move our piece to empty place
-        	movePiece(firstPieceSelected,piece,x,y);
-            firstPieceSelected=null;
-            
-            for(int j = 0; j < rectangleListOptions.getItems().size(); j++) {
-            	rectangleListOptions.getItems().get(j).setFill(null);
-            	rectangleListOptions.getItems().get(j).setStroke(null);
-            }
-            
-            rectangleListOptions = new ListView<>();
-        	//	System.out.println("piece before change: " + piece.getname() + " | " + piece.getX() + ","+ piece.getY());
-        //	System.out.println("firstPieceSelected before change: " + firstPieceSelected.getname() + " | " + firstPieceSelected.getX() + ","+ firstPieceSelected.getY());
-
-        	
-        	//System.out.println("/n piece after change: " + piece.getname() + " | " + piece.getX() + ","+ piece.getY());
-        	//System.out.println("firstPieceSelected after change: " + firstPieceSelected.getname() + " | " + firstPieceSelected.getX() + ","+ firstPieceSelected.getY());          	//firstPieceSelected = null;
-        }
+       
         else {
         	System.out.println("not our");
         }
@@ -315,6 +329,12 @@ public class GameController implements Initializable {
     	oldX=firstPieceSelected.getX();
     	oldY=firstPieceSelected.getY();
     	tempPiece=new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
+    	/*if(piece == null) {
+    		tempPiece=new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
+    	}
+    	else {
+    		tempPiece=new Piece(newX,newY,firstPieceSelected.getname(),piece.isWhite());
+    	}*/
         check=board.MoveCheck(firstPieceSelected,tempPiece);//check if available to move
         
     	if(check==1) {//available to move the image (KILL OR EMPTY SPACE)
@@ -358,6 +378,10 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
     	synchronized (board) {
     		Platform.runLater(() -> {
     		try {
+    			oldPiece.setX(7-oldPiece.getX());
+    			oldPiece.setY(7-oldPiece.getY());
+    			newPiece.setX(7-newPiece.getX());
+    			newPiece.setY(7-newPiece.getY());
     			board.setPieceXY(oldPiece, newPiece.getX(), newPiece.getY());
     	        imageViews[oldPiece.getX()][oldPiece.getY()].setLayoutX((double)newPiece.getX() * squareSize);
     	        imageViews[oldPiece.getX()][oldPiece.getY()].setLayoutY((double)newPiece.getY() * squareSize);
@@ -377,22 +401,33 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
     public void MoveOptions(ArrayList<Piece> options , Piece piece) {
     	
     	rectangleListOptions = new ListView<>();
-    	
-    	 for( Piece p: options) {    
-    		 
-    		 Rectangle newSquare = new Rectangle( p.getX() * squareSize,p.getY()*  squareSize, squareSize, squareSize);
-    		 	rectangleListOptions.getItems().add(newSquare);
+    	Piece tempPiece;
+    	 for( Piece p: options) {
+    		 tempPiece = board.getPiece(p.getX(), p.getY());
+    		 // mark a square only if there are no pieces in the square to move or black piece
+    		 if(tempPiece == null || !tempPiece.isWhite()) {
+    		 Rectangle squareOption = new Rectangle( p.getX() * squareSize,p.getY() * squareSize, squareSize, squareSize);
+    		 	rectangleListOptions.getItems().add(squareOption);
                  Color color;
                  color = Color.BLACK;
-                 newSquare.setFill(Color.TRANSPARENT);
-                 newSquare.setStroke(color);
-                 newSquare.setStrokeWidth(4.0);
-                 chessboardPane.getChildren().add(newSquare);
+                 squareOption.setFill(Color.TRANSPARENT);
+                 squareOption.setStroke(color);
+                 squareOption.setStrokeWidth(4.0);
+                 
+                 // Attach a click event handler to each square
+                 squareOption.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                     @Override
+                     public void handle(MouseEvent event) {
+                         handleClickOnMoveToSecond(squareOption);
+                     }
+                 });  
+                 
+                 chessboardPane.getChildren().add(squareOption);
                  System.out.println(p.getname() + "move option: " + p.getX() + ","+p.getY());
                  
                  
-                 
                  }
+    	 }
     	 
              }
    /* public List<Rectangle> MoveOptions(ArrayList<Piece> options , Piece piece) {
@@ -410,5 +445,31 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
     	 return square;
              }
     */
+
+	private void handleClickOnMoveToSecond(Rectangle squareOption) {
+		
+        int x = (int)squareOption.getX() / squareSize;
+        int y =	(int)squareOption.getY() / squareSize;
+        piece = board.getPiece(x,y);
+		 if(piece == null && firstPieceSelected != null) {//move our piece to empty place
+	        	movePiece(firstPieceSelected,piece,x,y);
+	            firstPieceSelected=null;
+	            
+	            for(int j = 0; j < rectangleListOptions.getItems().size(); j++) {
+	            	rectangleListOptions.getItems().get(j).setFill(null);
+	            	rectangleListOptions.getItems().get(j).setStroke(null);
+	            }
+	            rectangleListOptions.getItems().clear();
+	            
+
+	        	//	System.out.println("piece before change: " + piece.getname() + " | " + piece.getX() + ","+ piece.getY());
+	        //	System.out.println("firstPieceSelected before change: " + firstPieceSelected.getname() + " | " + firstPieceSelected.getX() + ","+ firstPieceSelected.getY());
+
+	        	
+	        	//System.out.println("/n piece after change: " + piece.getname() + " | " + piece.getX() + ","+ piece.getY());
+	        	//System.out.println("firstPieceSelected after change: " + firstPieceSelected.getname() + " | " + firstPieceSelected.getX() + ","+ firstPieceSelected.getY());          	//firstPieceSelected = null;
+	        }
+		
+	}
     
 }

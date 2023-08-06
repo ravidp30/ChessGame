@@ -14,11 +14,16 @@ public class Soldier extends Piece{
 		int currY=this.getY();
 		int left = 0,right=0,up=0,down = 0;
 		ArrayList<Piece> pieces = new ArrayList<>();
-
 		
+		if(currY > 0) {
+			pieces.add(new Piece(currX, currY-1, "soldierW", true));
+		}
+		if(currY == 6) {
+			pieces.add(new Piece(currX, currY-2, "soldierW", true));
+		}
 
-return pieces;
-}
+		return pieces;
+	}
 
 
 }
