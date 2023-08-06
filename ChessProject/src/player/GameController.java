@@ -12,10 +12,16 @@ import javax.imageio.ImageIO;
 
 import ClientAndServerLogin.SceneManagment;
 import client.ClientUI;
+import config.Bishop;
 import config.Board;
 import config.King;
+import config.Knight;
 import config.Piece;
 import config.Player;
+import config.Queen;
+import config.Rook;
+import config.Soldier;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -41,9 +47,10 @@ public class GameController implements Initializable {
     private Piece piece;
     private Piece tempPiece;
     private static GameController instance;
-
+    private King king;
     private ArrayList<Piece> pieces = new ArrayList<>();
     private LinkedList<Piece> pieceL = new LinkedList<>();
+    private ArrayList<Piece> Kpieces = new ArrayList<>();
   
     @FXML
     private Label ChessHeadLineLbl;
@@ -117,33 +124,27 @@ public class GameController implements Initializable {
                 //setup pieces
                 if (y == 6 && (x >= 0 && x < 8)) {//soldier White
                 	setUpPiece(x, y, "soldierW", true);
-                	System.out.println("soldierW position: x:" + x +" ||  y:" + y );
                 }
                 
                 if (y == 7 && (x ==0  || x == 7)) {//Rook White
                 	setUpPiece(x, y, "RookW", true);
-                	System.out.println("RookW position: x" + x +" ||  y:" + y );
                 }
                 
                 if (y == 7 && (x ==1  || x == 6)) {//Knight White
                   	setUpPiece(x, y, "KnightW", true);
-                	System.out.println("KnightW position: x" + x +" ||  y:" + y );
                 	
                 }
                 
                 if (y == 7 && (x ==2  || x == 5)) {//Bishop White
                 	setUpPiece(x, y, "BishopW", true);
-                	System.out.println("BishopW position: x" + x +" ||  y:" + y );
                 }
                 
                 if (y == 7 && x ==3) {//King White
                 	setUpPiece(x, y, "KingW", true);
-                	System.out.println("KingW position: x" + x +" ||  y:" + y );
                 }
                 
                 if (y == 7 && x ==4) {//Queen White
                 	setUpPiece(x, y, "QueenW", true);
-                	System.out.println("QueenW position: x" + x +" ||  y:" + y );
                 }
                 
                
@@ -158,20 +159,33 @@ public class GameController implements Initializable {
     
     public void setUpPiece(int x, int y, String name, boolean isWhite) {
     	switch (name) {
-        case "kingW":
+        case "KingW":
         	piece = new King(x, y, name, true);
+        	System.out.println(name +" in position: " + x +","+ y);
             break;
+        case "QueenW":
+        	piece = new Queen(x, y, name, true);
+        	System.out.println(name+" in position: " + x +","+ y);
+        	break;
+        case "RookW":
+        	piece = new Rook(x, y, name, true);
+        	System.out.println(name+" in position: " + x +","+ y);
+        	break; 
+        case "BishopW":
+        	piece = new Bishop(x, y, name, true);
+        	System.out.println(name+" in position: " + x +","+ y);
+        	break; 
         case "KnightW":
-            System.out.println("You chose Option 2");
-            break;
-       /* case 3:
-            System.out.println("You chose Option 3");
-            break; 
-        */    
+        	piece = new Knight(x, y, name, true);
+        	System.out.println(name+" in position: " + x +","+ y);
+        	break;
+        case "soldierW":
+        	piece = new Soldier(x, y, name, true);
+        	System.out.println(name+" in position: " + x +","+ y);
+        	break; 
         default:
             System.out.println("Invalid choice");
     }
-    	if(name.equals("KingW"))
         //piece = new Piece(x, y, name, true);
         
         imageViews[x][y] = new ImageView();
@@ -234,6 +248,31 @@ public class GameController implements Initializable {
         //first click + our piece
         if(piece != null && piece.isWhite()) { // our piece
         	firstPieceSelected = piece;//save the first Click on the piece
+        	switch (firstPieceSelected.getname()) {
+	        case "KingW":
+	        	king=(King) firstPieceSelected;
+	        	Kpieces=king.Move();
+	        	MoveOptions(Kpieces,king);
+	        	
+	            break;
+	        case "QueenW":
+	        	
+	        	break;
+	        case "RookW":
+	        	
+	        	break; 
+	        case "BishopW":
+	        	
+	        	break; 
+	        case "KnightW":
+	        	
+	        	break;
+	        case "soldierW":
+	        	
+	        	break; 
+	        default:
+	            System.out.println("Invalid choice");
+	    }
         	return;
         }
         //second click
@@ -303,27 +342,53 @@ public class GameController implements Initializable {
         	}*/
    }
     
-    
-    public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
+public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
     	
     	synchronized (board) {
-    	
-    	board.getPiece(oldPiece.getX(), oldPiece.getY()).setX(newPiece.getX());
-    	board.getPiece(oldPiece.getX(), oldPiece.getY()).setY(newPiece.getY());
-    	
-    	
-    	
-        imageViews[oldPiece.getX()][oldPiece.getY()].setLayoutX((double)newPiece.getX() * squareSize);
-        imageViews[oldPiece.getX()][oldPiece.getY()].setLayoutY((double)newPiece.getY() * squareSize);
-        imageViews[newPiece.getX()][newPiece.getY()] = imageViews[oldPiece.getX()][oldPiece.getY()];
-        imageViews[newPiece.getX()][newPiece.getY()].toFront();
-        imageViews[oldPiece.getX()][oldPiece.getY()]=null;
-        
-    	}
-        
+    		Platform.runLater(() -> {
+    		try {
+    			board.setPieceXY(oldPiece, newPiece.getX(), newPiece.getY());
+    	        imageViews[oldPiece.getX()][oldPiece.getY()].setLayoutX((double)newPiece.getX() * squareSize);
+    	        imageViews[oldPiece.getX()][oldPiece.getY()].setLayoutY((double)newPiece.getY() * squareSize);
+    	        imageViews[newPiece.getX()][newPiece.getY()] = imageViews[oldPiece.getX()][oldPiece.getY()];
+    	        imageViews[newPiece.getX()][newPiece.getY()].toFront();
+    	        imageViews[oldPiece.getX()][oldPiece.getY()]=null;
+    			
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+    		});
+       }
+  }
 
-   }
+
     
-    
+    public void MoveOptions(ArrayList<Piece> options , Piece piece) {
+    	 for( Piece p: options) {    
+                 Rectangle square = new Rectangle( p.getX() * squareSize,p.getY()*  squareSize, squareSize, squareSize);
+                 Color color;
+                 color = Color.RED;
+                 square.setFill(color);
+                 square.setVisible(true);
+                 chessboardPane.getChildren().add(square);
+                 System.out.println(p.getname() + "move option: " + p.getX() + ","+p.getY());
+                 }
+    	 
+             }
+   /* public List<Rectangle> MoveOptions(ArrayList<Piece> options , Piece piece) {
+		List<Rectangle> square =  (List<Rectangle>) new Rectangle();
+    	 int i=0;
+    	 for( Piece p: options) {    
+    		 Rectangle newSquare = new Rectangle( p.getX() * squareSize,p.getY()*  squareSize, squareSize, squareSize);
+    		  square.add(newSquare);
+                 Color color;
+                 color = Color.LIGHTBLUE;
+                 square.get(i).setFill(color);
+                 chessboardPane.getChildren().add(square.get(i));
+                 System.out.println(p.getname() + "move option: " + p.getX() + ","+p.getY());
+                 }
+    	 return square;
+             }
+    */
     
 }

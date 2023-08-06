@@ -19,7 +19,10 @@ public class MessageHandler_Server {
 	private static int playeridCounter = 0;
 	private static int playersReady = 0;
 	//ServerController serverController = new ServerController();
-	
+	private static ConnectionToClient player1;
+	private static ConnectionToClient player2;
+	private static String player1id;
+	private static String player2id;
 	private static ObservableList<ConnectedClient> connectedClients;
 	
 	/**
@@ -73,7 +76,29 @@ public class MessageHandler_Server {
 				// 1 - old piece
 				// 2 - new piece
 				// 3 - current playerId - piece's name
-				connectedClients = ServerController.getConnectedClients();
+				ArrayList<Piece> pieceMoved_arr_toOponent = new ArrayList<>();
+				pieceMoved_arr_toOponent.add(new Piece(0, 0, "OponentPieceWasMoved", true));
+				pieceMoved_arr_toOponent.add(arrayListPiece.get(1));
+				pieceMoved_arr_toOponent.add(arrayListPiece.get(2));	
+				
+				if(arrayListPiece.get(3).getname().equals(player1id)) {
+
+					try {
+						player2.sendToClient(pieceMoved_arr_toOponent);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else {
+					try {
+						player1.sendToClient(pieceMoved_arr_toOponent);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				/*connectedClients = ServerController.getConnectedClients();
 
 				for(int i = 0; i < connectedClients.size(); i++) {
 					
@@ -116,7 +141,7 @@ public class MessageHandler_Server {
 						
 						}
 					//}
-				}  
+				} */ 
 			try {
 				client.sendToClient("piece moved sucssefully");
 			} catch (IOException e) {
@@ -239,8 +264,11 @@ public class MessageHandler_Server {
 									client.sendToClient(players_arr);
 									
 									System.out.println("Game started between: \n" + currPlayer + " AND " + connectedClients.get(i).getPlayer());
-									
-									//break;
+									player1id = currPlayer.getPlayerId();
+									player1 = client;
+									player2id = connectedClients.get(i).getPlayer().getPlayerId();
+									player2 = connectedClients.get(i).getClient();
+									break;
 								}
 							}
 						}    

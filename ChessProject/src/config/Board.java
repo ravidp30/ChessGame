@@ -27,6 +27,15 @@ public class Board implements Serializable{
 		return null;
 	}
 	
+	public void setPieceXY(Piece piece, int x, int y) {
+		for(Piece p : pieces) {
+			if(p.getX() == piece.getX() && p.getY() == piece.getY()) {
+				p.setX(x);
+				p.setY(y);
+			}
+		}
+	}
+	
 	public int MoveCheck(Piece firstPieceSelected ,Piece piece) {//move check function
 		
 		for (Piece p:pieces) {

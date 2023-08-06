@@ -2,9 +2,9 @@ package config;
 
 import java.util.ArrayList;
 
-public class Queen extends Piece{
+public class Bishop extends Piece{
 
-	public Queen(int x, int y, String name, Boolean isWhite) {
+	public Bishop(int x, int y, String name, Boolean isWhite) {
 		super(x, y, name, isWhite);
 		// TODO Auto-generated constructor stub
 	}
@@ -15,32 +15,28 @@ public class Queen extends Piece{
 		int left = 0,right=0,up=0,down = 0;
 		ArrayList<Piece> pieces = new ArrayList<>();
 		
-		//------------------------------ Right--------------------------
+		//------------------------------count the Right--------------------------
 
 		if(currX<7) 
 			for(int i=1 ; currX+i<8; i++) { 
-				pieces.add(new Piece(currX+i, currY, "QueenW", true)); // right
 				right=i;
 			}
-		//------------------------------ Left--------------------------
+		//------------------------------ count the Left--------------------------
 
 		if(currX>0) 
 			for(int i=1 ; currX-i>0; i++) { 
-				pieces.add(new Piece(currX-i, currY, "QueenW", true));// left
 				left=i;
 			}
-		//------------------------------ Up--------------------------
+		//------------------------------ count the Up--------------------------
 
 		if(currY<7) 
 			for(int i=1 ; currY-i>0; i++) { 
-				pieces.add(new Piece(currX, currY-i, "QueenW", true));//up
 				up=i;
 			}
-		//------------------------------ Down--------------------------
+		//------------------------------ count the Down--------------------------
 
 		if(currY>0) 
 			for(int i=1 ; currY-i<8; i++) { 
-				pieces.add(new Piece(currX, currY+i, "KingW", true));// down
 				down=i;
 			}
 		
@@ -48,41 +44,41 @@ public class Queen extends Piece{
 		
 		if(down>=left) 
 			for(int i=1 ; left-i>=0 ; i++) 
-				pieces.add(new Piece(currX-i, currY+i, "QueenW", true));//down + left		
+				pieces.add(new Piece(currX-i, currY+i, "BishopW", true));//down + left		
 			
 		if(down<left) 
 			for(int i=1 ; down-i>=0 ; i++) 
-				pieces.add(new Piece(currX-i, currY+i, "QueenW", true));//down + left		
+				pieces.add(new Piece(currX-i, currY+i, "BishopW", true));//down + left		
 									
 		//------------------------------ Down + Right--------------------------
 		
 		if(down>=right) 
 		for(int i=1 ; right-i>=0 ; i++) 
-			pieces.add(new Piece(currX+i, currY+i, "QueenW", true)); // down + right
+			pieces.add(new Piece(currX+i, currY+i, "BishopW", true)); // down + right
 		
 		if(down<right) 
 			for(int i=1 ; down-i>=0 ; i++)  
-				pieces.add(new Piece(currX+i, currY+i, "QueenW", true)); // down + right
+				pieces.add(new Piece(currX+i, currY+i, "BishopW", true)); // down + right
 			
 		//------------------------------ Up + Left--------------------------
 		
 		if(up>=left) 
 			for(int i=1 ; left-i>=0 ; i++)  
-				pieces.add(new Piece(currX-i, currY-i, "QueenW", true));//up + left
+				pieces.add(new Piece(currX-i, currY-i, "BishopW", true));//up + left
 					
 		if(up<left) 
 			for(int i=1 ; up-i>=0 ; i++) 
-				pieces.add(new Piece(currX-i, currY-i, "QueenW", true));//up + left
+				pieces.add(new Piece(currX-i, currY-i, "BishopW", true));//up + left
 			
 		
 		//------------------------------ Up + Right--------------------------
 		if(up>=right) 
 			for(int i=1 ; right-i>=0 ; i++)  
-				pieces.add(new Piece(currX+i, currY-i, "QueenW", true));//up + right
+				pieces.add(new Piece(currX+i, currY-i, "BishopW", true));//up + right
 						
 		if(up<right) 
 			for(int i=1 ; up-i>=0 ; i++)  
-				pieces.add(new Piece(currX+i, currY-i, "QueenW", true));//up + right			
+				pieces.add(new Piece(currX+i, currY-i, "BishopW", true));//up + right			
 		
 		
 		return pieces;

@@ -12,7 +12,8 @@ public class King extends Piece{
 	public ArrayList<Piece>  Move() {
 		int currX=this.getX();
 		int currY=this.getY();
-		
+		System.out.println("currx: " +currX );
+		System.out.println("curry: " +currY );
 		ArrayList<Piece> pieces = new ArrayList<>();
 		if((currX>0 && currY<7) && (currX<7 && currY>0)  ) {//ORANGE in ipad - can move all sides
 			pieces.add(new Piece(currX+1, currY+1, "KingW", true)); // down + right
@@ -74,7 +75,9 @@ public class King extends Piece{
 			pieces.add(new Piece(currX+1, currY, "KingW", true)); // right
 			pieces.add(new Piece(currX+1, currY-1, "KingW", true));//up + right
 		}
-		
+		/*for (Piece p : pieces) {
+			System.out.println(p.getname() + "move option: " + p.getX() + ","+p.getY());
+		}*/
 		return pieces;
 	}
 	
