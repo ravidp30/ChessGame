@@ -57,7 +57,8 @@ public class MenuController implements Initializable{
 	}
 	
 	public void onClickExit(ActionEvent event) throws Exception {
-		
+		////quit function @@@@@@@@@@@@@@@@@@@@@@@@@
+
 	}
 	
 	public void onClickStartGame(ActionEvent event) throws Exception {

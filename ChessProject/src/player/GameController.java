@@ -1,5 +1,6 @@
 package player;
 
+import java.awt.Button;
 import java.awt.image.BufferedImage;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -53,10 +54,21 @@ public class GameController implements Initializable {
     private static GameController instance;
     private King king;
     private Soldier soldier;
+    private Queen queen;
+    private Knight knight;
+    private Bishop bishop;
+    private Rook rook;
+    
+
     private ArrayList<Piece> pieces = new ArrayList<>();
     private LinkedList<Piece> pieceL = new LinkedList<>();
     private ArrayList<Piece> Kpieces = new ArrayList<>();
     private ArrayList<Piece> Spieces = new ArrayList<>();
+    private ArrayList<Piece> Qpieces = new ArrayList<>();
+    private ArrayList<Piece> Rpieces = new ArrayList<>();
+    private ArrayList<Piece> Bpieces = new ArrayList<>();
+    private ArrayList<Piece> KNpieces = new ArrayList<>();
+
     
     
     private ListView<Rectangle> rectangleListOptions;
@@ -71,6 +83,9 @@ public class GameController implements Initializable {
 
     @FXML
     private Pane chessboardPane;
+    @FXML
+	private Button exitBtn;
+    
     
     public GameController() {
     	instance = this;
@@ -79,7 +94,9 @@ public class GameController implements Initializable {
     public static GameController getInstance() {
     	return instance;
     }
-    
+    public void onClickExit(ActionEvent event) throws Exception {
+	////quit function @@@@@@@@@@@@@@@@@@@@@@@@@
+    }
     public void onPlayerClickSend(ActionEvent event) throws Exception {
     	
     	String myText = txtChat.getText();
@@ -174,14 +191,15 @@ public class GameController implements Initializable {
                 	setUpPiece(x, y, "BishopW", true);
                 }
                 
-                if (y == 7 && x ==3) {//King White
+                if (y == 7 && x ==3) {				//King White
                 	setUpPiece(x, y, "KingW", true);
                 }
                 
-                if (y == 7 && x ==4) {//Queen White
+                if (y == 7 && x ==4) {				//Queen White
                 	setUpPiece(x, y, "QueenW", true);
                 }
                 
+                //-------------Set mirror Board --------------
                 
                 if (y == 1) {//soldier Black
                 	setUpPiece(x, y, "soldierB", false);
@@ -189,8 +207,19 @@ public class GameController implements Initializable {
                 if (y == 0 && x ==4) {//King Black
                 	setUpPiece(x, y, "KingB", false);
                 }
+                if (y == 0 && (x ==7  || x == 0)) {//Rook Black
+                	setUpPiece(x, y, "RookB", false);
+                }
+                if (y == 0 && (x ==6  || x == 1)) {//Knight Black
+                	setUpPiece(x, y, "KnightB", false);
+                }
+                if (y == 0 && (x ==2  || x == 5)) {//Bishop Black
+                	setUpPiece(x, y, "BishopB", false);
+                }
+                if (y == 0 && x ==3) {//Queen Black
+                	setUpPiece(x, y, "QueenB", false);
+                }
                
-                
             }
         }
         
@@ -201,6 +230,8 @@ public class GameController implements Initializable {
     
     public void setUpPiece(int x, int y, String name, boolean isWhite) {
     	switch (name) {
+    				//-------WHITE------
+    	
         case "KingW":
         	piece = new King(x, y, name, true);
         	System.out.println(name +" in position: " + x +","+ y);
@@ -226,20 +257,35 @@ public class GameController implements Initializable {
         	System.out.println(name+" in position: " + x +","+ y);
         	break; 
         	
+        				//-------BLACK----------
+        	
         case "soldierB":
         	piece = new Soldier(x, y, name, false);
         	System.out.println(name+" in position: " + x +","+ y);
         	break; 
-        	
         case "KingB":
         	piece = new King(x, y, name, false);
         	System.out.println(name+" in position: " + x +","+ y);
         	break;
-        	
+        case "RookB":
+        	piece = new Rook(x, y, name, false);
+        	System.out.println(name+" in position: " + x +","+ y);
+        	break;
+        case "KnightB":
+        	piece = new Knight(x, y, name, false);
+        	System.out.println(name+" in position: " + x +","+ y);
+        	break;
+        case "BishopB":
+        	piece = new Bishop(x, y, name, false);
+        	System.out.println(name+" in position: " + x +","+ y);
+        	break;
+        case "QueenB":
+        	piece = new Queen(x, y, name, false);
+        	System.out.println(name+" in position: " + x +","+ y);
+        	break;
         default:
             System.out.println("Invalid choice");
     }
-        //piece = new Piece(x, y, name, true);
         
         imageViews[x][y] = new ImageView();
         imageViews[x][y].setFitWidth(squareSize);
@@ -316,6 +362,9 @@ public class GameController implements Initializable {
 	        	
 	            break;
 	        case "QueenW":
+	        	queen=(Queen) firstPieceSelected;
+	        	Qpieces=queen.Move();
+	        	MoveOptions(Qpieces,queen);
 	        	
 	        	break;
 	        case "RookW":
