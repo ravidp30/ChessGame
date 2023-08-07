@@ -373,19 +373,19 @@ public class GameController implements Initializable {
 	            
 	        case "QueenW":
 	        	queen=(Queen) firstPieceSelected;
-	        	Qpieces=queen.Move();
+	        	Qpieces=queen.Move(board);
 	        	MoveOptions(Qpieces,queen);
 	        	break;
 	        	
 	        case "RookW":
 	        	rook=(Rook) firstPieceSelected;
-	        	Rpieces=rook.Move();
+	        	Rpieces=rook.Move(board);
 	        	MoveOptions(Rpieces,rook);
 	           	break; 
 	           	
 	        case "BishopW":
 	        	bishop=(Bishop) firstPieceSelected;
-	        	Bpieces=bishop.Move();
+	        	Bpieces=bishop.Move(board);
 	        	MoveOptions(Bpieces,bishop);
 	        	break; 
 	        	
@@ -398,7 +398,7 @@ public class GameController implements Initializable {
 	        	
 	        case "soldierW":
 	        	soldier=(Soldier) firstPieceSelected;
-	        	Spieces=soldier.Move();
+	        	Spieces=soldier.Move(board);
 	        	MoveOptions(Spieces,soldier);
 	        	break; 
 	        default:

@@ -9,7 +9,7 @@ public class Soldier extends Piece{
 		// TODO Auto-generated constructor stub
 	}
 
-	public ArrayList<Piece>  Move() {
+	public ArrayList<Piece> Move(Board board) {
 		int currX=this.getX();
 		int currY=this.getY();
 		int left = 0,right=0,up=0,down = 0;
@@ -19,7 +19,8 @@ public class Soldier extends Piece{
 			pieces.add(new Piece(currX, currY-1, "soldierW", true));
 		}
 		if(currY == 6) {
-			pieces.add(new Piece(currX, currY-2, "soldierW", true));
+			if(board.getPiece(currX, 5) == null)
+				pieces.add(new Piece(currX, currY-2, "soldierW", true));
 		}
 
 		return pieces;

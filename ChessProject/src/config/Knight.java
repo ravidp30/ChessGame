@@ -21,7 +21,7 @@ public class Knight extends Piece{
 					if(x >= 0 && x <= 7 && y >= 0 && y <= 7) {
 						if(x != currX && y != currY) {
 							if(!((x-currX == 2 || currX-x == 2) && (currY-y == 2 || y-currY == 2))) {
-								pieces.add(new Piece(x, y, "Knight", true));
+								pieces.add(new Piece(x, y, "KnightW", true));
 							}
 						}
 					}
