@@ -505,13 +505,10 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
 //    		 int currXPosition=tempPiece.getX();//save the current X position 
 //             int currYPosition=tempPiece.getY();//save the current Y position 
     		 // mark a square only if there are no pieces in the square to move or black piece
-    		 if(tempPiece == null && !opponentFound) {
-    		 Rectangle squareOption = new Rectangle( p.getX() * squareSize,p.getY() * squareSize, squareSize, squareSize);
-    		 	rectangleListOptions.getItems().add(squareOption);
-                 Color color;
-                 color = Color.BLACK;
+    		 if(tempPiece == null || !tempPiece.isWhite()) {
+    			 Rectangle squareOption = new Rectangle( p.getX() * squareSize,p.getY() * squareSize, squareSize, squareSize);
+    			 rectangleListOptions.getItems().add(squareOption);
                  squareOption.setFill(Color.TRANSPARENT);
-                 squareOption.setStroke(color);
                  squareOption.setStrokeWidth(4.0);
                  
                  // Attach a click event handler to each square
@@ -524,18 +521,18 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
                  
                  chessboardPane.getChildren().add(squareOption);
                  System.out.println(" clear options to move: " + p.getX() + ","+p.getY());
-
-                 }
-    		 else if(!tempPiece.isWhite() ){	// Opponent piece 
-    			// int opponentXPosition = tempPiece.getX();//save the current X opponent position
-    			 //int opponentYPosition = tempPiece.getY();//save the current X opponent position
-    			
-    			// opponentFound=true;
-    		 
-    		 }
-    		 
-    		
-             }
+                 
+        		 if(tempPiece == null){	// empty place 
+        			 squareOption.setStroke(Color.BLACK);
+ 
+        		 }
+                 
+        		 else if(!tempPiece.isWhite() ){	// Opponent piece 
+        			 squareOption.setStroke(Color.RED);		
+        		 
+        		 }
+    		 }	
+    	 }
     }
    /* public List<Rectangle> MoveOptions(ArrayList<Piece> options , Piece piece) {
 		List<Rectangle> square =  (List<Rectangle>) new Rectangle();
@@ -576,6 +573,9 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
 	        	//System.out.println("/n piece after change: " + piece.getname() + " | " + piece.getX() + ","+ piece.getY());
 	        	//System.out.println("firstPieceSelected after change: " + firstPieceSelected.getname() + " | " + firstPieceSelected.getX() + ","+ firstPieceSelected.getY());          	//firstPieceSelected = null;
 	        }
+		 else if(!piece.isWhite()) { // Opponent piece to eat
+			 System.out.println("eat");
+		 }
 		
 	}
 

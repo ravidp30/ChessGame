@@ -15,6 +15,17 @@ public class King extends Piece{
 		System.out.println("currx: " +currX );
 		System.out.println("curry: " +currY );
 		ArrayList<Piece> pieces = new ArrayList<>();
+		
+		// going all the squares around the king
+		for(int x = currX - 1; x <= currX + 1; x++) {
+			for(int y = currY - 1; y <= currY + 1; y++) {
+				if(x >= 0 && x <= 7 && y >= 0 && y <= 7) { // inside the board
+					pieces.add(new Piece(x, y, "KingW", true));
+				}
+			}
+		}
+		
+		/*
 		if((currX>0 && currY<7) && (currX<7 && currY>0)  ) {//ORANGE in ipad - can move all sides
 			pieces.add(new Piece(currX+1, currY+1, "KingW", true)); // down + right
 			pieces.add(new Piece(currX, currY+1, "KingW", true));// down
@@ -74,7 +85,7 @@ public class King extends Piece{
 			pieces.add(new Piece(currX, currY-1, "KingW", true));//up
 			pieces.add(new Piece(currX+1, currY, "KingW", true)); // right
 			pieces.add(new Piece(currX+1, currY-1, "KingW", true));//up + right
-		}
+		}*/
 		/*for (Piece p : pieces) {
 			System.out.println(p.getname() + "move option: " + p.getX() + ","+p.getY());
 		}*/

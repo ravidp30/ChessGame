@@ -10,6 +10,7 @@ public class Bishop extends Piece{
 	}
 
 	public ArrayList<Piece>  Move(Board board) {
+		Piece piece;
 		int currX=this.getX();
 		int currY=this.getY();
 		int left = 0,right=0,up=0,down = 0;
@@ -50,75 +51,123 @@ public class Bishop extends Piece{
 		//------------------------------ Down + Left--------------------------
 		
 		if(down>=left) 
-			for(int i=1 ; left-i>=0 ; i++)
-				if(board.getPiece(currX-i, currY+i) == null)
+			for(int i=1 ; left-i>=0 ; i++) {
+				piece = board.getPiece(currX-i, currY+i);
+				if(piece == null)
 					pieces.add(new Piece(currX-i, currY+i, "BishopW", true));//down + left	
+				else if(!piece.isWhite()) {
+					pieces.add(new Piece(currX-i, currY+i, "BishopW", true)); // right
+					break;
+				}
 				else {
 					break;
 				}
+			}
 			
 		if(down<left) 
-			for(int i=1 ; down-i>=0 ; i++) 
-				if(board.getPiece(currX-i, currY+i) == null)
-				pieces.add(new Piece(currX-i, currY+i, "BishopW", true));//down + left	
+			for(int i=1 ; down-i>=0 ; i++) {
+				piece = board.getPiece(currX-i, currY+i);
+				if(piece == null)
+					pieces.add(new Piece(currX-i, currY+i, "BishopW", true));//down + left
+				else if(!piece.isWhite()) {
+					pieces.add(new Piece(currX-i, currY+i, "BishopW", true)); // right
+					break;
+				}
 				else {
 					break;
 				}
+			}
 									
 		//------------------------------ Down + Right--------------------------
 		
 		if(down>=right) 
-		for(int i=1 ; right-i>=0 ; i++) 
-			if(board.getPiece(currX+i, currY+i) == null)
+		for(int i=1 ; right-i>=0 ; i++) {
+			piece = board.getPiece(currX+i, currY+i);
+			if(piece == null)
 				pieces.add(new Piece(currX+i, currY+i, "BishopW", true)); // down + right
+			else if(!piece.isWhite()) {
+				pieces.add(new Piece(currX+i, currY+i, "BishopW", true)); // right
+				break;
+			}
 			else {
 				break;
 			}
+		}
 		
 		if(down<right) 
-			for(int i=1 ; down-i>=0 ; i++)  
-				if(board.getPiece(currX+i, currY+i) == null)
+			for(int i=1 ; down-i>=0 ; i++) {
+				piece = board.getPiece(currX+i, currY+i);
+				if(piece == null)
 					pieces.add(new Piece(currX+i, currY+i, "BishopW", true)); // down + right
+				else if(!piece.isWhite()) {
+					pieces.add(new Piece(currX+i, currY+i, "BishopW", true)); // right
+					break;
+				}
 				else {
 					break;
 				}
+			}
 			
 		//------------------------------ Up + Left--------------------------
 		
 		if(up>=left) 
-			for(int i=1 ; left-i>=0 ; i++)  
-				if(board.getPiece(currX-i, currY-i) == null)
+			for(int i=1 ; left-i>=0 ; i++) {
+				piece = board.getPiece(currX-i, currY-i);
+				if(piece == null)
 					pieces.add(new Piece(currX-i, currY-i, "BishopW", true));//up + left
+				else if(!piece.isWhite()) {
+					pieces.add(new Piece(currX-i, currY-i, "BishopW", true)); // right
+					break;
+				}
 				else {
 					break;
 				}
+			}
 		
 					
 		if(up<left) 
-			for(int i=1 ; up-i>=0 ; i++) 
-				if(board.getPiece(currX-i, currY-i) == null)
+			for(int i=1 ; up-i>=0 ; i++) {
+				piece = board.getPiece(currX-i, currY-i);
+				if(piece == null)
 					pieces.add(new Piece(currX-i, currY-i, "BishopW", true));//up + left
+				else if(!piece.isWhite()) {
+					pieces.add(new Piece(currX-i, currY-i, "BishopW", true)); // right
+					break;
+				}
 				else {
 					break;
 				}
+			}
 			
 		
 		//------------------------------ Up + Right--------------------------
 		if(up>=right) 
-			for(int i=1 ; right-i>=0 ; i++)
-				if(board.getPiece(currX+i, currY-i) == null)
+			for(int i=1 ; right-i>=0 ; i++) {
+				piece = board.getPiece(currX+i, currY-i);
+				if(piece == null)
 					pieces.add(new Piece(currX+i, currY-i, "BishopW", true));//up + right
+				else if(!piece.isWhite()) {
+					pieces.add(new Piece(currX+i, currY-i, "BishopW", true)); // right
+					break;
+				}
 				else {
 					break;
 				}
+			}
 						
 		if(up<right) 
-			for(int i=1 ; up-i>=0 ; i++) 
-				if(board.getPiece(currX+i, currY-i) == null)
-					pieces.add(new Piece(currX+i, currY-i, "BishopW", true));//up + right			
+			for(int i=1 ; up-i>=0 ; i++) {
+				piece = board.getPiece(currX+i, currY-i);
+				if(piece == null)
+					pieces.add(new Piece(currX+i, currY-i, "BishopW", true));//up + right	
+				else if(!piece.isWhite()) {
+					pieces.add(new Piece(currX+i, currY-i, "BishopW", true)); // right
+					break;
+				}
 				else {
 					break;
 				}
+			}
 		
 		return pieces;
 	}
