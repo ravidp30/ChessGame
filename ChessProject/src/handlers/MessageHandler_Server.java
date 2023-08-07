@@ -12,7 +12,6 @@ import config.Player;
 import javafx.collections.ObservableList;
 import ocsf.server.ConnectionToClient;
 import server.EchoServer;
-import server.ServerUI;
 
 public class MessageHandler_Server {
 
@@ -26,6 +25,7 @@ public class MessageHandler_Server {
 	private static String player2id;
 	private static String playerIdTurn;
 	private static ObservableList<ConnectedClient> connectedClients;
+	//private static Thread ThreadTimer;
 	
 	/**
 	 * Handles the received message and performs the necessary actions based on the message type.
@@ -284,6 +284,10 @@ public class MessageHandler_Server {
 									connectedClients.get(i).getClient().sendToClient(players_arr);
 									players_arr.set(2, connectedClients.get(i).getPlayer());
 									client.sendToClient(players_arr);
+									
+									//ThreadTimer = new Thread(GameTimer);
+									//ThreadTimer.start();
+									
 									break;
 								}
 							}
