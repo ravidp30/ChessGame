@@ -450,6 +450,14 @@ public class GameController implements Initializable {
     	}
     	
     	
+    	 firstPieceSelected=null;
+         for(int j = 0; j < rectangleListOptions.getItems().size(); j++) {
+         	rectangleListOptions.getItems().get(j).setFill(null);
+         	rectangleListOptions.getItems().get(j).setStroke(null);
+         }
+         rectangleListOptions.getItems().clear();
+    	
+    	
     	return;
     }
     
@@ -522,7 +530,7 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
                  });  
                  
                  chessboardPane.getChildren().add(squareOption);
-                 System.out.println(" clear options to move: " + p.getX() + ","+p.getY());
+                 System.out.println("clear options to move: " + p.getX() + ","+p.getY());
                  
         		 if(tempPiece == null){	// empty place 
         			 squareOption.setStroke(Color.BLACK);
@@ -563,12 +571,12 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
 			 
 	        	movePiece(firstPieceSelected,piece,x,y);
 	        	
-	            firstPieceSelected=null;
-	            for(int j = 0; j < rectangleListOptions.getItems().size(); j++) {
-	            	rectangleListOptions.getItems().get(j).setFill(null);
-	            	rectangleListOptions.getItems().get(j).setStroke(null);
-	            }
-	            rectangleListOptions.getItems().clear();
+//	            firstPieceSelected=null;
+//	            for(int j = 0; j < rectangleListOptions.getItems().size(); j++) {
+//	            	rectangleListOptions.getItems().get(j).setFill(null);
+//	            	rectangleListOptions.getItems().get(j).setStroke(null);
+//	            }
+//	            rectangleListOptions.getItems().clear();
 	            
 
 	        	//	System.out.println("piece before change: " + piece.getname() + " | " + piece.getX() + ","+ piece.getY());
