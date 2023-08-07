@@ -13,7 +13,8 @@
       <Label fx:id="labelChatArea" alignment="TOP_LEFT" layoutX="726.0" layoutY="305.0" prefHeight="292.0" prefWidth="210.0" />
       <Button layoutX="877.0" layoutY="627.0" mnemonicParsing="false" onAction="#onPlayerClickSend" text="Send" />
       <TextField fx:id="txtChat" layoutX="721.0" layoutY="597.0" prefHeight="30.0" prefWidth="210.0" />
-      <Button layoutX="653.0" layoutY="658.0" mnemonicParsing="false" onAction="#sendGoodLuck" prefHeight="30.0" prefWidth="97.0" text="Good Luck  :-)" />		   </children>
+      <Button layoutX="653.0" layoutY="658.0" mnemonicParsing="false" onAction="#sendGoodLuck" prefHeight="30.0" prefWidth="97.0" text="Good Luck  :-)" />
+      <Label fx:id="lblTurnStatus" layoutX="740.0" layoutY="29.0" prefHeight="21.0" prefWidth="90.0" text="Loading..." />		   </children>
    <effect>
       <ColorAdjust />
    </effect>

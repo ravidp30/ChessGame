@@ -86,9 +86,19 @@ public class MessageHandler_Client {
 			
 				case "GameStarting":
 					
-					 // 1 - Opponent player
+					// 1 - the player that starting the game
+					// 2 - Opponent player
 					
-					MenuController.getInstance().startGame(arrayListPlayer.get(1));
+					MenuController.getInstance().startGame(arrayListPlayer.get(2), arrayListPlayer.get(1));
+					
+					break;
+					
+				case "ChangePlayerTurnForOpponent":
+					// 1 - player with the current turn
+					GameController.getInstance().changePlayerTurn(arrayListPlayer.get(1));
+					
+					
+					break;
 	        }
         
 		} catch (IOException e) {

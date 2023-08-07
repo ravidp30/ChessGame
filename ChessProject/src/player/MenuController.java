@@ -96,7 +96,7 @@ public class MenuController implements Initializable{
 		});
 	}
 
-	public void startGame(Player opponent) throws IOException {
+	public void startGame(Player opponent, Player playerStarting) throws IOException {
 		player.setStatus(2); // in game
 		
 		System.out.println("Game Started!!!");
@@ -106,7 +106,7 @@ public class MenuController implements Initializable{
 			((Node) currEvent.getSource()).getScene().getWindow().hide(); // hiding primary window
 	
 	        try {
-				GameController.start(player, opponent);
+				GameController.start(player, opponent, playerStarting);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

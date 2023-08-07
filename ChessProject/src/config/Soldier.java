@@ -31,8 +31,7 @@ public class Soldier extends Piece{
 		}
 		
 		piece = board.getPiece(currX, currY-2); 
-		if(currY == 6 && piece == null) { // moving 2 times up
-			if(piece == null)
+		if(currY == 6 && piece == null && board.getPiece(currX, currY-1) == null) { // moving 2 times up only if there are no opponents 1 and 2 moves up
 				pieces.add(new Piece(currX, currY-2, "soldierW", true));
 		}
 

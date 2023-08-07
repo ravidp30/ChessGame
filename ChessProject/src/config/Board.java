@@ -38,31 +38,38 @@ public class Board implements Serializable{
 	
 	public int MoveCheck(Piece firstPieceSelected ,Piece piece) {//move check function
 		
-		for (Piece p:pieces) {
+		if(piece.getname().equals("empty place")) { // move to empty place
 			
-			if(p.getX()==piece.getX() && p.getY()==piece.getY()) {//found piece there already
-				if(p.isWhite()) {
-					System.out.println("cant move there- somone is there");
-					return 0;
-				}
-
-				else {
-					Kill();System.out.println("kill");
-					return 1;
-				}//KILL
+			for (Piece p:pieces) {
+				if(p.getX()==firstPieceSelected.getX() && p.getY()==firstPieceSelected.getY()){//found the current piece
+					p.setX(piece.getX());//change the location
+					p.setY(piece.getY());
+					return 1; //Available to move to empty place
+				}	
 			}
-			if(p.getX()==firstPieceSelected.getX() && p.getY()==firstPieceSelected.getY()){//found the current piece
-				p.setX(piece.getX());//change the location
-				p.setY(piece.getY());
-				return 1; //Available to move
-			}	
+		}
+		
+		else { // move to a place with black / white piece
+		
+			for (Piece p:pieces) {
+				
+				if(p.getX()==piece.getX() && p.getY()==piece.getY()) {//found piece there already
+					if(p.isWhite()) { // move to place with white piece
+						System.out.println("cant move there- somone is there");
+						return 0;
+					}
+		
+					else { // move to place with black piece
+						pieces.remove(p); // remove the piece from the list
+						System.out.println("kill");
+						return 2;
+					}//KILL
+				}
+		
+			}
 		}
 		System.out.println("?");
 		return 0;
-	}
-    	
-	public void Kill() {// Kill function
-		pieces.remove(this);//remove the killed piece from list
 	}
 
 }

@@ -1,6 +1,7 @@
 package handlers;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -23,6 +24,7 @@ public class MessageHandler_Server {
 	private static ConnectionToClient player2;
 	private static String player1id;
 	private static String player2id;
+	private static String playerIdTurn;
 	private static ObservableList<ConnectedClient> connectedClients;
 	
 	/**
@@ -242,32 +244,46 @@ public class MessageHandler_Server {
 			    	
 				case "PlayerClickedOnStartGame":
 					// 1 - the player clicked on start game
+					
+			        Random random = new Random(); // random number (0 / 1) to choose who will start
+			        double randomNumber = random.nextDouble();
+					
 					Player currPlayer = arrayListPlayer.get(1);
 					//currPlayer.setStatus(2);
 					if(playersReady == 2) {
 						ArrayList<Player> players_arr = new ArrayList<>();
 						players_arr.add(new Player("GameStarting"));
+						
 						connectedClients = ServerController.getConnectedClients();
 						for(int i = 0; i < connectedClients.size(); i++) {
 							if(connectedClients.get(i).getPlayer().getStatus() == 1) { // all the ready players
 								ServerController.setPlayerStatus(connectedClients.get(i).getPlayer(), 2);
-								System.out.println("rara: " + connectedClients.get(i).getPlayer().getPlayerId());
-								System.out.println("dadada: " + ServerController.getConnectedClients().get(i).getPlayer().getStatus());
-								System.out.println("tqtqtq: " + ServerController.getConnectedClients().get(i).getClient());
 								//connectedClients.get(i).getPlayer().setStatus(2); // set the status of the 2 players that are ready to 2 (in game)
 								// send every player (2 players total) the player who play against
 								if(!connectedClients.get(i).getPlayer().getPlayerId().equals(currPlayer.getPlayerId())) {
 									currPlayer.setStatus(2);
-									players_arr.add(currPlayer);
-									connectedClients.get(i).getClient().sendToClient(players_arr);
-									players_arr.set(1, connectedClients.get(i).getPlayer());
-									client.sendToClient(players_arr);
+									
+
 									
 									System.out.println("Game started between: \n" + currPlayer + " AND " + connectedClients.get(i).getPlayer());
 									player1id = currPlayer.getPlayerId();
 									player1 = client;
 									player2id = connectedClients.get(i).getPlayer().getPlayerId();
 									player2 = connectedClients.get(i).getClient();
+									
+							        if(randomNumber == 0) {
+							        	playerIdTurn = player1id;
+							        }
+							        else {
+							        	playerIdTurn = player2id;
+							        }
+							        
+							        players_arr.add(new Player(playerIdTurn)); // send the player that starting the game
+							        players_arr.add(currPlayer);
+									
+									connectedClients.get(i).getClient().sendToClient(players_arr);
+									players_arr.set(2, connectedClients.get(i).getPlayer());
+									client.sendToClient(players_arr);
 									break;
 								}
 							}
@@ -278,6 +294,17 @@ public class MessageHandler_Server {
 						client.sendToClient("2 players have to be ready before starting a game!!! - player");
 					}
 					
+					
+					break;
+					
+				case "ChangePlayerTurn":
+					// 1 - Player next turn
+					
+					ArrayList<Player> playerNextTurn_arr = new ArrayList<>();
+					playerNextTurn_arr.add(new Player("ChangePlayerTurnForOpponent"));
+					playerNextTurn_arr.add(arrayListPlayer.get(1));
+					player1.sendToClient(playerNextTurn_arr);
+					player2.sendToClient(playerNextTurn_arr);
 					
 					break;
             }

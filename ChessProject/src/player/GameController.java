@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
+import javafx.scene.effect.DropShadow;
 
 import javax.imageio.ImageIO;
 
@@ -35,6 +36,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.image.Image;
@@ -45,12 +47,12 @@ public class GameController implements Initializable {
     private boolean opponentFound =false;
     private static Player player;
     private static Player opponent;
+    private static Player playerTurn;
     private Board board;
     private ImageView[][] imageViews = new ImageView[8][8];
     private int squareSize = 64;
     private Piece firstPieceSelected;
     private Piece piece;
-    private Piece tempPiece;
     private static GameController instance;
     private King king;
     private Soldier soldier;
@@ -81,6 +83,8 @@ public class GameController implements Initializable {
     private Button goodLuck;
     @FXML
     private Label ChessHeadLineLbl;
+    @FXML
+    private Label lblTurnStatus;
 
     @FXML
     private Pane chessboardPane;
@@ -99,22 +103,17 @@ public class GameController implements Initializable {
 	////quit function @@@@@@@@@@@@@@@@@@@@@@@@@
     }
     public void onPlayerClickSend(ActionEvent event) throws Exception {
-    	
     	String myText = txtChat.getText();
-    	String textInside;
-    	
-    	
-    	textInside = labelChatArea.getText();
-    	
     	txtChat.setText("");
-    	
-    	labelChatArea.setText(textInside + "\n(You): " + myText);
     	sendMessage(myText);
-    	
-
     }
     
     public void sendMessage(String msg) {
+    	
+    	String textInside = labelChatArea.getText();
+    	labelChatArea.setText(textInside + "\n(You): " + msg);
+    	
+    	// send the message to the server (to the opponent)
     	ArrayList<String> messageText_arr = new ArrayList<>();
     	messageText_arr.add("OponentSentMessage");
     	messageText_arr.add(msg);
@@ -123,15 +122,15 @@ public class GameController implements Initializable {
     }
     
     public void sendGoodLuck(ActionEvent event) throws Exception {
-    	String textInside = labelChatArea.getText();
-    	labelChatArea.setText(textInside +"\n(You): Good luck  :-)");
     	sendMessage("Good luck  :-)");
     }
 
-    public static void start(Player player_temp, Player opponent_temp) throws IOException {
+    public static void start(Player player_temp, Player opponent_temp, Player playerStarting) throws IOException {
         player = player_temp;
         System.out.println(player.getStatus() + "asdasdsadsadsa");
         opponent = opponent_temp;
+        playerTurn = playerStarting;
+        //changePlayerTurn(playerTurn);
         SceneManagment.createNewStage("/player/GameGUI.fxml", null, "Game").show();
     }
 
@@ -139,6 +138,7 @@ public class GameController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         ChessHeadLineLbl.setText("Chess Game:\nYou (id: " + player.getPlayerId() + ") VS opponent (id: " + opponent.getPlayerId() + ")");
         labelChatArea.setStyle("-fx-background-color: gray; -fx-border-color: green; -fx-border-width: 2px;");
+        changePlayerTurn(playerTurn);
         try {
 			drawChessboard();
 		} catch (IOException e) {
@@ -347,74 +347,80 @@ public class GameController implements Initializable {
     
     private void handleClickOnMoveTo(Rectangle cell) {
     	
-    	synchronized (board) {
-    		
-    		// clear the prev choices
-    		try {
-            for(int j = 0; j < rectangleListOptions.getItems().size(); j++) {
-            	rectangleListOptions.getItems().get(j).setFill(null);
-            	rectangleListOptions.getItems().get(j).setStroke(null);
-            }
-            rectangleListOptions.getItems().clear();
-    		}catch(NullPointerException e) {}
+    	if(playerTurn.getPlayerId().equals(player.getPlayerId())) {
     	
-        int x = (int)cell.getX() / squareSize;
-        int y =	(int)cell.getY() / squareSize;
-        
-        piece = board.getPiece(x,y);
-        //first click + our piece
-        if(piece != null && piece.isWhite()) { // our piece
-        	firstPieceSelected = piece;//save the first Click on the piece
-        	switch (firstPieceSelected.getname()) {
-        	
-	        case "KingW":
-	        	king=(King) firstPieceSelected;
-	        	Kpieces=king.Move();
-	        	MoveOptions(Kpieces,king);
-	            break;
-	            
-	        case "QueenW":
-	        	queen=(Queen) firstPieceSelected;
-	        	Qpieces=queen.Move(board);
-	        	MoveOptions(Qpieces,queen);
-	        	break;
-	        	
-	        case "RookW":
-	        	rook=(Rook) firstPieceSelected;
-	        	Rpieces=rook.Move(board);
-	        	MoveOptions(Rpieces,rook);
-	           	break; 
-	           	
-	        case "BishopW":
-	        	bishop=(Bishop) firstPieceSelected;
-	        	Bpieces=bishop.Move(board);
-	        	MoveOptions(Bpieces,bishop);
-	        	break; 
-	        	
-	        case "KnightW":
-	        	knight=(Knight) firstPieceSelected;
-	        	KNpieces=knight.Move();
-	        	MoveOptions(KNpieces,knight);
-	        	
-	        	break;
-	        	
-	        case "soldierW":
-	        	soldier=(Soldier) firstPieceSelected;
-	        	Spieces=soldier.Move(board);
-	        	MoveOptions(Spieces,soldier);
-	        	break; 
-	        default:
-	            System.out.println("Invalid choice");
-	    }
-        	return;
-        }
-        
-        //---------------- second click ---------------------
-        
-       
-        else {
-        	System.out.println("not our");
-        }
+	    	synchronized (board) {
+	    		
+	    		// clear the prev choices
+	    		try {
+	            for(int j = 0; j < rectangleListOptions.getItems().size(); j++) {
+	            	rectangleListOptions.getItems().get(j).setFill(null);
+	            	rectangleListOptions.getItems().get(j).setStroke(null);
+	            }
+	            rectangleListOptions.getItems().clear();
+	    		}catch(NullPointerException e) {}
+	    	
+		        int x = (int)cell.getX() / squareSize;
+		        int y =	(int)cell.getY() / squareSize;
+		        
+		        piece = board.getPiece(x,y);
+		        //first click + our piece
+		        if(piece != null && piece.isWhite()) { // our piece
+		        	firstPieceSelected = piece;//save the first Click on the piece
+		        	switch (firstPieceSelected.getname()) {
+		        	
+				        case "KingW":
+				        	king=(King) firstPieceSelected;
+				        	Kpieces=king.Move();
+				        	MoveOptions(Kpieces,king);
+				            break;
+				            
+				        case "QueenW":
+				        	queen=(Queen) firstPieceSelected;
+				        	Qpieces=queen.Move(board);
+				        	MoveOptions(Qpieces,queen);
+				        	break;
+				        	
+				        case "RookW":
+				        	rook=(Rook) firstPieceSelected;
+				        	Rpieces=rook.Move(board);
+				        	MoveOptions(Rpieces,rook);
+				           	break; 
+				           	
+				        case "BishopW":
+				        	bishop=(Bishop) firstPieceSelected;
+				        	Bpieces=bishop.Move(board);
+				        	MoveOptions(Bpieces,bishop);
+				        	break; 
+				        	
+				        case "KnightW":
+				        	knight=(Knight) firstPieceSelected;
+				        	KNpieces=knight.Move();
+				        	MoveOptions(KNpieces,knight);
+				        	
+				        	break;
+				        	
+				        case "soldierW":
+				        	soldier=(Soldier) firstPieceSelected;
+				        	Spieces=soldier.Move(board);
+				        	MoveOptions(Spieces,soldier);
+				        	break; 
+				        default:
+				            System.out.println("Invalid choice");
+		        	}
+		        	return;
+		        }
+		        
+		        //---------------- second click ---------------------
+		        
+		       
+		        else {
+		        	System.out.println("not our");
+		        }
+	    	}
+    	}
+    	else {
+    		System.out.println("not your turn");
     	}
         
     }
@@ -428,16 +434,17 @@ public class GameController implements Initializable {
     	Piece tempPiece=null;
     	oldX=firstPieceSelected.getX();
     	oldY=firstPieceSelected.getY();
-    	tempPiece=new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
-    	/*if(piece == null) {
-    		tempPiece=new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
+    	//tempPiece=new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
+    	if(piece == null) { // move to empty place
+    		tempPiece = new Piece(newX,newY, "empty place", true);
     	}
-    	else {
-    		tempPiece=new Piece(newX,newY,firstPieceSelected.getname(),piece.isWhite());
-    	}*/
+    	else { // move to not empty place (move to white or black piece)
+    		tempPiece = new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
+    	}
+    	
         check=board.MoveCheck(firstPieceSelected,tempPiece);//check if available to move
         
-    	if(check==1) {//available to move the image (KILL OR EMPTY SPACE)
+    	if(check == 1) {//available to move the image (EMPTY SPACE)
     		ChangePiqtureLocation(oldX,oldY,tempPiece);
     		
     		// send to the server the piece was changed (old piece and new piece)
@@ -447,6 +454,12 @@ public class GameController implements Initializable {
     		updatePieceMoce_arr.add(tempPiece); // new piece
     		updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
     		ClientUI.chat.accept(updatePieceMoce_arr);
+    	}
+    	else if(check == 2) { // move to black piece (eating)
+    		deleteOpponentPicture(tempPiece);
+    		ChangePiqtureLocation(oldX,oldY,tempPiece);
+    		board.setPieceXY(firstPieceSelected, tempPiece.getX(), tempPiece.getY()); // change the x and y of the piece for the new x y
+    		
     	}
     	
     	
@@ -461,7 +474,14 @@ public class GameController implements Initializable {
     	return;
     }
     
-    //function that change the piece picture to new location
+    public void deleteOpponentPicture(Piece pieceToRemove) {
+    	System.out.println(pieceToRemove.getX() + " , " + pieceToRemove.getY());
+    	chessboardPane.getChildren().remove(imageViews[pieceToRemove.getX()][pieceToRemove.getY()]);
+    	imageViews[pieceToRemove.getX()][pieceToRemove.getY()] = null;
+    	System.out.println("image was deleted");
+	}
+
+	//function that change the piece picture to new location
     public void ChangePiqtureLocation(int oldX, int oldY, Piece piece) {
     	
         imageViews[oldX][oldY].setLayoutX((double)piece.getX() * squareSize);
@@ -520,6 +540,7 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
     			 rectangleListOptions.getItems().add(squareOption);
                  squareOption.setFill(Color.TRANSPARENT);
                  squareOption.setStrokeWidth(4.0);
+                 SetHighLight(squareOption);
                  
                  // Attach a click event handler to each square
                  squareOption.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -562,55 +583,57 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
     */
 
 	private void handleClickOnMoveToSecond(Rectangle squareOption) {
-		
         int x = (int)squareOption.getX() / squareSize;
         int y =	(int)squareOption.getY() / squareSize;
         piece = board.getPiece(x,y); // the place to move to
-		 if(piece == null && firstPieceSelected != null) {//move our piece to empty place
-			 
-			 
-	        	movePiece(firstPieceSelected,piece,x,y);
-	        	
-//	            firstPieceSelected=null;
-//	            for(int j = 0; j < rectangleListOptions.getItems().size(); j++) {
-//	            	rectangleListOptions.getItems().get(j).setFill(null);
-//	            	rectangleListOptions.getItems().get(j).setStroke(null);
-//	            }
-//	            rectangleListOptions.getItems().clear();
-	            
-
-	        	//	System.out.println("piece before change: " + piece.getname() + " | " + piece.getX() + ","+ piece.getY());
-	        //	System.out.println("firstPieceSelected before change: " + firstPieceSelected.getname() + " | " + firstPieceSelected.getX() + ","+ firstPieceSelected.getY());
-
-	        	
-	        	//System.out.println("/n piece after change: " + piece.getname() + " | " + piece.getX() + ","+ piece.getY());
-	        	//System.out.println("firstPieceSelected after change: " + firstPieceSelected.getname() + " | " + firstPieceSelected.getX() + ","+ firstPieceSelected.getY());          	//firstPieceSelected = null;
-	        }
-		 else if(!piece.isWhite() && firstPieceSelected != null) { // Opponent piece to eat
-			 eat();
-		 }
-		 
-		 
-		
+        movePiece(firstPieceSelected,piece,x,y);
+        
+        SendToServerChangePlayerTurn();
+        
 	}
-
-	private void eat() {
-		System.out.println("eat");
 	
-}
+	// send to the server the current player turn
+	public void SendToServerChangePlayerTurn() {
+		ArrayList<Player> playerTurnChange_arr = new ArrayList<>();
+		playerTurnChange_arr.add(new Player("ChangePlayerTurn"));
+		playerTurnChange_arr.add(opponent);
+		ClientUI.chat.accept(playerTurnChange_arr);
+	}
+	
+	public void changePlayerTurn(Player newPlayerTurn) {
+		Platform.runLater(() -> {
+			playerTurn = newPlayerTurn;
+			if(playerTurn.getPlayerId().equals(player.getPlayerId())) {
+				lblTurnStatus.setText("Your Turn");
+			}
+			else {
+				lblTurnStatus.setText("Opponent's Turn");
+			}
+		});
+	}
+	
 
 	public void getMessageFromOponent(String message) {
 		
 		Platform.runLater(() -> {
 		
-    	String textInside;
-    	
-    	textInside = labelChatArea.getText();
-    	
-    	labelChatArea.setText(textInside + "\n(Oponent): " + message);
+	    	String textInside;
+	    	
+	    	textInside = labelChatArea.getText();
+	    	
+	    	labelChatArea.setText(textInside + "\n(Oponent): " + message);
     	
 		});
     	
+	}
+	
+	public void SetHighLight (Rectangle squareOption) {
+		DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(8.0);
+        dropShadow.setOffsetX(0.0);
+        dropShadow.setOffsetY(0.0);
+        dropShadow.setColor(Color.BLUE); // You can adjust the color as needed
+        squareOption.setEffect(dropShadow);
 	}
     
 }
