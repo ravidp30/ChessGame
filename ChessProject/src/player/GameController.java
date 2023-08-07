@@ -109,11 +109,15 @@ public class GameController implements Initializable {
     	txtChat.setText("");
     	
     	labelChatArea.setText(textInside + "\n(You): " + myText);
+    	sendMessage(myText);
     	
-    	
+
+    }
+    
+    public void sendMessage(String msg) {
     	ArrayList<String> messageText_arr = new ArrayList<>();
     	messageText_arr.add("OponentSentMessage");
-    	messageText_arr.add(myText);
+    	messageText_arr.add(msg);
     	messageText_arr.add(player.getPlayerId());
     	ClientUI.chat.accept(messageText_arr);
     }
@@ -121,6 +125,7 @@ public class GameController implements Initializable {
     public void sendGoodLuck(ActionEvent event) throws Exception {
     	String textInside = labelChatArea.getText();
     	labelChatArea.setText(textInside +"\n(You): Good luck  :-)");
+    	sendMessage("Good luck  :-)");
     }
 
     public static void start(Player player_temp, Player opponent_temp) throws IOException {
@@ -384,13 +389,13 @@ public class GameController implements Initializable {
 	        	MoveOptions(Bpieces,bishop);
 	        	break; 
 	        	
-//	        case "KnightW":
-//	        	knight=(Knight) firstPieceSelected;
-//	        	KNpieces=knight.Move();
-//	        	MoveOptions(KNpieces,knight);
-//	        	
-//	        	break;
-//	        	
+	        case "KnightW":
+	        	knight=(Knight) firstPieceSelected;
+	        	KNpieces=knight.Move();
+	        	MoveOptions(KNpieces,knight);
+	        	
+	        	break;
+	        	
 	        case "soldierW":
 	        	soldier=(Soldier) firstPieceSelected;
 	        	Spieces=soldier.Move();
@@ -582,7 +587,7 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
     	
     	textInside = labelChatArea.getText();
     	
-    	labelChatArea.setText(textInside + "\n\n(Oponent): " + message);
+    	labelChatArea.setText(textInside + "\n(Oponent): " + message);
     	
 		});
     	
