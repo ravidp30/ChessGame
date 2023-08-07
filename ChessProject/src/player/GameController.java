@@ -348,6 +348,8 @@ public class GameController implements Initializable {
     private void handleClickOnMoveTo(Rectangle cell) {
     	
     	synchronized (board) {
+    		
+    		// clear the prev choices
     		try {
             for(int j = 0; j < rectangleListOptions.getItems().size(); j++) {
             	rectangleListOptions.getItems().get(j).setFill(null);
@@ -555,11 +557,13 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
 		
         int x = (int)squareOption.getX() / squareSize;
         int y =	(int)squareOption.getY() / squareSize;
-        piece = board.getPiece(x,y);
+        piece = board.getPiece(x,y); // the place to move to
 		 if(piece == null && firstPieceSelected != null) {//move our piece to empty place
+			 
+			 
 	        	movePiece(firstPieceSelected,piece,x,y);
+	        	
 	            firstPieceSelected=null;
-	            
 	            for(int j = 0; j < rectangleListOptions.getItems().size(); j++) {
 	            	rectangleListOptions.getItems().get(j).setFill(null);
 	            	rectangleListOptions.getItems().get(j).setStroke(null);
@@ -577,6 +581,8 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
 		 else if(!piece.isWhite() && firstPieceSelected != null) { // Opponent piece to eat
 			 eat();
 		 }
+		 
+		 
 		
 	}
 
