@@ -10,16 +10,29 @@ public class Soldier extends Piece{
 	}
 
 	public ArrayList<Piece> Move(Board board) {
+		Piece piece;
 		int currX=this.getX();
 		int currY=this.getY();
-		int left = 0,right=0,up=0,down = 0;
 		ArrayList<Piece> pieces = new ArrayList<>();
 		
-		if(currY > 0) {
+		piece = board.getPiece(currX-1, currY-1); // left up
+		if(piece != null && !piece.isWhite()) { // if there is opponent on left up (to eat)
+			pieces.add(new Piece(currX-1, currY-1, "soldierW", true));
+		}
+		
+		piece = board.getPiece(currX+1, currY-1); // right up
+		if(piece != null && !piece.isWhite()) { // if there is opponent on right up (to eat)
+			pieces.add(new Piece(currX+1, currY-1, "soldierW", true));
+		}
+		
+		piece = board.getPiece(currX, currY-1); // next place to move (up)
+		if(currY > 0 && piece == null) {
 			pieces.add(new Piece(currX, currY-1, "soldierW", true));
 		}
-		if(currY == 6) {
-			if(board.getPiece(currX, 5) == null)
+		
+		piece = board.getPiece(currX, currY-2); 
+		if(currY == 6 && piece == null) { // moving 2 times up
+			if(piece == null)
 				pieces.add(new Piece(currX, currY-2, "soldierW", true));
 		}
 

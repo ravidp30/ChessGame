@@ -528,7 +528,8 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
         		 }
                  
         		 else if(!tempPiece.isWhite() ){	// Opponent piece 
-        			 squareOption.setStroke(Color.RED);		
+        			 squareOption.setStroke(Color.RED);
+        			 squareOption.toFront(); //
         		 
         		 }
     		 }	
