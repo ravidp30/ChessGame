@@ -574,11 +574,16 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
 	        	//System.out.println("/n piece after change: " + piece.getname() + " | " + piece.getX() + ","+ piece.getY());
 	        	//System.out.println("firstPieceSelected after change: " + firstPieceSelected.getname() + " | " + firstPieceSelected.getX() + ","+ firstPieceSelected.getY());          	//firstPieceSelected = null;
 	        }
-		 else if(!piece.isWhite()) { // Opponent piece to eat
-			 System.out.println("eat");
+		 else if(!piece.isWhite() && firstPieceSelected != null) { // Opponent piece to eat
+			 eat();
 		 }
 		
 	}
+
+	private void eat() {
+		System.out.println("eat");
+	
+}
 
 	public void getMessageFromOponent(String message) {
 		
