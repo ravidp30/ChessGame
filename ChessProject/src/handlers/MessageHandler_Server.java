@@ -75,15 +75,17 @@ public class MessageHandler_Server {
         switch (messageType) {
 		
 			case "PieceWasMoved":
-				// 1 - old piece
-				// 2 - new piece
-				// 3 - current playerId - piece's name
+				// 1 - Eating or NotEating
+				// 2 - old piece
+				// 3 - new piece
+				// 4 - current playerId - piece's name
 				ArrayList<Piece> pieceMoved_arr_toOponent = new ArrayList<>();
 				pieceMoved_arr_toOponent.add(new Piece(0, 0, "OponentPieceWasMoved", true));
 				pieceMoved_arr_toOponent.add(arrayListPiece.get(1));
-				pieceMoved_arr_toOponent.add(arrayListPiece.get(2));	
+				pieceMoved_arr_toOponent.add(arrayListPiece.get(2));
+				pieceMoved_arr_toOponent.add(arrayListPiece.get(3));	
 				
-				if(arrayListPiece.get(3).getname().equals(player1id)) {
+				if(arrayListPiece.get(4).getname().equals(player1id)) {
 
 					try {
 						player2.sendToClient(pieceMoved_arr_toOponent);

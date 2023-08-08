@@ -12,8 +12,6 @@ public class King extends Piece{
 	public ArrayList<Piece>  Move() {
 		int currX=this.getX();
 		int currY=this.getY();
-		System.out.println("currx: " +currX );
-		System.out.println("curry: " +currY );
 		ArrayList<Piece> pieces = new ArrayList<>();
 		
 		// going all the squares around the king

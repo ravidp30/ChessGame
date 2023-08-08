@@ -136,7 +136,7 @@ public class GameController implements Initializable {
 
     public static void start(Player player_temp, Player opponent_temp, Player playerStarting) throws IOException {
         player = player_temp;
-        System.out.println(player.getStatus() + "asdasdsadsadsa");
+      //  System.out.println(player.getStatus() + "asdasdsadsadsa");
         opponent = opponent_temp;
         playerTurn = playerStarting;
         //changePlayerTurn(playerTurn);
@@ -265,54 +265,42 @@ public class GameController implements Initializable {
     	
         case "KingW":
         	piece = new King(x, y, name, true);
-        	System.out.println(name +" in position: " + x +","+ y);
             break;
         case "QueenW":
         	piece = new Queen(x, y, name, true);
-        	System.out.println(name+" in position: " + x +","+ y);
         	break;
         case "RookW":
         	piece = new Rook(x, y, name, true);
-        	System.out.println(name+" in position: " + x +","+ y);
         	break; 
         case "BishopW":
         	piece = new Bishop(x, y, name, true);
-        	System.out.println(name+" in position: " + x +","+ y);
         	break; 
         case "KnightW":
         	piece = new Knight(x, y, name, true);
-        	System.out.println(name+" in position: " + x +","+ y);
         	break;
         case "soldierW":
         	piece = new Soldier(x, y, name, true);
-        	System.out.println(name+" in position: " + x +","+ y);
         	break; 
         	
         				//-------BLACK----------
         	
         case "soldierB":
         	piece = new Soldier(x, y, name, false);
-        	System.out.println(name+" in position: " + x +","+ y);
         	break; 
         case "KingB":
         	piece = new King(x, y, name, false);
-        	System.out.println(name+" in position: " + x +","+ y);
         	break;
         case "RookB":
         	piece = new Rook(x, y, name, false);
-        	System.out.println(name+" in position: " + x +","+ y);
         	break;
         case "KnightB":
         	piece = new Knight(x, y, name, false);
-        	System.out.println(name+" in position: " + x +","+ y);
         	break;
         case "BishopB":
         	piece = new Bishop(x, y, name, false);
-        	System.out.println(name+" in position: " + x +","+ y);
         	break;
         case "QueenB":
         	piece = new Queen(x, y, name, false);
-        	System.out.println(name+" in position: " + x +","+ y);
         	break;
         default:
             System.out.println("Invalid choice");
@@ -417,7 +405,7 @@ public class GameController implements Initializable {
 				        	
 				        case "KnightW":
 				        	knight=(Knight) firstPieceSelected;
-				        	KNpieces=knight.Move();
+				        	KNpieces=knight.Move(board);
 				        	MoveOptions(KNpieces,knight);
 				        	
 				        	break;
@@ -449,7 +437,7 @@ public class GameController implements Initializable {
 
 
     //function that move the specific piece 
-    public void movePiece(Piece firstPieceSelected ,Piece piece , int newX, int newY) {
+    public Piece movePiece(Piece firstPieceSelected ,Piece piece , int newX, int newY) {
     	
     	int check=0;
     	int oldX, oldY;
@@ -465,24 +453,27 @@ public class GameController implements Initializable {
     	}
     	
         check=board.MoveCheck(firstPieceSelected,tempPiece);//check if available to move
-        
+        String EatOrNot = "";
     	if(check == 1) {//available to move the image (EMPTY SPACE)
     		ChangePiqtureLocation(oldX,oldY,tempPiece);
-    		
-    		// send to the server the piece was changed (old piece and new piece)
-    		ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
-    		updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
-    		updatePieceMoce_arr.add(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
-    		updatePieceMoce_arr.add(tempPiece); // new piece
-    		updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
-    		ClientUI.chat.accept(updatePieceMoce_arr);
+    		EatOrNot = "NotEating";
     	}
     	else if(check == 2) { // move to black piece (eating)
     		deleteOpponentPicture(tempPiece);
     		ChangePiqtureLocation(oldX,oldY,tempPiece);
     		board.setPieceXY(firstPieceSelected, tempPiece.getX(), tempPiece.getY()); // change the x and y of the piece for the new x y
+    		EatOrNot = "Eating";
     		
     	}
+    	
+		// send to the server the piece was changed (old piece and new piece) and if eaten
+		ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
+		updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
+		updatePieceMoce_arr.add(new Piece(0, 0, EatOrNot, true));
+		updatePieceMoce_arr.add(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
+		updatePieceMoce_arr.add(tempPiece); // new piece
+		updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
+		ClientUI.chat.accept(updatePieceMoce_arr);
     	
     	
     	 firstPieceSelected=null;
@@ -493,11 +484,10 @@ public class GameController implements Initializable {
          rectangleListOptions.getItems().clear();
     	
     	
-    	return;
+    	return board.getPiece(newX,newY);
     }
     
     public void deleteOpponentPicture(Piece pieceToRemove) {
-    	System.out.println(pieceToRemove.getX() + " , " + pieceToRemove.getY());
     	chessboardPane.getChildren().remove(imageViews[pieceToRemove.getX()][pieceToRemove.getY()]);
     	imageViews[pieceToRemove.getX()][pieceToRemove.getY()] = null;
     	System.out.println("image was deleted");
@@ -523,15 +513,26 @@ public class GameController implements Initializable {
         	}*/
    }
     
-public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
+    // check after new move of me, if there is chess on me
+    // pieceNewMovement is the current piece movement that not done yet
+    // pieceOldMovement is the old piece place
+    public boolean isChessOnMeAfterNewMove(Piece pieceOldMovement, Piece pieceNewMovement) {
+    	
+    	return false;
+    }
+    
+    public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece, Piece eatingOrNot) {
     	
     	synchronized (board) {
     		Platform.runLater(() -> {
-    		try {
+    		try {		
     			oldPiece.setX(7-oldPiece.getX());
     			oldPiece.setY(7-oldPiece.getY());
     			newPiece.setX(7-newPiece.getX());
-    			newPiece.setY(7-newPiece.getY());
+    			newPiece.setY(7-newPiece.getY());	
+    			if(eatingOrNot.getname().equals("Eating")) {
+    				deleteOpponentPicture(newPiece);
+    			}	
     			board.setPieceXY(oldPiece, newPiece.getX(), newPiece.getY());
     	        imageViews[oldPiece.getX()][oldPiece.getY()].setLayoutX((double)newPiece.getX() * squareSize);
     	        imageViews[oldPiece.getX()][oldPiece.getY()].setLayoutY((double)newPiece.getY() * squareSize);
@@ -573,7 +574,7 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
                  });  
                  
                  chessboardPane.getChildren().add(squareOption);
-                 System.out.println("clear options to move: " + p.getX() + ","+p.getY());
+                 //System.out.println("clear options to move: " + p.getX() + ","+p.getY());
                  
         		 if(tempPiece == null){	// empty place 
         			 squareOption.setStroke(Color.BLACK);
@@ -603,12 +604,70 @@ public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece) {
     	 return square;
              }
     */
+    
+    public boolean isChess() {
+
+    	ArrayList<Piece> moveOptions = new ArrayList<>();
+
+    	Piece currPiece;
+
+
+    	for(int x = 0; x < 8; x++) {
+    		for(int y = 0; y < 8; y++) {
+    			try {
+	    			currPiece = board.getPiece(x, y);
+	    			if(currPiece.isWhite()){
+    					switch (currPiece.getname()) {
+
+	    					case "KingW":
+	    						moveOptions = ((King) currPiece).Move();
+	    						break;
+	
+	    					case "QueenW":
+	    						moveOptions = ((Queen) currPiece).Move(board);
+	    						break;
+	
+	    					case "RookW":
+	    						moveOptions = ((Rook) currPiece).Move(board);
+	    						break; 
+	
+	    					case "BishopW":
+	    						moveOptions = ((Bishop) currPiece).Move(board);
+	    						break; 
+	
+	    					case "KnightW":
+	    						moveOptions = ((Knight) currPiece).Move(board);
+	    						break;
+	
+	    					case "soldierW":
+	    						moveOptions = ((Soldier) currPiece).Move(board);
+	    						break; 
+	    					default:
+	    						System.out.println("no way");
+	    				}
+    					//System.out.println("\n\ncurr piece: " + currPiece.getname());
+    					for(Piece optionsToMove : moveOptions) {
+    						//System.out.println(optionsToMove.getname());
+    						if(optionsToMove.getname().equals("KingB")) {
+    							return true;
+    						}
+    					}
+	    			}
+    			}catch (NullPointerException e) {}
+    		}
+    	}
+    	return false;
+    }
 
 	private void handleClickOnMoveToSecond(Rectangle squareOption) {
         int x = (int)squareOption.getX() / squareSize;
         int y =	(int)squareOption.getY() / squareSize;
         piece = board.getPiece(x,y); // the place to move to
-        movePiece(firstPieceSelected,piece,x,y);
+        
+        piece = movePiece(firstPieceSelected,piece,x,y);
+
+        //System.out.println("new move: " + piece.getX() + ", " + piece.getY());
+        System.out.println(isChess());
         
         SendToServerChangePlayerTurn();
         

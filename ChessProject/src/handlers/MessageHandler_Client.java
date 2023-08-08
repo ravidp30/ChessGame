@@ -63,10 +63,11 @@ public class MessageHandler_Client {
         switch (messageType) {
 		
 			case "OponentPieceWasMoved":
-				// 1 - old piece
-				// 2 - new piece
+				// 1 - Eating or NotEating
+				// 2 - old piece
+				// 3 - new piece
 				System.out.println("moved");
-				GameController.getInstance().ChangePieceLocationForOponent(arrayListPiece.get(1), arrayListPiece.get(2));
+				GameController.getInstance().ChangePieceLocationForOponent(arrayListPiece.get(2), arrayListPiece.get(3), arrayListPiece.get(1));
 				break;
 		}
 		

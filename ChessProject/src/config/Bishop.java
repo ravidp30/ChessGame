@@ -21,14 +21,12 @@ public class Bishop extends Piece{
 		if(currX<=7) 
 			for(int i=1 ; currX+i<8; i++) { 
 				right=i;
-				System.out.println("right: "+ i);
 			}
 		//------------------------------ count the Left--------------------------
 
 		if(currX>=0) 
 			for(int i=1 ; currX-i>=0; i++) { 
 				left=i;
-				System.out.println("left: "+ i);
 
 			}
 		//------------------------------ count the Up--------------------------
@@ -36,7 +34,6 @@ public class Bishop extends Piece{
 		if(currY<=7) 
 			for(int i=1 ; currY-i>=0; i++) { 
 				up=i;
-				System.out.println("Up: "+ i);
 
 			}
 		//------------------------------ count the Down--------------------------
@@ -44,7 +41,6 @@ public class Bishop extends Piece{
 		if(currY>=0) 
 			for(int i=1 ; currY+i<8; i++) { 
 				down=i;
-				System.out.println("down: "+ i);
 
 			}
 		
@@ -54,9 +50,9 @@ public class Bishop extends Piece{
 			for(int i=1 ; left-i>=0 ; i++) {
 				piece = board.getPiece(currX-i, currY+i);
 				if(piece == null)
-					pieces.add(new Piece(currX-i, currY+i, "BishopW", true));//down + left	
+					pieces.add(new Piece(currX-i, currY+i, "empty", true));//down + left	
 				else if(!piece.isWhite()) {
-					pieces.add(new Piece(currX-i, currY+i, "BishopW", true)); // right
+					pieces.add(new Piece(currX-i, currY+i, piece.getname(), false)); // right
 					break;
 				}
 				else {
@@ -68,9 +64,9 @@ public class Bishop extends Piece{
 			for(int i=1 ; down-i>=0 ; i++) {
 				piece = board.getPiece(currX-i, currY+i);
 				if(piece == null)
-					pieces.add(new Piece(currX-i, currY+i, "BishopW", true));//down + left
+					pieces.add(new Piece(currX-i, currY+i, "empty", true));//down + left
 				else if(!piece.isWhite()) {
-					pieces.add(new Piece(currX-i, currY+i, "BishopW", true)); // right
+					pieces.add(new Piece(currX-i, currY+i, piece.getname(), false)); // right
 					break;
 				}
 				else {
@@ -84,9 +80,9 @@ public class Bishop extends Piece{
 		for(int i=1 ; right-i>=0 ; i++) {
 			piece = board.getPiece(currX+i, currY+i);
 			if(piece == null)
-				pieces.add(new Piece(currX+i, currY+i, "BishopW", true)); // down + right
+				pieces.add(new Piece(currX+i, currY+i, "empty", true)); // down + right
 			else if(!piece.isWhite()) {
-				pieces.add(new Piece(currX+i, currY+i, "BishopW", true)); // right
+				pieces.add(new Piece(currX+i, currY+i, piece.getname(), false)); // right
 				break;
 			}
 			else {
@@ -98,9 +94,9 @@ public class Bishop extends Piece{
 			for(int i=1 ; down-i>=0 ; i++) {
 				piece = board.getPiece(currX+i, currY+i);
 				if(piece == null)
-					pieces.add(new Piece(currX+i, currY+i, "BishopW", true)); // down + right
+					pieces.add(new Piece(currX+i, currY+i, "empty", true)); // down + right
 				else if(!piece.isWhite()) {
-					pieces.add(new Piece(currX+i, currY+i, "BishopW", true)); // right
+					pieces.add(new Piece(currX+i, currY+i, piece.getname(), false)); // right
 					break;
 				}
 				else {
@@ -114,9 +110,9 @@ public class Bishop extends Piece{
 			for(int i=1 ; left-i>=0 ; i++) {
 				piece = board.getPiece(currX-i, currY-i);
 				if(piece == null)
-					pieces.add(new Piece(currX-i, currY-i, "BishopW", true));//up + left
+					pieces.add(new Piece(currX-i, currY-i, "empty", true));//up + left
 				else if(!piece.isWhite()) {
-					pieces.add(new Piece(currX-i, currY-i, "BishopW", true)); // right
+					pieces.add(new Piece(currX-i, currY-i, piece.getname(), false)); // right
 					break;
 				}
 				else {
@@ -129,9 +125,9 @@ public class Bishop extends Piece{
 			for(int i=1 ; up-i>=0 ; i++) {
 				piece = board.getPiece(currX-i, currY-i);
 				if(piece == null)
-					pieces.add(new Piece(currX-i, currY-i, "BishopW", true));//up + left
+					pieces.add(new Piece(currX-i, currY-i, "empty", true));//up + left
 				else if(!piece.isWhite()) {
-					pieces.add(new Piece(currX-i, currY-i, "BishopW", true)); // right
+					pieces.add(new Piece(currX-i, currY-i, piece.getname(), false)); // right
 					break;
 				}
 				else {
@@ -145,9 +141,9 @@ public class Bishop extends Piece{
 			for(int i=1 ; right-i>=0 ; i++) {
 				piece = board.getPiece(currX+i, currY-i);
 				if(piece == null)
-					pieces.add(new Piece(currX+i, currY-i, "BishopW", true));//up + right
+					pieces.add(new Piece(currX+i, currY-i, "empty", true));//up + right
 				else if(!piece.isWhite()) {
-					pieces.add(new Piece(currX+i, currY-i, "BishopW", true)); // right
+					pieces.add(new Piece(currX+i, currY-i, piece.getname(), false)); // right
 					break;
 				}
 				else {
@@ -159,9 +155,9 @@ public class Bishop extends Piece{
 			for(int i=1 ; up-i>=0 ; i++) {
 				piece = board.getPiece(currX+i, currY-i);
 				if(piece == null)
-					pieces.add(new Piece(currX+i, currY-i, "BishopW", true));//up + right	
+					pieces.add(new Piece(currX+i, currY-i, "empty", true));//up + right	
 				else if(!piece.isWhite()) {
-					pieces.add(new Piece(currX+i, currY-i, "BishopW", true)); // right
+					pieces.add(new Piece(currX+i, currY-i, piece.getname(), false)); // right
 					break;
 				}
 				else {

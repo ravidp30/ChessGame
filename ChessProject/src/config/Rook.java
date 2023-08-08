@@ -21,9 +21,9 @@ public class Rook extends Piece{
 			for(int i=1 ; currX+i<8; i++) { 
 				piece = board.getPiece(currX+i, currY);
 				if(piece == null)
-					pieces.add(new Piece(currX+i, currY, "RookW", true)); // right
+					pieces.add(new Piece(currX+i, currY, "empty", true)); // right
 				else if(!piece.isWhite()) {
-					pieces.add(new Piece(currX+i, currY, "RookW", true)); // right
+					pieces.add(new Piece(currX+i, currY, piece.getname(), false)); // right
 					break;
 				}
 				else {
@@ -36,9 +36,9 @@ public class Rook extends Piece{
 			for(int i=1 ; currX-i>=0; i++) { 
 				piece = board.getPiece(currX-i, currY);
 				if(piece == null)
-					pieces.add(new Piece(currX-i, currY, "RookW", true));// left
+					pieces.add(new Piece(currX-i, currY, "empty", true));// left
 				else if(!piece.isWhite()) {
-					pieces.add(new Piece(currX-i, currY, "RookW", true)); // right
+					pieces.add(new Piece(currX-i, currY, piece.getname(), false)); // right
 					break;
 				}
 				else {
@@ -51,9 +51,9 @@ public class Rook extends Piece{
 			for(int i=1 ; currY-i>=0; i++) {
 				piece = board.getPiece(currX, currY-i);
 				if(piece == null)
-					pieces.add(new Piece(currX, currY-i, "RookW", true));//up
+					pieces.add(new Piece(currX, currY-i, "empty", true));//up
 				else if(!piece.isWhite()) {
-					pieces.add(new Piece(currX, currY-i, "RookW", true)); // right
+					pieces.add(new Piece(currX, currY-i, piece.getname(), false)); // right
 					break;
 				}
 				else {
@@ -66,9 +66,9 @@ public class Rook extends Piece{
 			for(int i=1 ; currY+i<8; i++) { 
 				piece = board.getPiece(currX, currY+i);
 				if(piece == null)
-					pieces.add(new Piece(currX, currY+i, "RookW", true));// down
+					pieces.add(new Piece(currX, currY+i, "empty", true));// down
 				else if(!piece.isWhite()) {
-					pieces.add(new Piece(currX, currY+i, "RookW", true)); // right
+					pieces.add(new Piece(currX, currY+i, piece.getname(), false)); // right
 					break;
 				}
 				else {
