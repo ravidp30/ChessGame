@@ -26,6 +26,9 @@ import config.Player;
 import config.Queen;
 import config.Rook;
 import config.Soldier;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -37,6 +40,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.image.Image;
@@ -61,6 +65,7 @@ public class GameController implements Initializable {
     private Bishop bishop;
     private Rook rook;
     
+    
 
     private ArrayList<Piece> pieces = new ArrayList<>();
 //    private LinkedList<Piece> pieceL = new LinkedList<>();
@@ -74,13 +79,17 @@ public class GameController implements Initializable {
     
     
     private ListView<Rectangle> rectangleListOptions;
-    
+    @FXML
+    private Pane backGroundPane;
     @FXML
     private TextField txtChat;
     @FXML
     private Label labelChatArea;
     @FXML
+    private Label ChatLabel;
+    @FXML
     private Button goodLuck;
+
     @FXML
     private Label ChessHeadLineLbl;
     @FXML
@@ -137,7 +146,20 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ChessHeadLineLbl.setText("Chess Game:\nYou (id: " + player.getPlayerId() + ") VS opponent (id: " + opponent.getPlayerId() + ")");
-        labelChatArea.setStyle("-fx-background-color: gray; -fx-border-color: green; -fx-border-width: 2px;");
+        ChessHeadLineLbl.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
+        backGroundPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: black; -fx-border-width: 1px;");
+        labelChatArea.setStyle("-fx-text-fill: white; -fx-font-size: 15px;-fx-border-color: blue; -fx-border-width: 2px; -fx-font-weight: bold;");
+        ChatLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
+        lblTurnStatus.setStyle("-fx-text-fill: #FF8080; -fx-font-weight: bold; -fx-font-size: 25px;");
+        // Create a Timeline animation for flickering
+        KeyFrame hideKeyFrame = new KeyFrame(Duration.seconds(0.5), event -> lblTurnStatus.setVisible(false));
+        KeyFrame showKeyFrame = new KeyFrame(Duration.seconds(1), event -> lblTurnStatus.setVisible(true));
+        Timeline flickerTimeline = new Timeline(hideKeyFrame, showKeyFrame);
+        flickerTimeline.setCycleCount(Animation.INDEFINITE);
+        flickerTimeline.play();
+    
+        
+  
         changePlayerTurn(playerTurn);
         try {
 			drawChessboard();
@@ -159,9 +181,9 @@ public class GameController implements Initializable {
                 
                 Color color;
                 if ((x + y) % 2 == 0) {//set the board
-                    color = Color.WHITE;
+                	 color = Color.rgb(173, 216, 230); // Light blue color
                 } else {
-                    color = Color.GREEN;
+                	color = Color.rgb(0, 102, 204);   // Darker blue color
                 }
                 
                

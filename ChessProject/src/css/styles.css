@@ -272,3 +272,15 @@
     -fx-font-style: italic;
     -fx-text-fill: #FAF9F6;
 }
+.styled-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0, 0, 2);
+}
+
+.styled-button:hover {
+    -fx-background-color: #45a049;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
