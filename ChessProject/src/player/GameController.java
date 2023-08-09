@@ -684,9 +684,9 @@ public class GameController implements Initializable {
         piece = movePiece(firstPieceSelected,piece,x,y);
 
         //System.out.println("new move: " + piece.getX() + ", " + piece.getY());
-        System.out.println("check: " + isChess(board));
+        System.out.println("i did check on opponent: " + isChess(board));
         
-        System.out.println("check on me : " + isChessOnMe());
+        System.out.println("opponent checked on me : " + isChessOnMe());
         
         SendToServerChangePlayerTurn();
         
@@ -712,22 +712,22 @@ public class GameController implements Initializable {
 						
 						switch (modifiedString) {
 					        case "soldierB":
-					        	tempPiece = new Soldier(x, y, modifiedString, false);
+					        	tempPiece = new Soldier(7-x, 7-y, modifiedString, false);
 					        	break; 
 					        case "KingB":
-					        	tempPiece = new King(x, y, modifiedString, false);
+					        	tempPiece = new King(7-x, 7-y, modifiedString, false);
 					        	break;
 					        case "RookB":
-					        	tempPiece = new Rook(x, y, modifiedString, false);
+					        	tempPiece = new Rook(7-x, 7-y, modifiedString, false);
 					        	break;
 					        case "KnightB":
-					        	tempPiece = new Knight(x,y, modifiedString, false);
+					        	tempPiece = new Knight(7-x,7-y, modifiedString, false);
 					        	break;
 					        case "BishopB":
-					        	tempPiece = new Bishop(x,y, modifiedString, false);
+					        	tempPiece = new Bishop(7-x,7-y, modifiedString, false);
 					        	break;
 					        case "QueenB":
-					        	tempPiece = new Queen(x, y, modifiedString, false);
+					        	tempPiece = new Queen(7-x, 7-y, modifiedString, false);
 					        	break;
 					        default:
 					            System.out.println("Invalid choice");
@@ -766,8 +766,9 @@ public class GameController implements Initializable {
 					            System.out.println("Invalid choice");
 						}
 										
-						tempPieces.add(tempPiece);
+						
 					}
+					tempPieces.add(tempPiece);
 				}catch (Exception e) {
 					//tempPieces.add(new Piece(x, y, "empty", true));
 					//System.out.println("empty: " + x + "," + y);
