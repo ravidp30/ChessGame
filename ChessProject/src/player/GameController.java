@@ -712,22 +712,22 @@ public class GameController implements Initializable {
 						
 						switch (modifiedString) {
 					        case "soldierB":
-					        	tempPiece = new Soldier(7-x, 7-y, modifiedString, false);
+					        	tempPiece = new Soldier(x, y, modifiedString, false);
 					        	break; 
 					        case "KingB":
-					        	tempPiece = new King(7-x, 7-y, modifiedString, false);
+					        	tempPiece = new King(x, y, modifiedString, false);
 					        	break;
 					        case "RookB":
-					        	tempPiece = new Rook(7-x, 7-y, modifiedString, false);
+					        	tempPiece = new Rook(x, y, modifiedString, false);
 					        	break;
 					        case "KnightB":
-					        	tempPiece = new Knight(7-x,7-y, modifiedString, false);
+					        	tempPiece = new Knight(x,y, modifiedString, false);
 					        	break;
 					        case "BishopB":
-					        	tempPiece = new Bishop(7-x,7-y, modifiedString, false);
+					        	tempPiece = new Bishop(x,y, modifiedString, false);
 					        	break;
 					        case "QueenB":
-					        	tempPiece = new Queen(7-x, 7-y, modifiedString, false);
+					        	tempPiece = new Queen(x, y, modifiedString, false);
 					        	break;
 					        default:
 					            System.out.println("Invalid choice");
@@ -745,22 +745,22 @@ public class GameController implements Initializable {
 		    				//-------WHITE------
 		    	
 					        case "KingW":
-					        	tempPiece = new King(x, y, modifiedString, true);
+					        	tempPiece = new King(7-x, 7-y, modifiedString, true);
 					            break;
 					        case "QueenW":
-					        	tempPiece = new Queen(x, y, modifiedString, true);
+					        	tempPiece = new Queen(7-x, 7-y, modifiedString, true);
 					        	break;
 					        case "RookW":
-					        	tempPiece = new Rook(x, y, modifiedString, true);
+					        	tempPiece = new Rook(7-x, 7-y, modifiedString, true);
 					        	break; 
 					        case "BishopW":
-					        	tempPiece = new Bishop(x, y, modifiedString, true);
+					        	tempPiece = new Bishop(7-x, 7-y, modifiedString, true);
 					        	break; 
 					        case "KnightW":
-					        	tempPiece = new Knight(x, y, modifiedString, true);
+					        	tempPiece = new Knight(7-x, 7-y, modifiedString, true);
 					        	break;
 					        case "soldierW":
-					        	tempPiece = new Soldier(x, y, modifiedString, true);
+					        	tempPiece = new Soldier(7-x, 7-y, modifiedString, true);
 					        	break; 
 					        default:
 					            System.out.println("Invalid choice");
