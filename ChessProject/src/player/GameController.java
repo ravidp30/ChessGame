@@ -697,7 +697,7 @@ public class GameController implements Initializable {
 		
 		for(int x = 0; x < 8; x++) {
 			for(int y = 0; y < 8; y++) {
-				try {
+				try {	
 					
 		
 					
@@ -706,26 +706,29 @@ public class GameController implements Initializable {
 					tempPiece = board.getPiece(x, y);
 	
 					if(tempPiece.getname().endsWith("W")) {
+						//System.out.println("white: " + tempPiece.getX() + "," + tempPiece.getY());
 						modifiedString = (tempPiece.getname()).substring(0, (tempPiece.getname()).length() - 1) + "B";
+						//System.out.println("white to black: " + modifiedString);
+						//System.out.println(modifiedString + " , " + tempPiece.getX() + " " + tempPiece.getY());
 						
 						switch (modifiedString) {
 					        case "soldierB":
-					        	tempPiece = new Soldier(7-x, 7-y, modifiedString, false);
+					        	tempPiece = new Soldier(x, y, modifiedString, false);
 					        	break; 
 					        case "KingB":
-					        	tempPiece = new King(7-x, 7-y, modifiedString, false);
+					        	tempPiece = new King(x, y, modifiedString, false);
 					        	break;
 					        case "RookB":
-					        	tempPiece = new Rook(7-x, 7-y, modifiedString, false);
+					        	tempPiece = new Rook(x, y, modifiedString, false);
 					        	break;
 					        case "KnightB":
-					        	tempPiece = new Knight(7-x,7-y, modifiedString, false);
+					        	tempPiece = new Knight(x,y, modifiedString, false);
 					        	break;
 					        case "BishopB":
-					        	tempPiece = new Bishop(7-x, 7-y, modifiedString, false);
+					        	tempPiece = new Bishop(x,y, modifiedString, false);
 					        	break;
 					        case "QueenB":
-					        	tempPiece = new Queen(7-x, 7-y, modifiedString, false);
+					        	tempPiece = new Queen(x, y, modifiedString, false);
 					        	break;
 					        default:
 					            System.out.println("Invalid choice");
@@ -737,8 +740,9 @@ public class GameController implements Initializable {
 					}
 					
 					else if (tempPiece.getname().endsWith("B")){
+						//System.out.println("black: " + tempPiece.getX() + "," + tempPiece.getY());
 						modifiedString = (tempPiece.getname()).substring(0, (tempPiece.getname()).length() - 1) + "W";
-						
+						//System.out.println("black to white: " + modifiedString);
 						
 						
 						switch (modifiedString) {
@@ -765,16 +769,23 @@ public class GameController implements Initializable {
 					        default:
 					            System.out.println("Invalid choice");
 						}
-						
+										
 						tempPieces.add(new Piece(tempPiece.getX(), tempPiece.getY(), modifiedString, true));
 					}
-				}catch (NullPointerException e) {
-					System.out.println("null empty");
+				}catch (Exception e) {
+					//System.out.println("empty: " + x + "," + y);
 				}
 			}
 		}
-		Board tempBoard = new Board(8 * squareSize, 8 * squareSize, tempPieces);
+		/*int cnt = 0;
+		for(Piece a : tempPieces) {
+			cnt++;
+			System.out.println(a.getname() + ", " + a.getX() + ", " + a.getY());
+		}
+		System.out.println(cnt);*/	
 		
+		Board tempBoard = new Board(8 * squareSize, 8 * squareSize, tempPieces);
+
 		return isChess(tempBoard);
 
 	}
