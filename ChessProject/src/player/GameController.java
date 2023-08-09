@@ -699,15 +699,74 @@ public class GameController implements Initializable {
 			for(int y = 0; y < 8; y++) {
 				try {
 					
+		
+					
+					
+					
 					tempPiece = board.getPiece(x, y);
 	
 					if(tempPiece.getname().endsWith("W")) {
 						modifiedString = (tempPiece.getname()).substring(0, (tempPiece.getname()).length() - 1) + "B";
+						
+						switch (modifiedString) {
+					        case "soldierB":
+					        	tempPiece = new Soldier(7-x, 7-y, modifiedString, false);
+					        	break; 
+					        case "KingB":
+					        	tempPiece = new King(7-x, 7-y, modifiedString, false);
+					        	break;
+					        case "RookB":
+					        	tempPiece = new Rook(7-x, 7-y, modifiedString, false);
+					        	break;
+					        case "KnightB":
+					        	tempPiece = new Knight(7-x,7-y, modifiedString, false);
+					        	break;
+					        case "BishopB":
+					        	tempPiece = new Bishop(7-x, 7-y, modifiedString, false);
+					        	break;
+					        case "QueenB":
+					        	tempPiece = new Queen(7-x, 7-y, modifiedString, false);
+					        	break;
+					        default:
+					            System.out.println("Invalid choice");
+					    }
+						
+						
+						
 						tempPieces.add(new Piece(7 - tempPiece.getX(), 7 - tempPiece.getY(), modifiedString, false));
 					}
+					
 					else if (tempPiece.getname().endsWith("B")){
 						modifiedString = (tempPiece.getname()).substring(0, (tempPiece.getname()).length() - 1) + "W";
-						tempPieces.add(new Piece(7 - tempPiece.getX(), 7 - tempPiece.getY(), modifiedString, true));
+						
+						
+						
+						switch (modifiedString) {
+		    				//-------WHITE------
+		    	
+					        case "KingW":
+					        	tempPiece = new King(7-x, 7-y, modifiedString, true);
+					            break;
+					        case "QueenW":
+					        	tempPiece = new Queen(7-x, 7-y, modifiedString, true);
+					        	break;
+					        case "RookW":
+					        	tempPiece = new Rook(7-x, 7-y, modifiedString, true);
+					        	break; 
+					        case "BishopW":
+					        	tempPiece = new Bishop(7-x, 7-y, modifiedString, true);
+					        	break; 
+					        case "KnightW":
+					        	tempPiece = new Knight(7-x, 7-y, modifiedString, true);
+					        	break;
+					        case "soldierW":
+					        	tempPiece = new Soldier(7-x, 7-y, modifiedString, true);
+					        	break; 
+					        default:
+					            System.out.println("Invalid choice");
+						}
+						
+						tempPieces.add(new Piece(tempPiece.getX(), tempPiece.getY(), modifiedString, true));
 					}
 				}catch (NullPointerException e) {
 					System.out.println("null empty");
