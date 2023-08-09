@@ -538,7 +538,7 @@ public class GameController implements Initializable {
     			newPiece.setX(7-newPiece.getX());
     			newPiece.setY(7-newPiece.getY());
     			
-    			System.out.println("check: " + isChess());
+    			System.out.println("check: " + isChess(board));
 
     			
     			if(eatingOrNot.getname().equals("Eating")) {
@@ -618,7 +618,7 @@ public class GameController implements Initializable {
              }
     */
     
-    public boolean isChess() {
+    public boolean isChess(Board board) {
 
     	ArrayList<Piece> moveOptions = new ArrayList<>();
 
@@ -680,12 +680,46 @@ public class GameController implements Initializable {
         piece = movePiece(firstPieceSelected,piece,x,y);
 
         //System.out.println("new move: " + piece.getX() + ", " + piece.getY());
-        System.out.println(isChess());
+        System.out.println("check: " + isChess(board));
+        
+        System.out.println("check on me : " + isChessOnMe());
         
         SendToServerChangePlayerTurn();
         
 	}
 	
+	private boolean isChessOnMe() {
+		
+		
+		ArrayList<Piece> tempPieces = new ArrayList<>();
+		Piece tempPiece;
+		String modifiedString = null;
+		
+		for(int x = 0; x < 8; x++) {
+			for(int y = 0; y < 8; y++) {
+				try {
+					
+					tempPiece = board.getPiece(x, y);
+	
+					if(tempPiece.getname().endsWith("W")) {
+						modifiedString = (tempPiece.getname()).substring(0, (tempPiece.getname()).length() - 1) + "B";
+						tempPieces.add(new Piece(7 - tempPiece.getX(), 7 - tempPiece.getY(), modifiedString, false));
+					}
+					else if (tempPiece.getname().endsWith("B")){
+						modifiedString = (tempPiece.getname()).substring(0, (tempPiece.getname()).length() - 1) + "W";
+						tempPieces.add(new Piece(7 - tempPiece.getX(), 7 - tempPiece.getY(), modifiedString, true));
+					}
+				}catch (NullPointerException e) {
+					System.out.println("null empty");
+				}
+			}
+		}
+		Board tempBoard = new Board(8 * squareSize, 8 * squareSize, tempPieces);
+		
+		return isChess(tempBoard);
+
+	}
+
 	// send to the server the current player turn
 	public void SendToServerChangePlayerTurn() {
 		ArrayList<Player> playerTurnChange_arr = new ArrayList<>();
