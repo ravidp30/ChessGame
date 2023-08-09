@@ -580,7 +580,7 @@ public class GameController implements Initializable {
     			 }
     			 
     			 if(!isChess()) {
-	    			 Rectangle squareOption = new Rectangle( savedX * squareSize,savedY * squareSize, squareSize, squareSize);
+	    			 Rectangle squareOption = new Rectangle( p.getX() * squareSize,p.getY() * squareSize, squareSize, squareSize);
 	    			 rectangleListOptions.getItems().add(squareOption);
 	                 squareOption.setFill(Color.TRANSPARENT);
 	                 squareOption.setStrokeWidth(4.0);
