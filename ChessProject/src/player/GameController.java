@@ -624,10 +624,12 @@ public class GameController implements Initializable {
 
     	Piece currPiece;
 
-
+    	int cnt = 0;
+    	
     	for(int x = 0; x < 8; x++) {
     		for(int y = 0; y < 8; y++) {
     			try {
+    				cnt ++;
 	    			currPiece = board.getPiece(x, y);
 	    			if(currPiece.isWhite()){
     					switch (currPiece.getname()) {
@@ -666,9 +668,13 @@ public class GameController implements Initializable {
     						}
     					}
 	    			}
-    			}catch (NullPointerException e) {}
+    			}catch (Exception e) {
+    				//System.out.println("null");
+    				//System.out.println(cnt);
+    			}
     		}
     	}
+    	System.out.println("Asd" + cnt);
     	return false;
     }
 
@@ -773,6 +779,7 @@ public class GameController implements Initializable {
 						tempPieces.add(new Piece(tempPiece.getX(), tempPiece.getY(), modifiedString, true));
 					}
 				}catch (Exception e) {
+					//tempPieces.add(new Piece(x, y, "empty", true));
 					//System.out.println("empty: " + x + "," + y);
 				}
 			}
@@ -785,8 +792,21 @@ public class GameController implements Initializable {
 		System.out.println(cnt);*/	
 		
 		Board tempBoard = new Board(8 * squareSize, 8 * squareSize, tempPieces);
+		
+		
+		for(int i = 0; i<8; i++) {
+			for(int j = 0; j<8; j++) {
+				if(tempBoard.getPiece(i, j) != null)
+					System.out.println(tempBoard.getPiece(i, j).getname() + ", " + tempBoard.getPiece(i, j).getX() + ", " + tempBoard.getPiece(i, j).getY());
+			}
+		}
+		
+
+		
 
 		return isChess(tempBoard);
+		
+		//return false;
 
 	}
 
