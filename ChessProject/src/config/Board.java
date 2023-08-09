@@ -55,7 +55,7 @@ public class Board implements Serializable{
 				
 				if(p.getX()==piece.getX() && p.getY()==piece.getY()) {//found piece there already
 					if(p.isWhite()) { // move to place with white piece
-						System.out.println("cant move there- somone is there");
+						System.out.println("cant move there- someone is there");
 						return 0;
 					}
 		

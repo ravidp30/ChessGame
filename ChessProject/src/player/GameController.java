@@ -14,6 +14,8 @@ import java.util.ResourceBundle;
 import javafx.scene.effect.DropShadow;
 
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import ClientAndServerLogin.SceneManagment;
 import client.ClientUI;
@@ -538,8 +540,8 @@ public class GameController implements Initializable {
     			newPiece.setX(7-newPiece.getX());
     			newPiece.setY(7-newPiece.getY());
     			
-    			System.out.println("check: " + isChess(board));
-
+    		//System.out.println("check: " + isChess(board));
+    			
     			
     			if(eatingOrNot.getname().equals("Eating")) {
     				deleteOpponentPicture(newPiece);
@@ -685,7 +687,9 @@ public class GameController implements Initializable {
 
         //System.out.println("new move: " + piece.getX() + ", " + piece.getY());
         System.out.println("i did check on opponent: " + isChess(board));
-        
+        if(isChess(board)) {
+        	popUpCheck();
+        }
         System.out.println("opponent checked on me : " + isChessOnMe());
         
         SendToServerChangePlayerTurn();
@@ -844,5 +848,21 @@ public class GameController implements Initializable {
         dropShadow.setColor(Color.BLUE); // You can adjust the color as needed
         squareOption.setEffect(dropShadow);
 	}
-    
+	
+	//pop-up window - check is on.
+	public void popUpCheck(){
+		
+		 String message = "<html><h1 style='font-size: 24px; color: #007bff;'>Check!</h1>"
+                 + "<p style='font-size: 18px; color: #333;'>"
+                  + player.getPlayerId()+" is in check.</p></html>";
+
+		 JLabel messageLabel = new JLabel(message);
+		 JOptionPane.showMessageDialog(
+				 null,
+				 messageLabel,
+				 "Check",
+				 JOptionPane.INFORMATION_MESSAGE
+);
+	}
+
 }
