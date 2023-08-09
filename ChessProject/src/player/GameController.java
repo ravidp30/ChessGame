@@ -539,7 +539,9 @@ public class GameController implements Initializable {
     	        imageViews[newPiece.getX()][newPiece.getY()] = imageViews[oldPiece.getX()][oldPiece.getY()];
     	        imageViews[newPiece.getX()][newPiece.getY()].toFront();
     	        imageViews[oldPiece.getX()][oldPiece.getY()]=null;
-    			
+    	        
+    	        System.out.println("check: " + isChess());
+    	        
     		} catch (Exception e) {
     			e.printStackTrace();
     		}
