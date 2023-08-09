@@ -745,22 +745,22 @@ public class GameController implements Initializable {
 		    				//-------WHITE------
 		    	
 					        case "KingW":
-					        	tempPiece = new King(7-x, 7-y, modifiedString, true);
+					        	tempPiece = new King(x, y, modifiedString, true);
 					            break;
 					        case "QueenW":
-					        	tempPiece = new Queen(7-x, 7-y, modifiedString, true);
+					        	tempPiece = new Queen(x, y, modifiedString, true);
 					        	break;
 					        case "RookW":
-					        	tempPiece = new Rook(7-x, 7-y, modifiedString, true);
+					        	tempPiece = new Rook(x, y, modifiedString, true);
 					        	break; 
 					        case "BishopW":
-					        	tempPiece = new Bishop(7-x, 7-y, modifiedString, true);
+					        	tempPiece = new Bishop(x, y, modifiedString, true);
 					        	break; 
 					        case "KnightW":
-					        	tempPiece = new Knight(7-x, 7-y, modifiedString, true);
+					        	tempPiece = new Knight(x, y, modifiedString, true);
 					        	break;
 					        case "soldierW":
-					        	tempPiece = new Soldier(7-x, 7-y, modifiedString, true);
+					        	tempPiece = new Soldier(x, y, modifiedString, true);
 					        	break; 
 					        default:
 					            System.out.println("Invalid choice");
