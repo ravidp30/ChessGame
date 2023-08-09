@@ -454,11 +454,15 @@ public class GameController implements Initializable {
     	
         check=board.MoveCheck(firstPieceSelected,tempPiece);//check if available to move
         
+        //isCheckOnMe(); // send to the opponent message to check if there is check from his side
+        
+        
         //System.out.println(isChess());
         
         String EatOrNot = "";
     	if(check == 1) {//available to move the image (EMPTY SPACE)
     		ChangePiqtureLocation(oldX,oldY,tempPiece);
+    		board.setPieceXY(firstPieceSelected, tempPiece.getX(), tempPiece.getY()); // change the x and y of the piece for the new x y
     		EatOrNot = "NotEating";
     	}
     	else if(check == 2) { // move to black piece (eating)
