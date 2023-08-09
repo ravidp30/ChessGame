@@ -453,6 +453,9 @@ public class GameController implements Initializable {
     	}
     	
         check=board.MoveCheck(firstPieceSelected,tempPiece);//check if available to move
+        
+        //System.out.println(isChess());
+        
         String EatOrNot = "";
     	if(check == 1) {//available to move the image (EMPTY SPACE)
     		ChangePiqtureLocation(oldX,oldY,tempPiece);
@@ -526,10 +529,14 @@ public class GameController implements Initializable {
     	synchronized (board) {
     		Platform.runLater(() -> {
     		try {		
+    			
     			oldPiece.setX(7-oldPiece.getX());
     			oldPiece.setY(7-oldPiece.getY());
     			newPiece.setX(7-newPiece.getX());
-    			newPiece.setY(7-newPiece.getY());	
+    			newPiece.setY(7-newPiece.getY());
+    			
+    			System.out.println("check: " + isChess());
+    			
     			if(eatingOrNot.getname().equals("Eating")) {
     				deleteOpponentPicture(newPiece);
     			}	
@@ -540,7 +547,7 @@ public class GameController implements Initializable {
     	        imageViews[newPiece.getX()][newPiece.getY()].toFront();
     	        imageViews[oldPiece.getX()][oldPiece.getY()]=null;
     	        
-    	        System.out.println("check: " + isChess());
+    	        
     	        
     		} catch (Exception e) {
     			e.printStackTrace();
