@@ -562,39 +562,53 @@ public class GameController implements Initializable {
     	
     	rectangleListOptions = new ListView<>();
     	Piece tempPiece;
+    	int savedX;
+    	int savedY;
     	 for( Piece p: options) {
     		 tempPiece = board.getPiece(p.getX(), p.getY());
 //    		 int currXPosition=tempPiece.getX();//save the current X position 
 //             int currYPosition=tempPiece.getY();//save the current Y position 
     		 // mark a square only if there are no pieces in the square to move or black piece
     		 if(tempPiece == null || !tempPiece.isWhite()) {
-    			 Rectangle squareOption = new Rectangle( p.getX() * squareSize,p.getY() * squareSize, squareSize, squareSize);
-    			 rectangleListOptions.getItems().add(squareOption);
-                 squareOption.setFill(Color.TRANSPARENT);
-                 squareOption.setStrokeWidth(4.0);
-                 SetHighLight(squareOption);
-                 
-                 // Attach a click event handler to each square
-                 squareOption.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                     @Override
-                     public void handle(MouseEvent event) {
-                         handleClickOnMoveToSecond(squareOption);
-                     }
-                 });  
-                 
-                 chessboardPane.getChildren().add(squareOption);
-                 //System.out.println("clear options to move: " + p.getX() + ","+p.getY());
-                 
-        		 if(tempPiece == null){	// empty place 
-        			 squareOption.setStroke(Color.BLACK);
- 
-        		 }
-                 
-        		 else if(!tempPiece.isWhite() ){	// Opponent piece 
-        			 squareOption.setStroke(Color.RED);
-        			 squareOption.toFront(); //
-        		 
-        		 }
+    			 savedX = piece.getX();
+    			 savedY = piece.getY();
+    			 
+    			 board.setPieceXY(piece, p.getX(), p.getY());
+    			 
+    			 if(isChess()) {
+    				 System.out.println("chessss");
+    			 }
+    			 
+    			 if(!isChess()) {
+	    			 Rectangle squareOption = new Rectangle( savedX * squareSize,savedY * squareSize, squareSize, squareSize);
+	    			 rectangleListOptions.getItems().add(squareOption);
+	                 squareOption.setFill(Color.TRANSPARENT);
+	                 squareOption.setStrokeWidth(4.0);
+	                 SetHighLight(squareOption);
+	                 
+	                 // Attach a click event handler to each square
+	                 squareOption.setOnMouseClicked(new EventHandler<MouseEvent>() {
+	                     @Override
+	                     public void handle(MouseEvent event) {
+	                         handleClickOnMoveToSecond(squareOption);
+	                     }
+	                 });  
+	                 
+	                 chessboardPane.getChildren().add(squareOption);
+	                 //System.out.println("clear options to move: " + p.getX() + ","+p.getY());
+	                 
+	        		 if(tempPiece == null){	// empty place 
+	        			 squareOption.setStroke(Color.BLACK);
+	 
+	        		 }
+	                 
+	        		 else if(!tempPiece.isWhite() ){	// Opponent piece 
+	        			 squareOption.setStroke(Color.RED);
+	        			 squareOption.toFront(); //
+	        		 
+	        		 }
+	        		 board.setPieceXY(piece, savedX, savedY);
+    			 }
     		 }	
     	 }
     }
