@@ -39,7 +39,14 @@ public class Board implements Serializable{
 	public int MoveCheck(Piece firstPieceSelected ,Piece piece) {//move check function
 		
 		if(piece.getname().equals("empty place")) { // move to empty place
-			return 1; //Available to move to empty place
+			
+			for (Piece p:pieces) {
+				if(p.getX()==firstPieceSelected.getX() && p.getY()==firstPieceSelected.getY()){//found the current piece
+					p.setX(piece.getX());//change the location
+					p.setY(piece.getY());
+					return 1; //Available to move to empty place
+				}	
+			}
 		}
 		
 		else { // move to a place with black / white piece

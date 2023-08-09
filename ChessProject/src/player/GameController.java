@@ -462,7 +462,6 @@ public class GameController implements Initializable {
         String EatOrNot = "";
     	if(check == 1) {//available to move the image (EMPTY SPACE)
     		ChangePiqtureLocation(oldX,oldY,tempPiece);
-    		board.setPieceXY(firstPieceSelected, tempPiece.getX(), tempPiece.getY()); // change the x and y of the piece for the new x y
     		EatOrNot = "NotEating";
     	}
     	else if(check == 2) { // move to black piece (eating)
@@ -563,16 +562,16 @@ public class GameController implements Initializable {
 
 
     //function that showing all possibles moves 
-    public void MoveOptions(ArrayList<Piece> options , Piece piece) {
-    	
+    public void MoveOptions(ArrayList<Piece> options , Piece piece) {	
     	rectangleListOptions = new ListView<>();
     	Piece tempPiece;
     	 for( Piece p: options) {
+    		 
     		 tempPiece = board.getPiece(p.getX(), p.getY());
 //    		 int currXPosition=tempPiece.getX();//save the current X position 
 //             int currYPosition=tempPiece.getY();//save the current Y position 
     		 // mark a square only if there are no pieces in the square to move or black piece
-    		 if(tempPiece == null || !tempPiece.isWhite()) {
+    		 if(tempPiece == null || !tempPiece.isWhite()) {		 
     			 Rectangle squareOption = new Rectangle( p.getX() * squareSize,p.getY() * squareSize, squareSize, squareSize);
     			 rectangleListOptions.getItems().add(squareOption);
                  squareOption.setFill(Color.TRANSPARENT);
