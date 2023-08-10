@@ -716,6 +716,21 @@ public class GameController implements Initializable {
         	//System.out.println("new move: " + piece.getX() + ", " + piece.getY());
 
         }
+        
+        
+        for(int x1 = 0; x1<8; x1++) {
+            for(int y1 = 0; y1<8; y1++) {
+            	if(board.getPiece(x1, y1) == null) {
+            		System.out.println("empty in: " + x1 + " " + y1);
+            	}
+            	else {
+            		System.out.println(board.getPiece(x1, y1).getname() + ": " + board.getPiece(x1, y1).getX() + ": " + board.getPiece(x1, y1).getY());
+            	}
+            }
+        }
+        
+        
+        
 
 	}
 	
@@ -725,11 +740,11 @@ public class GameController implements Initializable {
 
 		
 		try {
-			System.out.println(lastOpponentPiece.getname() + "," + lastOpponentPiece.getX() + "," + lastOpponentPiece.getY());
+			//System.out.println(lastOpponentPiece.getname() + "," + lastOpponentPiece.getX() + "," + lastOpponentPiece.getY());
 		}catch (NullPointerException e) {
-			System.out.println("empty");
+			//System.out.println("empty");
 		}
-		System.out.println(firstPieceSelected.getname() + "," + oldX + "," + oldY);
+		//System.out.println(firstPieceSelected.getname() + "," + oldX + "," + oldY);
 		
 		if(lastOpponentPiece == null) { // moving to empty place and check
 			
