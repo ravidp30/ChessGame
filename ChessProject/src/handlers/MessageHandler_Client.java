@@ -66,10 +66,8 @@ public class MessageHandler_Client {
 				// 1 - Eating or NotEating
 				// 2 - old piece
 				// 3 - new piece
-				// 4 - if there is check or not: isWhite() --> check
 				System.out.println("moved");
-				GameController.getInstance().ChangePieceLocationForOponent(arrayListPiece.get(2), arrayListPiece.get(3), arrayListPiece.get(1)
-						, arrayListPiece.get(4));
+				GameController.getInstance().ChangePieceLocationForOponent(arrayListPiece.get(2), arrayListPiece.get(3), arrayListPiece.get(1));
 				break;
 		}
 		
@@ -98,7 +96,8 @@ public class MessageHandler_Client {
 					
 				case "ChangePlayerTurnForOpponent":
 					// 1 - player with the current turn
-					GameController.getInstance().changePlayerTurn(arrayListPlayer.get(1));
+					// 2 - in check or not
+					GameController.getInstance().changePlayerTurn(arrayListPlayer.get(1), arrayListPlayer.get(2));
 					
 					
 					break;

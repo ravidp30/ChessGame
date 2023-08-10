@@ -69,8 +69,6 @@ public class GameController implements Initializable {
     private Piece lastOpponentPiece;
     private int oldX;
     private int oldY;
-    private String EatOrNot = "";
-    private Piece tempPieceToMove=null;
     
     
 
@@ -167,7 +165,7 @@ public class GameController implements Initializable {
     
         
   
-        changePlayerTurn(playerTurn);
+        changePlayerTurn(playerTurn, new Player("NotInCheck"));
         try {
 			drawChessboard();
 		} catch (IOException e) {
@@ -448,33 +446,33 @@ public class GameController implements Initializable {
     	
     	int check=0;
     	//int oldX, oldY;
-
+    	Piece tempPiece=null;
     	oldX=firstPieceSelected.getX();
     	oldY=firstPieceSelected.getY();
     	//tempPiece=new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
     	if(piece == null) { // move to empty place
-    		tempPieceToMove = new Piece(newX,newY, "empty place", true);
+    		tempPiece = new Piece(newX,newY, "empty place", true);
     	}
     	else { // move to not empty place (move to white or black piece)
-    		tempPieceToMove = new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
+    		tempPiece = new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
     	}
     	
-        check=board.MoveCheck(firstPieceSelected,tempPieceToMove);//check if available to move
+        check=board.MoveCheck(firstPieceSelected,tempPiece);//check if available to move
         
         //isCheckOnMe(); // send to the opponent message to check if there is check from his side
         
         
         //System.out.println(isChess());
         
-
+        String EatOrNot = "";
     	if(check == 1) {//available to move the image (EMPTY SPACE)
-    		ChangePiqtureLocation(oldX,oldY,tempPieceToMove);
+    		ChangePiqtureLocation(oldX,oldY,tempPiece);
     		EatOrNot = "NotEating";
     	}
     	else if(check == 2) { // move to black piece (eating)
-    		deleteOpponentPicture(tempPieceToMove);
-    		ChangePiqtureLocation(oldX,oldY,tempPieceToMove);
-    		board.setPieceXY(firstPieceSelected, tempPieceToMove.getX(), tempPieceToMove.getY()); // change the x and y of the piece for the new x y
+    		deleteOpponentPicture(tempPiece);
+    		ChangePiqtureLocation(oldX,oldY,tempPiece);
+    		board.setPieceXY(firstPieceSelected, tempPiece.getX(), tempPiece.getY()); // change the x and y of the piece for the new x y
     		EatOrNot = "Eating";
     		
     	}
@@ -484,7 +482,7 @@ public class GameController implements Initializable {
 		updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
 		updatePieceMoce_arr.add(new Piece(0, 0, EatOrNot, true));
 		updatePieceMoce_arr.add(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
-		updatePieceMoce_arr.add(tempPieceToMove); // new piece
+		updatePieceMoce_arr.add(tempPiece); // new piece
 		updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
 		ClientUI.chat.accept(updatePieceMoce_arr);
     	
@@ -534,9 +532,7 @@ public class GameController implements Initializable {
     	return false;
     }
     
-    
-    // if isCheck.isWhite() --> in check
-    public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece, Piece eatingOrNot, Piece isCheck) {
+    public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece, Piece eatingOrNot) {
     	
     	synchronized (board) {
     		Platform.runLater(() -> {
@@ -560,9 +556,7 @@ public class GameController implements Initializable {
     	        imageViews[newPiece.getX()][newPiece.getY()].toFront();
     	        imageViews[oldPiece.getX()][oldPiece.getY()]=null;
     	        
-    	        if(isCheck.isWhite()) {
-    	        	popUpCheck("im in check");
-    	        }
+    	        
     	        
     		} catch (Exception e) {
     			e.printStackTrace();
@@ -701,37 +695,20 @@ public class GameController implements Initializable {
         
         else {   
         	
-    		// send to the server the piece was changed (old piece and new piece) and if eaten
-    		ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
-    		updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
-    		updatePieceMoce_arr.add(new Piece(0, 0, EatOrNot, true));
-    		updatePieceMoce_arr.add(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
-    		updatePieceMoce_arr.add(tempPieceToMove); // new piece
-    		updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
-    		
-        	System.out.println(1);
-    		
-        	//System.out.println("new move: " + piece.getX() + ", " + piece.getY());
+        	
 	        System.out.println("i did check on opponent: " + isChess(board));
-	        boolean check = isChess(board);
-	        System.out.println(2);
-	        updatePieceMoce_arr.add(new Piece(0, 0, "check?", check)); // if there is check or not
-	        System.out.println(3);
-	        if(check) {
+	        
+	        boolean inCheck = isChess(board);
+	        
+	        if(inCheck) {
 	        	popUpCheck("chess");
-	        	System.out.println(4);
 	        }
-	        System.out.println(5);
         	
-	        ClientUI.chat.accept(updatePieceMoce_arr);//
-	        System.out.println(6);
-        	
-        	SendToServerChangePlayerTurn(); 
-        	System.out.println(7);
+        	SendToServerChangePlayerTurn(inCheck);  // send to the opponent also if there is check on him
+        	//System.out.println("new move: " + piece.getX() + ", " + piece.getY());
 
         }
-        firstPieceSelected=null;
-        tempPieceToMove = null;
+
 	}
 	
 	private void moveBack() {
@@ -898,15 +875,23 @@ public class GameController implements Initializable {
 
 	}
 
-	// send to the server the current player turn
-	public void SendToServerChangePlayerTurn() {
+	// send to the server the current player turn and if the opponent inCheck or not
+	public void SendToServerChangePlayerTurn(boolean inCheck) {
 		ArrayList<Player> playerTurnChange_arr = new ArrayList<>();
 		playerTurnChange_arr.add(new Player("ChangePlayerTurn"));
 		playerTurnChange_arr.add(opponent);
+		if(inCheck) {
+			playerTurnChange_arr.add(new Player("InCheck"));
+		}
+		else {
+			playerTurnChange_arr.add(new Player("NotInCheck"));
+		}
 		ClientUI.chat.accept(playerTurnChange_arr);
 	}
 	
-	public void changePlayerTurn(Player newPlayerTurn) {
+	
+	// inCheck.getplayerId() = "InCheck" / "NotInCheck"
+	public void changePlayerTurn(Player newPlayerTurn, Player inCheck) {
 		Platform.runLater(() -> {
 			/*if(isChess(board)) {
 				System.out.println(123123);
@@ -914,6 +899,9 @@ public class GameController implements Initializable {
 			playerTurn = newPlayerTurn;
 			if(playerTurn.getPlayerId().equals(player.getPlayerId())) {
 				lblTurnStatus.setText("Your Turn");
+				if(inCheck.getPlayerId().equals("InCheck")) {
+					popUpCheck("check on me");
+				}
 			}
 			else {
 				lblTurnStatus.setText("Opponent's Turn");

@@ -79,13 +79,11 @@ public class MessageHandler_Server {
 				// 2 - old piece
 				// 3 - new piece
 				// 4 - current playerId - piece's name
-				// 5 - if there is check or not: isWhite() --> check
 				ArrayList<Piece> pieceMoved_arr_toOponent = new ArrayList<>();
 				pieceMoved_arr_toOponent.add(new Piece(0, 0, "OponentPieceWasMoved", true));
 				pieceMoved_arr_toOponent.add(arrayListPiece.get(1));
 				pieceMoved_arr_toOponent.add(arrayListPiece.get(2));
-				pieceMoved_arr_toOponent.add(arrayListPiece.get(3));
-				pieceMoved_arr_toOponent.add(arrayListPiece.get(5));
+				pieceMoved_arr_toOponent.add(arrayListPiece.get(3));	
 				
 				if(arrayListPiece.get(4).getname().equals(player1id)) {
 
@@ -307,10 +305,13 @@ public class MessageHandler_Server {
 					
 				case "ChangePlayerTurn":
 					// 1 - Player next turn
+					// 2 - in check or not
 					
 					ArrayList<Player> playerNextTurn_arr = new ArrayList<>();
 					playerNextTurn_arr.add(new Player("ChangePlayerTurnForOpponent"));
 					playerNextTurn_arr.add(arrayListPlayer.get(1));
+					playerNextTurn_arr.add(arrayListPlayer.get(2));
+					
 					player1.sendToClient(playerNextTurn_arr);
 					player2.sendToClient(playerNextTurn_arr);
 					
