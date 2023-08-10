@@ -69,6 +69,8 @@ public class GameController implements Initializable {
     private Piece lastOpponentPiece;
     private int oldX;
     private int oldY;
+    private String EatOrNot;
+    private Piece tempPieceToMove = null;
     
     
 
@@ -446,48 +448,36 @@ public class GameController implements Initializable {
     	
     	int check=0;
     	//int oldX, oldY;
-    	Piece tempPiece=null;
     	oldX=firstPieceSelected.getX();
     	oldY=firstPieceSelected.getY();
     	//tempPiece=new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
     	if(piece == null) { // move to empty place
-    		tempPiece = new Piece(newX,newY, "empty place", true);
+    		tempPieceToMove = new Piece(newX,newY, "empty place", true);
     	}
     	else { // move to not empty place (move to white or black piece)
-    		tempPiece = new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
+    		tempPieceToMove = new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
     	}
     	
-        check=board.MoveCheck(firstPieceSelected,tempPiece);//check if available to move
+        check=board.MoveCheck(firstPieceSelected,tempPieceToMove);//check if available to move
         
         //isCheckOnMe(); // send to the opponent message to check if there is check from his side
         
         
         //System.out.println(isChess());
         
-        String EatOrNot = "";
     	if(check == 1) {//available to move the image (EMPTY SPACE)
-    		ChangePiqtureLocation(oldX,oldY,tempPiece);
+    		ChangePiqtureLocation(oldX,oldY,tempPieceToMove);
     		EatOrNot = "NotEating";
     	}
     	else if(check == 2) { // move to black piece (eating)
-    		deleteOpponentPicture(tempPiece);
-    		ChangePiqtureLocation(oldX,oldY,tempPiece);
-    		board.setPieceXY(firstPieceSelected, tempPiece.getX(), tempPiece.getY()); // change the x and y of the piece for the new x y
+    		deleteOpponentPicture(tempPieceToMove);
+    		ChangePiqtureLocation(oldX,oldY,tempPieceToMove);
+    		board.setPieceXY(firstPieceSelected, tempPieceToMove.getX(), tempPieceToMove.getY()); // change the x and y of the piece for the new x y
     		EatOrNot = "Eating";
     		
     	}
     	
-		// send to the server the piece was changed (old piece and new piece) and if eaten
-		ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
-		updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
-		updatePieceMoce_arr.add(new Piece(0, 0, EatOrNot, true));
-		updatePieceMoce_arr.add(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
-		updatePieceMoce_arr.add(tempPiece); // new piece
-		updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
-		ClientUI.chat.accept(updatePieceMoce_arr);
-    	
-    	
-    	 firstPieceSelected=null;
+
          for(int j = 0; j < rectangleListOptions.getItems().size(); j++) {
          	rectangleListOptions.getItems().get(j).setFill(null);
          	rectangleListOptions.getItems().get(j).setStroke(null);
@@ -703,6 +693,21 @@ public class GameController implements Initializable {
 	        if(inCheck) {
 	        	popUpCheck("chess");
 	        }
+	        
+	        
+			// send to the server the piece was changed (old piece and new piece) and if eaten
+			ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
+			updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
+			updatePieceMoce_arr.add(new Piece(0, 0, EatOrNot, true));
+			updatePieceMoce_arr.add(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
+			updatePieceMoce_arr.add(tempPieceToMove); // new piece
+			updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
+			ClientUI.chat.accept(updatePieceMoce_arr);
+	    	
+	    	
+	    	 firstPieceSelected=null;
+	        
+	        
         	
         	SendToServerChangePlayerTurn(inCheck);  // send to the opponent also if there is check on him
         	//System.out.println("new move: " + piece.getX() + ", " + piece.getY());
