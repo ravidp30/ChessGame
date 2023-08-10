@@ -747,7 +747,7 @@ public class GameController implements Initializable {
 	        
 	        pieces.add(lastOpponentPiece);
 	        
-	        
+	        board.setPieceXY(firstPieceSelected, oldX, oldY);
 	        
 			
 			
