@@ -724,7 +724,7 @@ public class GameController implements Initializable {
 		}
 		else {
 			
-			
+			ChangePiqtureLocation(oldX,oldY,firstPieceSelected);
 			
 			
 	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()] = new ImageView();
@@ -743,7 +743,7 @@ public class GameController implements Initializable {
 	        
 	        chessboardPane.getChildren().add(imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()]);
 	        
-	        ChangePiqtureLocation(oldX,oldY,firstPieceSelected);
+	        
 	        
 	        pieces.add(lastOpponentPiece);
 	        
