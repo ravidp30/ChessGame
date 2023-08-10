@@ -684,18 +684,34 @@ public class GameController implements Initializable {
         piece = board.getPiece(x,y); // the place to move to
         
         piece = movePiece(firstPieceSelected,piece,x,y);
-
-        //System.out.println("new move: " + piece.getX() + ", " + piece.getY());
-        System.out.println("i did check on opponent: " + isChess(board));
-        if(isChess(board)) {
-        	popUpCheck();
-        }
+        
+        
+        
         System.out.println("opponent checked on me : " + isChessOnMe());
+        if(isChessOnMe()) {
+        	moveBack();
+        }
         
-        SendToServerChangePlayerTurn();
-        
+        else {   
+        	SendToServerChangePlayerTurn(); 
+        	//System.out.println("new move: " + piece.getX() + ", " + piece.getY());
+	        System.out.println("i did check on opponent: " + isChess(board));
+	        if(isChess(board)) {
+	        	popUpCheck();
+	        }
+        }
+
 	}
 	
+	private void moveBack() {
+		// firstPieceSelected
+		// piece
+		
+		System.out.println(piece.getname() + "," + piece.getX() + "," + piece.getX());
+		System.out.println(firstPieceSelected.getname() + "," + firstPieceSelected.getX() + "," + firstPieceSelected.getX());
+		
+	}
+
 	private boolean isChessOnMe() {
 		
 		
@@ -815,6 +831,9 @@ public class GameController implements Initializable {
 	
 	public void changePlayerTurn(Player newPlayerTurn) {
 		Platform.runLater(() -> {
+			/*if(isChess(board)) {
+				System.out.println(123123);
+			}*/
 			playerTurn = newPlayerTurn;
 			if(playerTurn.getPlayerId().equals(player.getPlayerId())) {
 				lblTurnStatus.setText("Your Turn");
