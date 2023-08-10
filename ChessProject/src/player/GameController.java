@@ -743,9 +743,12 @@ public class GameController implements Initializable {
 	        
 	        chessboardPane.getChildren().add(imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()]);
 	        
-	        
+	        ChangePiqtureLocation(oldX,oldY,firstPieceSelected);
 	        
 	        pieces.add(lastOpponentPiece);
+	        
+	        
+	        
 			
 			
 		}
