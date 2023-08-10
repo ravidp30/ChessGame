@@ -716,15 +716,15 @@ public class GameController implements Initializable {
 		}
 		System.out.println(firstPieceSelected.getname() + "," + oldX + "," + oldY);
 		
-		if(lastOpponentPiece == null) {
+		if(lastOpponentPiece == null) { // moving to empty place and check
 			
 			board.setPieceXY(firstPieceSelected, oldX, oldY);
 			
 			
 		}
-		else {
+		else { // after eating and check
 			
-			ChangePiqtureLocation(oldX,oldY,firstPieceSelected);
+			ChangePiqtureLocation(firstPieceSelected.getX(),firstPieceSelected.getY(),new Piece(oldX, oldY, firstPieceSelected.getname(), true));
 			
 			
 	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()] = new ImageView();
