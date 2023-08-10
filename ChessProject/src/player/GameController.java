@@ -714,11 +714,11 @@ public class GameController implements Initializable {
 
 		
 		try {
-			System.out.println(lastOpponentPiece.getname() + "," + lastOpponentPiece.getX() + "," + lastOpponentPiece.getX());
+			System.out.println(lastOpponentPiece.getname() + "," + lastOpponentPiece.getX() + "," + lastOpponentPiece.getY());
 		}catch (NullPointerException e) {
 			System.out.println("empty");
 		}
-		System.out.println(firstPieceSelected.getname() + "," + firstPieceSelected.getX() + "," + firstPieceSelected.getX());
+		System.out.println(firstPieceSelected.getname() + "," + firstPieceSelected.getX() + "," + firstPieceSelected.getY());
 		System.out.println(lastNewX + "," + lastNewY);
 	}
 
