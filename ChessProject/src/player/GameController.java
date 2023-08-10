@@ -709,19 +709,25 @@ public class GameController implements Initializable {
     		updatePieceMoce_arr.add(tempPieceToMove); // new piece
     		updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
     		
-        	
+        	System.out.println(1);
     		
         	//System.out.println("new move: " + piece.getX() + ", " + piece.getY());
 	        System.out.println("i did check on opponent: " + isChess(board));
 	        boolean check = isChess(board);
+	        System.out.println(2);
 	        updatePieceMoce_arr.add(new Piece(0, 0, "check?", check)); // if there is check or not
+	        System.out.println(3);
 	        if(check) {
 	        	popUpCheck("chess");
+	        	System.out.println(4);
 	        }
+	        System.out.println(5);
         	
 	        ClientUI.chat.accept(updatePieceMoce_arr);//
+	        System.out.println(6);
         	
         	SendToServerChangePlayerTurn(); 
+        	System.out.println(7);
 
         }
         firstPieceSelected=null;
