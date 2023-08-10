@@ -183,7 +183,7 @@ public class GameController implements Initializable {
                 
                 Color color;
                 if ((x + y) % 2 == 0) {//set the board
-                	 color = Color.rgb(173, 216, 230); // Light blue color
+                	 color = Color.rgb(173, 216, 230); // Light blue color 
                 } else {
                 	color = Color.rgb(0, 102, 204);   // Darker blue color
                 }
@@ -702,7 +702,7 @@ public class GameController implements Initializable {
 		ArrayList<Piece> tempPieces = new ArrayList<>();
 		Piece tempPiece;
 		String modifiedString = null;
-		
+		//changing the board 
 		for(int x = 0; x < 8; x++) {
 			for(int y = 0; y < 8; y++) {
 				try {			

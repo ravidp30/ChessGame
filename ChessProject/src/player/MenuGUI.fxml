@@ -8,6 +8,11 @@
 
 <Pane prefHeight="392.0" prefWidth="512.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="player.MenuController">
    <children>
+      <ImageView fitHeight="707.0" fitWidth="518.0" layoutX="-3.0" layoutY="-157.0">
+         <image>
+            <Image url="@../../../../../OneDrive%20-%20ort%20braude%20college%20of%20engineering/שולחן%20העבודה/chess%20players/pngtree-chess-king-break-down-business-plan-and-strategy-concept-image_327500.png" />
+         </image>
+      </ImageView>
       <Button fx:id="exitBtn" layoutX="477.0" layoutY="1.0" onAction="#onClickExit" text="Exit" />
       <Label layoutX="231.0" layoutY="8.0" prefHeight="37.0" prefWidth="35.0" text="Menu" />
       <Button fx:id="readyBtn" layoutX="390.0" layoutY="125.0" mnemonicParsing="false" onAction="#onClickReady" text="Ready" />
