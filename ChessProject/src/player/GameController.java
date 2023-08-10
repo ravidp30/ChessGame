@@ -698,7 +698,7 @@ public class GameController implements Initializable {
         	//System.out.println("new move: " + piece.getX() + ", " + piece.getY());
 	        System.out.println("i did check on opponent: " + isChess(board));
 	        if(isChess(board)) {
-	        	popUpCheck();
+	        	popUpCheck("chess");
 	        }
         }
 
@@ -748,7 +748,8 @@ public class GameController implements Initializable {
 	        pieces.add(lastOpponentPiece);
 	        
 	        board.setPieceXY(firstPieceSelected, oldX, oldY);
-	        
+        	popUpCheck("unvailable move");
+
 			
 			
 		}
@@ -915,11 +916,11 @@ public class GameController implements Initializable {
 	}
 	
 	//pop-up window - check is on.
-	public void popUpCheck(){
+	public void popUpCheck(String string){
 		
 		 String message = "<html><h1 style='font-size: 24px; color: #007bff;'>Check!</h1>"
                  + "<p style='font-size: 18px; color: #333;'>"
-                  + player.getPlayerId()+" is in check.</p></html>";
+                  + player.getPlayerId()+ string + ".</p></html>";
 
 		 JLabel messageLabel = new JLabel(message);
 		 JOptionPane.showMessageDialog(
