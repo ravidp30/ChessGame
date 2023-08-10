@@ -534,7 +534,9 @@ public class GameController implements Initializable {
     	return false;
     }
     
-    public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece, Piece eatingOrNot) {
+    
+    // if isCheck.isWhite() --> in check
+    public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece, Piece eatingOrNot, Piece isCheck) {
     	
     	synchronized (board) {
     		Platform.runLater(() -> {
@@ -558,7 +560,9 @@ public class GameController implements Initializable {
     	        imageViews[newPiece.getX()][newPiece.getY()].toFront();
     	        imageViews[oldPiece.getX()][oldPiece.getY()]=null;
     	        
-    	        
+    	        if(isCheck.isWhite()) {
+    	        	popUpCheck("im in check");
+    	        }
     	        
     		} catch (Exception e) {
     			e.printStackTrace();

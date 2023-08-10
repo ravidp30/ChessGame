@@ -79,11 +79,13 @@ public class MessageHandler_Server {
 				// 2 - old piece
 				// 3 - new piece
 				// 4 - current playerId - piece's name
+				// 5 - if there is check or not: isWhite() --> check
 				ArrayList<Piece> pieceMoved_arr_toOponent = new ArrayList<>();
 				pieceMoved_arr_toOponent.add(new Piece(0, 0, "OponentPieceWasMoved", true));
 				pieceMoved_arr_toOponent.add(arrayListPiece.get(1));
 				pieceMoved_arr_toOponent.add(arrayListPiece.get(2));
-				pieceMoved_arr_toOponent.add(arrayListPiece.get(3));	
+				pieceMoved_arr_toOponent.add(arrayListPiece.get(3));
+				pieceMoved_arr_toOponent.add(arrayListPiece.get(5));
 				
 				if(arrayListPiece.get(4).getname().equals(player1id)) {
 

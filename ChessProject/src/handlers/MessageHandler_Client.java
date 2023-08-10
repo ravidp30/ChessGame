@@ -66,8 +66,10 @@ public class MessageHandler_Client {
 				// 1 - Eating or NotEating
 				// 2 - old piece
 				// 3 - new piece
+				// 4 - if there is check or not: isWhite() --> check
 				System.out.println("moved");
-				GameController.getInstance().ChangePieceLocationForOponent(arrayListPiece.get(2), arrayListPiece.get(3), arrayListPiece.get(1));
+				GameController.getInstance().ChangePieceLocationForOponent(arrayListPiece.get(2), arrayListPiece.get(3), arrayListPiece.get(1)
+						, arrayListPiece.get(4));
 				break;
 		}
 		
