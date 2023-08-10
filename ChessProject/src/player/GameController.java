@@ -475,6 +475,8 @@ public class GameController implements Initializable {
     	else if(check == 2) { // move to black piece (eating)
     		deleteOpponentPicture(tempPieceToMove);
     		ChangePiqtureLocation(oldX,oldY,tempPieceToMove);
+    		System.out.println("first ******" + firstPieceSelected.getname());
+    		System.out.println("seccccc *******" + tempPieceToMove.getname());
     		board.setPieceXY(firstPieceSelected, tempPieceToMove.getX(), tempPieceToMove.getY()); // change the x and y of the piece for the new x y
     		//board.setName(firstPieceSelected, firstPieceSelected);
     		System.out.println("first @@@@@@" + firstPieceSelected.getname());
