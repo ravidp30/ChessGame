@@ -68,12 +68,19 @@ public class GameController implements Initializable {
     private Bishop bishop;
     private Rook rook;
     private Piece lastOpponentPiece;
-    private int oldX;
-    private int oldY;
+    private int firstPieceSelectedX;
+    private int firstPieceSelectedY;
     private String EatOrNot;
     //private Piece tempPieceToMove = null;
     private int newXLastOpponent;
     private int newYLastOpponent;
+    private Piece updatedFirstPiece;
+ 
+    /*
+     * firstSelectedPiece: the piece was selected first
+     * secondSelectedPiece: the piece was selected second (the piece to move to can be empty or black piece)
+     * updatedFirstPiece: the piece that was selected first with the new coordination
+     */
     
     
 
@@ -382,11 +389,12 @@ public class GameController implements Initializable {
 		        int x = (int)cell.getX() / squareSize;
 		        int y =	(int)cell.getY() / squareSize;
 		        
+	        	firstPieceSelectedX = x;
+	        	firstPieceSelectedY = y;
 		        firstPieceSelected = board.getPiece(x,y);
+		        
 		        //first click + our piece
 		        if(firstPieceSelected != null && firstPieceSelected.isWhite()) { // our piece
-			        oldX = firstPieceSelected.getX();
-			        oldY = firstPieceSelected.getY();
 		        	switch (firstPieceSelected.getname()) {
 		        	
 				        case "KingW":
@@ -462,7 +470,7 @@ public class GameController implements Initializable {
     	//}
     	
     	
-    	check=board.MoveCheck(oldX, oldY, newX, newY);//check if available to move
+    	check=board.MoveCheck(firstPieceSelectedX, firstPieceSelectedY, newX, newY);//check if available to move
     	
     	
         //check=board.MoveCheck(firstPieceSelected,secondPieceSelected);//check if available to move
@@ -474,7 +482,7 @@ public class GameController implements Initializable {
         
     	if(check == 1) {//available to move the image (EMPTY SPACE)
     		
-    		ChangePiqtureLocation(oldX,oldY,newX, newY);
+    		ChangePiqtureLocation(firstPieceSelectedX, firstPieceSelectedY,newX, newY);
     		board.setPieceXY(firstPieceSelected, newX, newY);
     		EatOrNot = "NotEating";
     		
@@ -485,13 +493,13 @@ public class GameController implements Initializable {
     		board.setPieceXY(firstPieceSelected, newX, newY);
     		
     		deleteOpponentPicture(secondPieceSelected);
-    		ChangePiqtureLocation(oldX,oldY,newX, newY);
-    		System.out.println("first ******" + firstPieceSelected.getname());
-    		System.out.println("seccccc ******" + secondPieceSelected.getname());
+    		ChangePiqtureLocation(firstPieceSelectedX, firstPieceSelectedY, newX, newY);
+    		System.out.println("first ******" + firstPieceSelected.getname() + " " + firstPieceSelected.getX() + " " + firstPieceSelected.getY());
+    		System.out.println("seccccc ******" + secondPieceSelected.getname() + " " + secondPieceSelected.getX() + " " + secondPieceSelected.getY());
+    		System.out.println("seccccc ******" + updatedFirstPiece.getname() + " " + updatedFirstPiece.getX() + " " + updatedFirstPiece.getY());
+    		System.out.println("seccccc ******" + lastOpponentPiece.getname() + " " + lastOpponentPiece.getX() + " " + lastOpponentPiece.getY());
     		//board.setPieceXY(firstPieceSelected, tempPieceToMove.getX(), tempPieceToMove.getY()); // change the x and y of the piece for the new x y
     		//board.setName(firstPieceSelected, firstPieceSelected);
-    		System.out.println("first @@@@@@" + firstPieceSelected.getname());
-    		System.out.println("seccccc @@@@@@" + secondPieceSelected.getname());
     		EatOrNot = "Eating";
 
     		
@@ -515,7 +523,6 @@ public class GameController implements Initializable {
 
 	//function that change the piece picture to new location
     public void ChangePiqtureLocation(int oldX, int oldY, int newX, int newY) {
-    	
         imageViews[oldX][oldY].setLayoutX((double)newX * squareSize);
         imageViews[oldX][oldY].setLayoutY((double)newY * squareSize);
         imageViews[newX][newY] = imageViews[oldX][oldY];
@@ -684,11 +691,12 @@ public class GameController implements Initializable {
 	private void handleClickOnMoveToSecond(Rectangle squareOption) {
         int x = (int)squareOption.getX() / squareSize;
         int y =	(int)squareOption.getY() / squareSize;
+        
         secondPieceSelected = board.getPiece(x,y); // the place to move to
         
         movePiece(x,y);
         
-        secondPieceSelected = board.getPiece(x,y); // the place to move to
+        updatedFirstPiece = board.getPiece(x,y); // the piece that moved with the new coordination
         
         System.out.println("opponent checked on me : " + isChessOnMe());
         if(isChessOnMe()) {
@@ -711,13 +719,13 @@ public class GameController implements Initializable {
 			ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
 			updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
 			updatePieceMoce_arr.add(new Piece(0, 0, EatOrNot, true));
-			updatePieceMoce_arr.add(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
-			updatePieceMoce_arr.add(secondPieceSelected); // new piece
+			updatePieceMoce_arr.add(new Piece(firstPieceSelectedX, firstPieceSelectedY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
+			updatePieceMoce_arr.add(updatedFirstPiece); // new piece
 			updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
 			ClientUI.chat.accept(updatePieceMoce_arr);
 	    	
 	    	
-	    	 firstPieceSelected=null;
+	    	 //firstPieceSelected=null;
 	        
 	        
         	
@@ -757,14 +765,14 @@ public class GameController implements Initializable {
 		
 		if(lastOpponentPiece == null) { // moving to empty place and check
 			
-			board.setPieceXY(firstPieceSelected, oldX, oldY);
-			ChangePiqtureLocation(newXLastOpponent, newYLastOpponent,oldX, oldY);
+			
+			ChangePiqtureLocation(newXLastOpponent, newYLastOpponent, firstPieceSelectedX, firstPieceSelectedY);
+			board.setPieceXY(firstPieceSelected, firstPieceSelectedX, firstPieceSelectedY);
 			
 		}
 		else { // after eating and check
 			
-			ChangePiqtureLocation(firstPieceSelected.getX(),firstPieceSelected.getY(),oldX, oldY);
-			
+			ChangePiqtureLocation(firstPieceSelected.getX(), firstPieceSelected.getY(), firstPieceSelectedX, firstPieceSelectedY);
 			
 	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()] = new ImageView();
 	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()].setFitWidth(squareSize);
@@ -786,12 +794,13 @@ public class GameController implements Initializable {
 	        
 	        pieces.add(lastOpponentPiece);
 	        
-	        board.setPieceXY(firstPieceSelected, oldX, oldY);
-        	popUpCheck("unvailable move");
+	        board.setPieceXY(firstPieceSelected, firstPieceSelectedX, firstPieceSelectedY);
 
 			
-        	lastOpponentPiece = null;
+        	//lastOpponentPiece = null;
 		}
+		
+		popUpCheck("unvailable move");
 		
 		
 	
