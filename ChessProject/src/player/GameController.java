@@ -67,8 +67,8 @@ public class GameController implements Initializable {
     private Bishop bishop;
     private Rook rook;
     private Piece lastOpponentPiece;
-    private int lastNewX;
-    private int lastNewY;
+    private int oldX;
+    private int oldY;
     
     
 
@@ -333,8 +333,6 @@ public class GameController implements Initializable {
         chessboardPane.getChildren().add(imageViews[x][y]);
         
         pieces.add(piece);
-        piece.setX(x);
-    	piece.setY(y);
 
     }
     
@@ -445,11 +443,9 @@ public class GameController implements Initializable {
     public Piece movePiece(Piece firstPieceSelected ,Piece piece , int newX, int newY) {
     	
     	lastOpponentPiece = board.getPiece(newX, newY);
-    	lastNewX = newX;
-    	lastNewY = newY;
     	
     	int check=0;
-    	int oldX, oldY;
+    	//int oldX, oldY;
     	Piece tempPiece=null;
     	oldX=firstPieceSelected.getX();
     	oldY=firstPieceSelected.getY();
@@ -718,8 +714,46 @@ public class GameController implements Initializable {
 		}catch (NullPointerException e) {
 			System.out.println("empty");
 		}
-		System.out.println(firstPieceSelected.getname() + "," + firstPieceSelected.getX() + "," + firstPieceSelected.getY());
-		System.out.println(lastNewX + "," + lastNewY);
+		System.out.println(firstPieceSelected.getname() + "," + oldX + "," + oldY);
+		
+		if(lastOpponentPiece == null) {
+			
+			board.setPieceXY(firstPieceSelected, oldX, oldY);
+			
+			
+		}
+		else {
+			
+			
+			
+			
+	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()] = new ImageView();
+	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()].setFitWidth(squareSize);
+	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()].setFitHeight(squareSize);
+	        
+	        
+	        
+	        
+	        Image image = new Image(getClass().getResourceAsStream("/player/" + lastOpponentPiece.getname() + ".png"));
+	        
+	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()].setImage(image);
+	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()].setLayoutX(lastOpponentPiece.getX() * squareSize);
+	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()].setLayoutY(lastOpponentPiece.getY() * squareSize);
+	        
+	        
+	        chessboardPane.getChildren().add(imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()]);
+	        
+	        
+	        
+	        pieces.add(lastOpponentPiece);
+			
+			
+		}
+		
+		
+	
+		
+		
 	}
 
 	private boolean isChessOnMe() {
