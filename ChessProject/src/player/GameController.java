@@ -768,7 +768,7 @@ public class GameController implements Initializable {
 			
 	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()] = new ImageView();
 	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()].setFitWidth(squareSize);
-	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()].setFitHeight(squareSize);
+	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()].setFitHeight(squareSize);//
 	        
 	        
 	        
