@@ -736,7 +736,7 @@ public class GameController implements Initializable {
 		}
 		else { // after eating and check
 			
-			ChangePiqtureLocation(firstPieceSelected.getX(),firstPieceSelected.getY(),new Piece(oldX, oldY, firstPieceSelected.getname(), true));
+			
 			
 			
 	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()] = new ImageView();
@@ -767,7 +767,7 @@ public class GameController implements Initializable {
 		}
 		
 		
-	
+		ChangePiqtureLocation(firstPieceSelected.getX(),firstPieceSelected.getY(),new Piece(oldX, oldY, firstPieceSelected.getname(), true));
 		
 		
 	}
