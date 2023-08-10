@@ -66,6 +66,9 @@ public class GameController implements Initializable {
     private Knight knight;
     private Bishop bishop;
     private Rook rook;
+    private Piece lastOpponentPiece;
+    private int lastNewX;
+    private int lastNewY;
     
     
 
@@ -441,6 +444,10 @@ public class GameController implements Initializable {
     //function that move the specific piece 
     public Piece movePiece(Piece firstPieceSelected ,Piece piece , int newX, int newY) {
     	
+    	lastOpponentPiece = board.getPiece(newX, newY);
+    	lastNewX = newX;
+    	lastNewY = newY;
+    	
     	int check=0;
     	int oldX, oldY;
     	Piece tempPiece=null;
@@ -685,8 +692,6 @@ public class GameController implements Initializable {
         
         piece = movePiece(firstPieceSelected,piece,x,y);
         
-        
-        
         System.out.println("opponent checked on me : " + isChessOnMe());
         if(isChessOnMe()) {
         	moveBack();
@@ -706,10 +711,15 @@ public class GameController implements Initializable {
 	private void moveBack() {
 		// firstPieceSelected
 		// piece
+
 		
-		System.out.println(piece.getname() + "," + piece.getX() + "," + piece.getX());
+		try {
+			System.out.println(lastOpponentPiece.getname() + "," + lastOpponentPiece.getX() + "," + lastOpponentPiece.getX());
+		}catch (NullPointerException e) {
+			System.out.println("empty");
+		}
 		System.out.println(firstPieceSelected.getname() + "," + firstPieceSelected.getX() + "," + firstPieceSelected.getX());
-		
+		System.out.println(lastNewX + "," + lastNewY);
 	}
 
 	private boolean isChessOnMe() {
@@ -805,19 +815,18 @@ public class GameController implements Initializable {
 		Board tempBoard = new Board(8 * squareSize, 8 * squareSize, tempPieces);
 		
 		
-		for(int i = 0; i<8; i++) {
+		/*for(int i = 0; i<8; i++) {
 			for(int j = 0; j<8; j++) {
 				if(tempBoard.getPiece(i, j) != null)
 					System.out.println(tempBoard.getPiece(i, j).getname() + ", " + tempBoard.getPiece(i, j).getX() + ", " + tempBoard.getPiece(i, j).getY());
 			}
-		}
+		}*/
 		
 
 		
 
 		return isChess(tempBoard);
 		
-		//return false;
 
 	}
 
