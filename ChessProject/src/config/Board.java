@@ -2,6 +2,7 @@ package config;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Board implements Serializable{
 	
@@ -36,6 +37,42 @@ public class Board implements Serializable{
 		}
 	}
 	
+	
+	public int MoveCheck(int oldX, int oldY, int newX, int newY) {//move check function
+		
+		Piece newPiece = getPiece(newX, newY);
+		//Piece oldPiece  = getPiece(oldX, oldY);
+		
+		if(newPiece == null) { // move to empty place
+			//setPieceXY(oldPiece, newX, newY);
+			return 1; //Available to move to empty place
+		}
+		
+		else { // move to a place with black / white piece
+		
+			if(newPiece.isWhite()) {
+				System.out.println("cant move there- someone is there");
+				return 0;
+			}
+			else {
+				System.out.println("eat");
+				return 2;
+			}
+		}
+	}
+	
+	public void removePiece(int x, int y) {
+	    Iterator<Piece> iterator = pieces.iterator();
+	    while (iterator.hasNext()) {
+	        Piece p = iterator.next();
+	        if (p.getX() == x && p.getY() == y) {
+	            iterator.remove(); // Safe way to remove the current element
+	        }
+	    }
+	}
+	
+	
+	/*
 	public int MoveCheck(Piece firstPieceSelected ,Piece piece) {//move check function
 		
 		if(piece.getname().equals("empty place")) { // move to empty place
@@ -60,8 +97,14 @@ public class Board implements Serializable{
 					}
 		
 					else { // move to place with black piece
+						int x = p.getX();
+						int y = p.getY();
 						pieces.remove(p); // remove the piece from the list
 						System.out.println("kill");
+						
+						
+						setPieceXY(firstPieceSelected, x, y);
+						
 						return 2;
 					}//KILL
 				}
@@ -71,5 +114,5 @@ public class Board implements Serializable{
 		System.out.println("?");
 		return 0;
 	}
-
+*/
 }

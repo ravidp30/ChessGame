@@ -58,7 +58,8 @@ public class GameController implements Initializable {
     private ImageView[][] imageViews = new ImageView[8][8];
     private int squareSize = 64;
     private Piece firstPieceSelected;
-    private Piece piece;
+    private Piece secondPieceSelected;
+    //private Piece piece;
     private static GameController instance;
     private King king;
     private Soldier soldier;
@@ -70,7 +71,7 @@ public class GameController implements Initializable {
     private int oldX;
     private int oldY;
     private String EatOrNot;
-    private Piece tempPieceToMove = null;
+    //private Piece tempPieceToMove = null;
     private int newXLastOpponent;
     private int newYLastOpponent;
     
@@ -269,6 +270,7 @@ public class GameController implements Initializable {
     }
     
     public void setUpPiece(int x, int y, String name, boolean isWhite) {
+    	Piece piece = null;
     	switch (name) {
     				//-------WHITE------
     	
@@ -380,10 +382,11 @@ public class GameController implements Initializable {
 		        int x = (int)cell.getX() / squareSize;
 		        int y =	(int)cell.getY() / squareSize;
 		        
-		        piece = board.getPiece(x,y);
+		        firstPieceSelected = board.getPiece(x,y);
 		        //first click + our piece
-		        if(piece != null && piece.isWhite()) { // our piece
-		        	firstPieceSelected = piece;//save the first Click on the piece
+		        if(firstPieceSelected != null && firstPieceSelected.isWhite()) { // our piece
+			        oldX = firstPieceSelected.getX();
+			        oldY = firstPieceSelected.getY();
 		        	switch (firstPieceSelected.getname()) {
 		        	
 				        case "KingW":
@@ -444,24 +447,25 @@ public class GameController implements Initializable {
 
 
     //function that move the specific piece 
-    public Piece movePiece(Piece firstPieceSelected ,Piece piece , int newX, int newY) {
+    public void movePiece(int newX, int newY) {
     	
-    	lastOpponentPiece = board.getPiece(newX, newY);
+    	
     	newXLastOpponent = newX;
     	newYLastOpponent = newY;
     	int check=0;
-    	//int oldX, oldY;
-    	oldX=firstPieceSelected.getX();
-    	oldY=firstPieceSelected.getY();
     	//tempPiece=new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
-    	if(piece == null) { // move to empty place
-    		tempPieceToMove = new Piece(newX,newY, "empty place", true);
-    	}
-    	else { // move to not empty place (move to white or black piece)
-    		tempPieceToMove = new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
-    	}
+    	//if(secondPieceSelected == null) { // move to empty place
+    	//	secondPieceSelected = new Piece(newX,newY, "empty place", true);
+    	//}
+    	//else { // move to not empty place (move to white or black piece)
+    		//tempPieceToMove = new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
+    	//}
     	
-        check=board.MoveCheck(firstPieceSelected,tempPieceToMove);//check if available to move
+    	
+    	check=board.MoveCheck(oldX, oldY, newX, newY);//check if available to move
+    	
+    	
+        //check=board.MoveCheck(firstPieceSelected,secondPieceSelected);//check if available to move
         
         //isCheckOnMe(); // send to the opponent message to check if there is check from his side
         
@@ -469,19 +473,27 @@ public class GameController implements Initializable {
         //System.out.println(isChess());
         
     	if(check == 1) {//available to move the image (EMPTY SPACE)
-    		ChangePiqtureLocation(oldX,oldY,tempPieceToMove);
+    		
+    		ChangePiqtureLocation(oldX,oldY,newX, newY);
+    		board.setPieceXY(firstPieceSelected, newX, newY);
     		EatOrNot = "NotEating";
+    		
     	}
     	else if(check == 2) { // move to black piece (eating)
-    		deleteOpponentPicture(tempPieceToMove);
-    		ChangePiqtureLocation(oldX,oldY,tempPieceToMove);
+    		
+    		board.removePiece(newX, newY);
+    		board.setPieceXY(firstPieceSelected, newX, newY);
+    		
+    		deleteOpponentPicture(secondPieceSelected);
+    		ChangePiqtureLocation(oldX,oldY,newX, newY);
     		System.out.println("first ******" + firstPieceSelected.getname());
-    		System.out.println("seccccc *******" + tempPieceToMove.getname());
-    		board.setPieceXY(firstPieceSelected, tempPieceToMove.getX(), tempPieceToMove.getY()); // change the x and y of the piece for the new x y
+    		System.out.println("seccccc ******" + secondPieceSelected.getname());
+    		//board.setPieceXY(firstPieceSelected, tempPieceToMove.getX(), tempPieceToMove.getY()); // change the x and y of the piece for the new x y
     		//board.setName(firstPieceSelected, firstPieceSelected);
     		System.out.println("first @@@@@@" + firstPieceSelected.getname());
-    		System.out.println("seccccc @@@@@@" + tempPieceToMove.getname());
+    		System.out.println("seccccc @@@@@@" + secondPieceSelected.getname());
     		EatOrNot = "Eating";
+
     		
     	}
     	
@@ -492,8 +504,7 @@ public class GameController implements Initializable {
          }
          rectangleListOptions.getItems().clear();
     	
-    	
-    	return board.getPiece(newX,newY);
+         lastOpponentPiece = board.getPiece(newX, newY);
     }
     
     public void deleteOpponentPicture(Piece pieceToRemove) {
@@ -503,12 +514,12 @@ public class GameController implements Initializable {
 	}
 
 	//function that change the piece picture to new location
-    public void ChangePiqtureLocation(int oldX, int oldY, Piece piece) {
+    public void ChangePiqtureLocation(int oldX, int oldY, int newX, int newY) {
     	
-        imageViews[oldX][oldY].setLayoutX((double)piece.getX() * squareSize);
-        imageViews[oldX][oldY].setLayoutY((double)piece.getY() * squareSize);
-        imageViews[piece.getX()][piece.getY()] = imageViews[oldX][oldY];
-        imageViews[piece.getX()][piece.getY()].toFront();
+        imageViews[oldX][oldY].setLayoutX((double)newX * squareSize);
+        imageViews[oldX][oldY].setLayoutY((double)newY * squareSize);
+        imageViews[newX][newY] = imageViews[oldX][oldY];
+        imageViews[newX][newY].toFront();
         imageViews[oldX][oldY]=null;
         
      /*   System.out.println("--------------------\n");
@@ -522,13 +533,6 @@ public class GameController implements Initializable {
         	}*/
    }
     
-    // check after new move of me, if there is chess on me
-    // pieceNewMovement is the current piece movement that not done yet
-    // pieceOldMovement is the old piece place
-    public boolean isChessOnMeAfterNewMove(Piece pieceOldMovement, Piece pieceNewMovement) {
-    	
-    	return false;
-    }
     
     public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece, Piece eatingOrNot) {
     	
@@ -627,12 +631,10 @@ public class GameController implements Initializable {
 
     	Piece currPiece;
 
-    	int cnt = 0;
     	
     	for(int x = 0; x < 8; x++) {
     		for(int y = 0; y < 8; y++) {
     			try {
-    				cnt ++;
 	    			currPiece = board1.getPiece(x, y);
 	    			if(currPiece.isWhite()){
 	    				
@@ -682,9 +684,11 @@ public class GameController implements Initializable {
 	private void handleClickOnMoveToSecond(Rectangle squareOption) {
         int x = (int)squareOption.getX() / squareSize;
         int y =	(int)squareOption.getY() / squareSize;
-        piece = board.getPiece(x,y); // the place to move to
+        secondPieceSelected = board.getPiece(x,y); // the place to move to
         
-        piece = movePiece(firstPieceSelected,piece,x,y);
+        movePiece(x,y);
+        
+        secondPieceSelected = board.getPiece(x,y); // the place to move to
         
         System.out.println("opponent checked on me : " + isChessOnMe());
         if(isChessOnMe()) {
@@ -708,7 +712,7 @@ public class GameController implements Initializable {
 			updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
 			updatePieceMoce_arr.add(new Piece(0, 0, EatOrNot, true));
 			updatePieceMoce_arr.add(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
-			updatePieceMoce_arr.add(tempPieceToMove); // new piece
+			updatePieceMoce_arr.add(secondPieceSelected); // new piece
 			updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
 			ClientUI.chat.accept(updatePieceMoce_arr);
 	    	
@@ -754,12 +758,12 @@ public class GameController implements Initializable {
 		if(lastOpponentPiece == null) { // moving to empty place and check
 			
 			board.setPieceXY(firstPieceSelected, oldX, oldY);
-			ChangePiqtureLocation(newXLastOpponent, newYLastOpponent,new Piece(oldX, oldY, firstPieceSelected.getname(), true));
+			ChangePiqtureLocation(newXLastOpponent, newYLastOpponent,oldX, oldY);
 			
 		}
 		else { // after eating and check
 			
-			ChangePiqtureLocation(firstPieceSelected.getX(),firstPieceSelected.getY(),new Piece(oldX, oldY, firstPieceSelected.getname(), true));
+			ChangePiqtureLocation(firstPieceSelected.getX(),firstPieceSelected.getY(),oldX, oldY);
 			
 			
 	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()] = new ImageView();
@@ -786,7 +790,7 @@ public class GameController implements Initializable {
         	popUpCheck("unvailable move");
 
 			
-			
+        	lastOpponentPiece = null;
 		}
 		
 		
