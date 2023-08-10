@@ -71,6 +71,8 @@ public class GameController implements Initializable {
     private int oldY;
     private String EatOrNot;
     private Piece tempPieceToMove = null;
+    private int newXLastOpponent;
+    private int newYLastOpponent;
     
     
 
@@ -445,7 +447,8 @@ public class GameController implements Initializable {
     public Piece movePiece(Piece firstPieceSelected ,Piece piece , int newX, int newY) {
     	
     	lastOpponentPiece = board.getPiece(newX, newY);
-    	
+    	newXLastOpponent = newX;
+    	newYLastOpponent = newY;
     	int check=0;
     	//int oldX, oldY;
     	oldX=firstPieceSelected.getX();
@@ -731,7 +734,7 @@ public class GameController implements Initializable {
 		if(lastOpponentPiece == null) { // moving to empty place and check
 			
 			board.setPieceXY(firstPieceSelected, oldX, oldY);
-			ChangePiqtureLocation(firstPieceSelected.getX(),firstPieceSelected.getY(),new Piece(oldX, oldY, firstPieceSelected.getname(), true));
+			ChangePiqtureLocation(newXLastOpponent, newYLastOpponent,new Piece(oldX, oldY, firstPieceSelected.getname(), true));
 			
 		}
 		else { // after eating and check
