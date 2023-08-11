@@ -98,7 +98,7 @@ public class ChatClient extends AbstractClient
     {
     	e.printStackTrace();
       clientUI.display("Could not send message to server: Terminating client."+ e);
-      quit();
+      quit("-1");
     }
   }
 
@@ -109,7 +109,7 @@ public class ChatClient extends AbstractClient
 	 Closes the connection to the server and terminates the client.
 	 If the client is not yet connected, it simply terminates the client.
 	 */
-  public void quit()
+  public void quit(String playerid)
   {
 	if(isConnected()) {
 		//System.out.println("exited1");
@@ -118,6 +118,7 @@ public class ChatClient extends AbstractClient
 	    try {
 			clientInfo.add(InetAddress.getLocalHost().getHostAddress());
 			clientInfo.add(InetAddress.getLocalHost().getHostName());
+			clientInfo.add(playerid);
 			sendToServer(clientInfo);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -7,6 +7,7 @@ import java.util.Map;
 import ClientAndServerLogin.ClientConnectController;
 import config.Piece;
 import config.Player;
+import javafx.scene.Node;
 import player.GameController;
 import player.MenuController;
 
@@ -98,6 +99,17 @@ public class MessageHandler_Client {
 					// 1 - player with the current turn
 					// 2 - in check or not
 					GameController.getInstance().changePlayerTurn(arrayListPlayer.get(1), arrayListPlayer.get(2));
+					
+					
+					break;
+					
+					
+					
+				case "OpponentExitedFromYourGame":
+					// 1 - opponent player exited the game - if needed in the future
+					GameController.exitActiveGame(2); // 2 because the player won automatically
+					
+					
 					
 					
 					break;

@@ -16,7 +16,12 @@ public class Board implements Serializable{
 	public Board(int x, int y, ArrayList<Piece> pieces) {
 		this.x = x;
 		this.y = y;
-		this.pieces = pieces;
+		if(pieces == null) { // initialize the board at first with null ArrayList and on SetUpPiece its adding to the pieces arraylist here in the board
+			this.pieces = new ArrayList<>();
+		}
+		else {
+			this.pieces = pieces; // this for checking when creating new board for checking check
+		}
 	}
 	
 	public Piece getPiece(int x, int y) {
@@ -60,6 +65,10 @@ public class Board implements Serializable{
 			}
 		}
 	}
+	
+    public void addPiece(Piece piece) {
+        pieces.add(piece);
+    }
 	
 	public void removePiece(int x, int y) {
 	    Iterator<Piece> iterator = pieces.iterator();

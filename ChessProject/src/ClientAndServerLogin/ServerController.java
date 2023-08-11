@@ -251,11 +251,25 @@ public class ServerController implements Initializable {
 		@param ip The IP address of the client.
 		@param clientName The name of the client.
 	*/
-	public static void removeConnectedClientFromTable(String ip, String clientName) {
-		for(int idx = 0; idx < connectedClients.size(); idx++) {
-			if(connectedClients.get(idx).getIp().equals(ip)) {
-				if(connectedClients.get(idx).getClientname().equals(clientName)) {
-					removeConnectedClient(connectedClients.get(idx));
+	public static void removeConnectedClientFromTable(String ip, String clientName, String playerid) {
+		
+		// playerid == -1 only if something gone wrong. if all as planned it will remove the specific player from the connected players list
+		
+		if(!playerid.equals("-1")) {
+			for(int idx = 0; idx < connectedClients.size(); idx++) {
+				if(connectedClients.get(idx).getIp().equals(ip)) {
+					if(connectedClients.get(idx).getClientname().equals(clientName) && connectedClients.get(idx).getPlayer().getPlayerId().equals(playerid)) {
+						removeConnectedClient(connectedClients.get(idx));
+					}
+				}
+			}
+		}
+		else {
+			for(int idx = 0; idx < connectedClients.size(); idx++) {
+				if(connectedClients.get(idx).getIp().equals(ip)) {
+					if(connectedClients.get(idx).getClientname().equals(clientName)) {
+						removeConnectedClient(connectedClients.get(idx));
+					}
 				}
 			}
 		}

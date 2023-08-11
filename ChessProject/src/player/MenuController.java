@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javax.swing.JLabel;
+
 import ClientAndServerLogin.SceneManagment;
 import client.ClientUI;
 import config.ConnectedClient;
@@ -16,8 +18,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 
 public class MenuController implements Initializable{
 	
@@ -57,7 +62,15 @@ public class MenuController implements Initializable{
 	}
 	
 	public void onClickExit(ActionEvent event) throws Exception {
-		////quit function @@@@@@@@@@@@@@@@@@@@@@@@@
+		
+		if(player.getStatus() == 1) { // if the player is ready, update it in the lobby and than exit the application
+			ArrayList<Player> clickOnUnReady_arr = new ArrayList<>();
+			clickOnUnReady_arr.add(new Player("PlayerClickedOnUnReady"));
+			clickOnUnReady_arr.add(player);
+			ClientUI.chat.accept(clickOnUnReady_arr);
+			player.setStatus(0);
+		}
+		ClientUI.chat.client.quit(player.getPlayerId());
 
 	}
 	
@@ -73,9 +86,30 @@ public class MenuController implements Initializable{
 		}
 	}
 	
-	public static void start(String pId) throws IOException {
+	// endStatus: 0 - none , 1 - lost - 2 - won
+	public static void start(String pId, int endStatus) throws IOException {
 		player = new Player(pId);
 		SceneManagment.createNewStage("/player/MenuGUI.fxml", null, "Menu").show();
+		
+		String message = "";
+		if(endStatus == 1) {
+			message = "You opponent has left the game\n\nYou WON!!!";
+		}
+		
+		if(endStatus == 2) {
+			message = "Looser, you quitted the game and LOST!!!";
+		}
+		
+		if(endStatus == 1 || endStatus == 2) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+	        alert.setTitle("The Game Was Ended");
+	        alert.setHeaderText(message);
+	        
+	        ButtonType exitButton = new ButtonType("Close");
+	        alert.getButtonTypes().setAll(exitButton);
+	        alert.show();
+		}
+
 	}
 
 	@Override

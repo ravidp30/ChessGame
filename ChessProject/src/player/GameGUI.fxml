@@ -16,7 +16,8 @@
       <Button layoutX="653.0" layoutY="658.0" mnemonicParsing="false" onAction="#sendGoodLuck" prefHeight="30.0" prefWidth="97.0" text="Good Luck  :-)" />
       <Label fx:id="lblTurnStatus" layoutX="705.0" layoutY="29.0" prefHeight="93.0" prefWidth="224.0" text="Loading..." />
       <Label fx:id="ChatLabel" layoutX="786.0" layoutY="284.0" prefHeight="21.0" prefWidth="90.0" text="Chat:" />
-      <Pane fx:id="addPiecesBar" layoutX="96.0" layoutY="95.0" prefHeight="57.0" prefWidth="665.0" />		   </children>
+      <Pane fx:id="addPiecesBar" layoutX="96.0" layoutY="95.0" prefHeight="57.0" prefWidth="665.0" />
+      <Button fx:id="exitGameBtn" layoutX="850.0" layoutY="25.0" mnemonicParsing="false" onAction="#onPlayerClickExitGame" text="Exit game" />		   </children>
    <effect>
       <ColorAdjust />
    </effect>

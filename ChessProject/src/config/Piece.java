@@ -49,4 +49,9 @@ public class Piece implements Serializable{
 		return this.name;
 	}
 	
+	public String toString() {
+		return "name: " + name + "(" + x + ", " + y + ")" + " white?: " + isWhite;
+		
+	}
+	
 }

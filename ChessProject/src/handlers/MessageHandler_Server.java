@@ -316,6 +316,32 @@ public class MessageHandler_Server {
 					player2.sendToClient(playerNextTurn_arr);
 					
 					break;
+					
+				case "PlayerExitedFromActiveGame":
+                	// 1 - the player exited the game
+                	
+                	ArrayList<Player> exitedfromgame_arr = new ArrayList<>();
+                	exitedfromgame_arr.add(new Player("OpponentExitedFromYourGame"));
+                	exitedfromgame_arr.add(arrayListPlayer.get(1));
+                	
+                	if(player1id.equals(arrayListPlayer.get(1).getPlayerId())) {
+                		player2.sendToClient(exitedfromgame_arr);
+                	}
+                	else {
+                		player1.sendToClient(exitedfromgame_arr);
+                	}
+                	
+                	player1id = null;
+                	player2id = null;
+                	player1 = null;
+                	player2 = null;
+                	playeridCounter = 0;
+                	playersReady = 0;
+                	
+                	client.sendToClient("exited from the game succesfully");
+                	
+                	break;
+					
             }
     	
         }catch (IOException e) {
@@ -423,10 +449,8 @@ public class MessageHandler_Server {
 	                	
 						// 1 - HostAddress
 						// 2 - HostName
-						// 3 - UserID
-						// 4 - userLoginAs
-						// 5 - isLogged
-						ServerController.removeConnectedClientFromTable(arrayListStr.get(1), arrayListStr.get(2)); // call function to remove the client from the table
+						// 3 - playerid
+						ServerController.removeConnectedClientFromTable(arrayListStr.get(1), arrayListStr.get(2), arrayListStr.get(3)); // call function to remove the client from the table
 						client.sendToClient("quit");
 						
 	                    break;
@@ -449,6 +473,7 @@ public class MessageHandler_Server {
 	                	client.sendToClient("message sent");
 	                	
 	                	break;
+
 
 				}
             }catch (IOException e) {

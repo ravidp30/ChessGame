@@ -151,7 +151,7 @@ public class ClientConnectController implements Initializable {
 			((Node) currEvent.getSource()).getScene().getWindow().hide(); // hiding primary window
 	
 	        try {
-				MenuController.start(playerId);
+				MenuController.start(playerId, 0);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

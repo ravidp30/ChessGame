@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.shape.Line;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -47,6 +52,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -72,24 +78,26 @@ public class GameController implements Initializable {
     private Knight knight;
     private Bishop bishop;
     private Rook rook;
-    private Piece lastOpponentPiece;
+    private Piece lastChosenPiece;
     private int oldX;
     private int oldY;
     private String EatOrNot;
+    private static Stage currStage;
     //private Piece tempPieceToMove = null;
     private int newXLastOpponent;
     private int newYLastOpponent;
     private int CountChess;
-    Image Cloud ;
-    ImageView CloudImageView ;
-    HBox hbox;
+    private boolean continueTurn = true;
+    private Image Cloud ;
+    private ImageView CloudImageView ;
+    private HBox hbox;
     private String[] pieceImagePaths  = {
 	        "/player/QueenW.png",
 	        "/player/KnightW.png",
 	        "/player/BishopW.png",
 	        "/player/RookW.png"
 	    };;
-    private ArrayList<Piece> pieces = new ArrayList<>();
+    //private ArrayList<Piece> pieces = new ArrayList<>();
 //    private LinkedList<Piece> pieceL = new LinkedList<>();
     private ArrayList<Piece> Kpieces = new ArrayList<>();
     private ArrayList<Piece> Spieces = new ArrayList<>();
@@ -132,9 +140,7 @@ public class GameController implements Initializable {
     public static GameController getInstance() {
     	return instance;
     }
-    public void onClickExit(ActionEvent event) throws Exception {
-	////quit function @@@@@@@@@@@@@@@@@@@@@@@@@
-    }
+
     public void onPlayerClickSend(ActionEvent event) throws Exception {
     	String myText = txtChat.getText();
     	txtChat.setText("");
@@ -164,11 +170,13 @@ public class GameController implements Initializable {
         opponent = opponent_temp;
         playerTurn = playerStarting;
         //changePlayerTurn(playerTurn);
-        SceneManagment.createNewStage("/player/GameGUI.fxml", null, "Game").show();
+        currStage = SceneManagment.createNewStage("/player/GameGUI.fxml", null, "Game");
+        currStage.show();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+    	board = new Board(8 * squareSize, 8 * squareSize, null);
         ChessHeadLineLbl.setText("Chess Game:\nYou (id: " + player.getPlayerId() + ") VS opponent (id: " + opponent.getPlayerId() + ")");
         ChessHeadLineLbl.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
         backGroundPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: black; -fx-border-width: 1px;");
@@ -190,13 +198,14 @@ public class GameController implements Initializable {
         CloudImageView.setVisible(false);
         //Hbox of pieces tool bar 
          hbox = new HBox(10); // Set spacing between slots
-     	 hbox.setLayoutX(100);
+     	 hbox.setLayoutX(250);
 		 hbox.setLayoutY(100);
-		
+		 backGroundPane.getChildren().add(hbox);
          for (int i = 0; i < 4; i++) {
              ImageView HboxPiecesChoosing = new ImageView(new Image(pieceImagePaths[i]));
              HboxPiecesChoosing.setFitWidth(50);
              HboxPiecesChoosing.setFitHeight(50);
+             
              // Set an action when the image is clicked
              int slotIndex = i;
              HboxPiecesChoosing.setOnMouseClicked(event -> handlePieceClickOnHBOX(slotIndex));
@@ -214,7 +223,6 @@ public class GameController implements Initializable {
         addPiecesBar.setVisible(false); 
         
       */ 
-  
         changePlayerTurn(playerTurn, new Player("NotInCheck"));
         try {
 			drawChessboard();
@@ -227,28 +235,79 @@ public class GameController implements Initializable {
     }
     
     private void handlePieceClickOnHBOX(int slotIndex) {//Queen knight bishop rook
-    	board.removePiece(lastOpponentPiece.getX(),lastOpponentPiece.getY());
-		deleteOpponentPicture(lastOpponentPiece);
+    	board.removePiece(lastChosenPiece.getX(),lastChosenPiece.getY());
+		deleteOpponentPicture(lastChosenPiece);
     	switch(slotIndex) {
     	case 0:
-    		setUpPiece(lastOpponentPiece.getX(), lastOpponentPiece.getY(), "QueenW", true);
+    		setUpPiece(lastChosenPiece.getX(), lastChosenPiece.getY(), "QueenW", true);
     		break;
     	case 1:
-    		setUpPiece(lastOpponentPiece.getX(), lastOpponentPiece.getY(), "KnightW", true);
+    		setUpPiece(lastChosenPiece.getX(), lastChosenPiece.getY(), "KnightW", true);
     		break;
     	case 2:
-    		setUpPiece(lastOpponentPiece.getX(), lastOpponentPiece.getY(), "BishopW", true);
-    		break;
+    		setUpPiece(lastChosenPiece.getX(), lastChosenPiece.getY(), "BishopW", true);
     	case 3:
-    		setUpPiece(lastOpponentPiece.getX(), lastOpponentPiece.getY(), "RookW", true);
+    		setUpPiece(lastChosenPiece.getX(), lastChosenPiece.getY(), "RookW", true);
     		break;
     	default:
     			System.out.println("Error");
     	}
-    	
 		hbox.setVisible(false);
+		TurnContinueAfterMovement();
+		continueTurn = true;
 
 	}
+    
+    public void onPlayerClickExitGame(ActionEvent event) throws Exception {
+    	Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Exit Game");
+        alert.setHeaderText("Are you sure you want to exit the game?");
+        
+        ButtonType exitButton = new ButtonType("Exit Game");
+        ButtonType cancelButton = new ButtonType("Stay In The Game");
+        alert.getButtonTypes().setAll(exitButton, cancelButton);
+        
+        alert.showAndWait().ifPresent(response -> {
+            if (response == exitButton) {
+                // User clicked "Exit Game"
+                System.out.println("Exiting the game...");
+                
+                ArrayList<Player> playerExitedFromGame = new ArrayList<>();
+                playerExitedFromGame.add(new Player("PlayerExitedFromActiveGame"));
+                playerExitedFromGame.add(player);
+                ClientUI.chat.accept(playerExitedFromGame);
+                
+    			/*((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
+    			try {
+					MenuController.start(player.getPlayerId());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}*/
+                
+                exitActiveGame(1);
+                
+            }
+        });
+
+    }
+    
+    // endStatus: 0 - none , 1 - lost - 2 - won
+    public static void exitActiveGame(int endStatus) {
+    	
+    	Platform.runLater(() -> {
+
+    		currStage.getScene().getWindow().hide(); // hiding primary window
+			try {
+				MenuController.start(player.getPlayerId(), endStatus);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+    	});
+    }
+    
 
 	
 	private void drawChessboard() throws IOException {
@@ -333,7 +392,6 @@ public class GameController implements Initializable {
         
         chessboardPane.setPrefWidth(8 * squareSize);
         chessboardPane.setPrefHeight(8 * squareSize);
-        board = new Board(8 * squareSize, 8 * squareSize, pieces);
     }
     
     public void setUpPiece(int x, int y, String name, boolean isWhite) {
@@ -342,43 +400,43 @@ public class GameController implements Initializable {
     				//-------WHITE------
     	
         case "KingW":
-        	piece = new King(x, y, name, true);
+        	piece = new King(x, y, name, isWhite);
             break;
         case "QueenW":
-        	piece = new Queen(x, y, name, true);
+        	piece = new Queen(x, y, name, isWhite);
         	break;
         case "RookW":
-        	piece = new Rook(x, y, name, true);
+        	piece = new Rook(x, y, name, isWhite);
         	break; 
         case "BishopW":
-        	piece = new Bishop(x, y, name, true);
+        	piece = new Bishop(x, y, name, isWhite);
         	break; 
         case "KnightW":
-        	piece = new Knight(x, y, name, true);
+        	piece = new Knight(x, y, name, isWhite);
         	break;
         case "soldierW":
-        	piece = new Soldier(x, y, name, true);
+        	piece = new Soldier(x, y, name, isWhite);
         	break; 
         	
         				//-------BLACK----------
         	
         case "soldierB":
-        	piece = new Soldier(x, y, name, false);
+        	piece = new Soldier(x, y, name, isWhite);
         	break; 
         case "KingB":
-        	piece = new King(x, y, name, false);
+        	piece = new King(x, y, name, isWhite);
         	break;
         case "RookB":
-        	piece = new Rook(x, y, name, false);
+        	piece = new Rook(x, y, name, isWhite);
         	break;
         case "KnightB":
-        	piece = new Knight(x, y, name, false);
+        	piece = new Knight(x, y, name, isWhite);
         	break;
         case "BishopB":
-        	piece = new Bishop(x, y, name, false);
+        	piece = new Bishop(x, y, name, isWhite);
         	break;
         case "QueenB":
-        	piece = new Queen(x, y, name, false);
+        	piece = new Queen(x, y, name, isWhite);
         	break;
         default:
             System.out.println("Invalid choice");
@@ -405,7 +463,7 @@ public class GameController implements Initializable {
         
         chessboardPane.getChildren().add(imageViews[x][y]);
         
-        pieces.add(piece);
+        board.addPiece(piece);
 
     }
     
@@ -433,7 +491,7 @@ public class GameController implements Initializable {
     
     private void handleClickOnMoveTo(Rectangle cell) {
     	
-    	if(playerTurn.getPlayerId().equals(player.getPlayerId())) {
+    	if(playerTurn.getPlayerId().equals(player.getPlayerId()) && continueTurn) {
     	
 	    	synchronized (board) {
 	    		
@@ -550,7 +608,7 @@ public class GameController implements Initializable {
          }
          rectangleListOptions.getItems().clear();
     	
-         lastOpponentPiece = board.getPiece(newX, newY);
+         lastChosenPiece = board.getPiece(newX, newY);
     }
     
     public void deleteOpponentPicture(Piece pieceToRemove) {
@@ -577,6 +635,7 @@ public class GameController implements Initializable {
     		Platform.runLater(() -> {
     		try {		
     			
+    			// set the pieces places to the opposite side (for the opponent)
     			oldPiece.setX(7-oldPiece.getX());
     			oldPiece.setY(7-oldPiece.getY());
     			newPiece.setX(7-newPiece.getX());
@@ -584,13 +643,34 @@ public class GameController implements Initializable {
     			
     			if(eatingOrNot.getname().equals("Eating")) {
     				deleteOpponentPicture(newPiece);
-    			}	
+    				board.removePiece(newPiece.getX(),newPiece.getY());//
+    			}
+			
     			board.setPieceXY(oldPiece, newPiece.getX(), newPiece.getY());
     	        imageViews[oldPiece.getX()][oldPiece.getY()].setLayoutX((double)newPiece.getX() * squareSize);
     	        imageViews[oldPiece.getX()][oldPiece.getY()].setLayoutY((double)newPiece.getY() * squareSize);
     	        imageViews[newPiece.getX()][newPiece.getY()] = imageViews[oldPiece.getX()][oldPiece.getY()];
     	        imageViews[newPiece.getX()][newPiece.getY()].toFront();
     	        imageViews[oldPiece.getX()][oldPiece.getY()]=null;
+    	        
+    	        
+    	        
+    	        // old piece's and new piece's have differenet names only if the player changed his piece from soldier to differenet piece
+    	        if(!oldPiece.getname().equals(newPiece.getname())) { 
+    	        	
+    	        	
+    	        	board.removePiece(newPiece.getX(),newPiece.getY());
+
+    	    		deleteOpponentPicture(newPiece);
+    	    		
+    	    		// changing the name to black piece
+    	    		String newPieceNameChangeToBlack = (newPiece.getname()).substring(0, (newPiece.getname()).length() - 1) + "B";
+    	    		
+
+    	    		setUpPiece(newPiece.getX(),newPiece.getY(), newPieceNameChangeToBlack, false);
+
+    	        	
+    	        }
     	        
     	        
     	        
@@ -704,7 +784,8 @@ public class GameController implements Initializable {
         secondPieceSelected = board.getPiece(x,y); // the place to move to
         
         movePiece(x,y);
-                
+
+        
         if(isChessOnMe()) { //Chess On ME
         	moveBack();
         	cloudImage(true);
@@ -713,54 +794,64 @@ public class GameController implements Initializable {
 
         
         else {   
-        		        
-        	cloudImage(false);
-	        boolean inCheck = isChess(board);
-	        
-	        if(inCheck) {
-	        	popUpCheck("chess");
-	        }
-	        
-	        
+        	
+        	
 	        // if soldier is at the end
 	        Piece soldierPiece = board.getPiece(x,y);
-	        if(soldierPiece != null && soldierPiece.getname().equals("soldierW")) {
-	        	if(soldierPiece.getY() == 0) {
-	        		 if (!chessboardPane.getChildren().contains(hbox)) { //if the Hbox is not added to parent yet
-	        			 chessboardPane.getChildren().add(hbox);
-	        			}
-	        		
-	        		hbox.setVisible(true);
-	        	}
+	        if(soldierPiece != null && soldierPiece.getname().equals("soldierW") && soldierPiece.getY() == 0) {
+	        	/*if (!backGroundPane.getChildren().contains(hbox)) { //if the Hbox is not added to parent yet
+	        		backGroundPane.getChildren().add(hbox);
+	        	}*/
+	        	continueTurn = false;
+	        	hbox.setVisible(true);
+	            //Line line = new Line(soldierPiece.getX()*squareSize, soldierPiece.getY()*squareSize, 130, 130);
+
+	            //hbox.getChildren().add(line);
 	        }
-	        
-	        
-	        
-	        
-	        
-	        
-			// send to the server the piece was changed (old piece and new piece) and if eaten
-			ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
-			updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
-			updatePieceMoce_arr.add(new Piece(0, 0, EatOrNot, true));
-			updatePieceMoce_arr.add(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
-			updatePieceMoce_arr.add(lastOpponentPiece); // new piece
-			updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
-			ClientUI.chat.accept(updatePieceMoce_arr);
-	    	
-	    	
-	    	 firstPieceSelected=null;
-	        
-	        
+	        else {
+	        	TurnContinueAfterMovement();
+	        }
         	
-        	SendToServerChangePlayerTurn(inCheck);  // send to the opponent also if there is check on him
 
         }
-        
-        
-        
-        
+   
 
+	}
+	
+	public void TurnContinueAfterMovement() {
+		
+		if(secondPieceSelected != null) {
+			lastChosenPiece = board.getPiece(secondPieceSelected.getX(), secondPieceSelected.getY());
+		}
+		
+    	cloudImage(false);
+        boolean inCheck = isChess(board);
+        
+        if(inCheck) {
+        	popUpCheck("chess");
+        }
+        
+        System.out.println("@@@@@@@@@@");
+        System.out.println(firstPieceSelected.getname());
+        System.out.println(lastChosenPiece.getname());
+        System.out.println("@@@@@@@@@@");
+
+   
+		// send to the server the piece was changed (old piece and new piece) and if eaten
+		ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
+		updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
+		updatePieceMoce_arr.add(new Piece(0, 0, EatOrNot, true));
+		updatePieceMoce_arr.add(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
+		updatePieceMoce_arr.add(lastChosenPiece); // new piece
+		updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
+		ClientUI.chat.accept(updatePieceMoce_arr);
+    	
+    	
+    	 firstPieceSelected=null;
+        
+        
+    	
+    	SendToServerChangePlayerTurn(inCheck);  // send to the opponent also if there is check on him
 	}
 	
 	
@@ -827,39 +918,37 @@ public class GameController implements Initializable {
 		
 		if(secondPieceSelected == null) { // moving to empty place and check
 			
-			board.setPieceXY(lastOpponentPiece, oldX, oldY);
+			board.setPieceXY(lastChosenPiece, oldX, oldY);
 			ChangePiqtureLocation(newXLastOpponent, newYLastOpponent,oldX, oldY);
 			
 		}
 		else { // after eating and check
 			
-			ChangePiqtureLocation(lastOpponentPiece.getX(),lastOpponentPiece.getY(),oldX, oldY);//firstPieceSelected.ggetX..\Y
+			ChangePiqtureLocation(lastChosenPiece.getX(),lastChosenPiece.getY(), oldX, oldY);//firstPieceSelected.ggetX..\Y
 			
 			
-	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()] = new ImageView();
-	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()].setFitWidth(squareSize);
-	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()].setFitHeight(squareSize);//
-	        
-	        
-	        
+	        imageViews[lastChosenPiece.getX()][lastChosenPiece.getY()] = new ImageView();
+	        imageViews[lastChosenPiece.getX()][lastChosenPiece.getY()].setFitWidth(squareSize);
+	        imageViews[lastChosenPiece.getX()][lastChosenPiece.getY()].setFitHeight(squareSize);//
+	             
 	        
 	        Image image = new Image(getClass().getResourceAsStream("/player/" + secondPieceSelected.getname() + ".png"));
 	        
-	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()].setImage(image);
-	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()].setLayoutX(lastOpponentPiece.getX() * squareSize);
-	        imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()].setLayoutY(lastOpponentPiece.getY() * squareSize);
+	        imageViews[lastChosenPiece.getX()][lastChosenPiece.getY()].setImage(image);
+	        imageViews[lastChosenPiece.getX()][lastChosenPiece.getY()].setLayoutX(lastChosenPiece.getX() * squareSize);
+	        imageViews[lastChosenPiece.getX()][lastChosenPiece.getY()].setLayoutY(lastChosenPiece.getY() * squareSize);
 	        
 	        
-	        chessboardPane.getChildren().add(imageViews[lastOpponentPiece.getX()][lastOpponentPiece.getY()]);
+	        chessboardPane.getChildren().add(imageViews[lastChosenPiece.getX()][lastChosenPiece.getY()]);
 	        
 	        
+	        board.addPiece(secondPieceSelected);
+	        //pieces.add(secondPieceSelected);
 	        
-	        pieces.add(secondPieceSelected);
-	        
-	        board.setPieceXY(lastOpponentPiece, oldX, oldY);
+	        board.setPieceXY(lastChosenPiece, oldX, oldY);
 
 			
-        	lastOpponentPiece = null;
+        	lastChosenPiece = null;
 		}
 		
 		popUpCheck("unvailable move");
