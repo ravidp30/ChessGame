@@ -14,8 +14,11 @@ import java.util.ResourceBundle;
 import javafx.scene.effect.DropShadow;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import ClientAndServerLogin.SceneManagment;
 import client.ClientUI;
@@ -42,6 +45,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -74,8 +78,9 @@ public class GameController implements Initializable {
     //private Piece tempPieceToMove = null;
     private int newXLastOpponent;
     private int newYLastOpponent;
-    
-    
+    private int CountChess;
+    Image Cloud ;
+    ImageView CloudImageView ;
 
     private ArrayList<Piece> pieces = new ArrayList<>();
 //    private LinkedList<Piece> pieceL = new LinkedList<>();
@@ -169,8 +174,15 @@ public class GameController implements Initializable {
         Timeline flickerTimeline = new Timeline(hideKeyFrame, showKeyFrame);
         flickerTimeline.setCycleCount(Animation.INDEFINITE);
         flickerTimeline.play();
+        //Cloud image
+        Cloud = new Image(getClass().getResourceAsStream("/player/Cloud.png"));
+        CloudImageView = new ImageView(Cloud);
+        CloudImageView.setFitWidth(50);
+        CloudImageView.setFitHeight(50);
+        CloudImageView.toFront();
+        CloudImageView.setVisible(false);
         
-        
+        //setting up Bar choosing new player
         addPiecesBar.setStyle("-fx-background-color: black;");
         double spacing = 80; // Adjust as needed
         addImageToAddPiecesBar(addPiecesBar, "/player/QueenW.png", 50);
@@ -179,7 +191,7 @@ public class GameController implements Initializable {
         addImageToAddPiecesBar(addPiecesBar, "/player/RookW.png", 50 + 3 * spacing);
         addPiecesBar.setVisible(false); 
         
-
+       
   
         changePlayerTurn(playerTurn, new Player("NotInCheck"));
         try {
@@ -487,46 +499,25 @@ public class GameController implements Initializable {
     	
     	newXLastOpponent = newX;
     	newYLastOpponent = newY;
-    	int check=0;
-    	//tempPiece=new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
-    	//if(secondPieceSelected == null) { // move to empty place
-    	//	secondPieceSelected = new Piece(newX,newY, "empty place", true);
-    	//}
-    	//else { // move to not empty place (move to white or black piece)
-    		//tempPieceToMove = new Piece(newX,newY,firstPieceSelected.getname(),firstPieceSelected.isWhite());
-    	//}
+    	int availableToMove=0;
     	
-    	
-    	check=board.MoveCheck(oldX, oldY, newX, newY);//check if available to move
-    	
-    	
-        //check=board.MoveCheck(firstPieceSelected,secondPieceSelected);//check if available to move
+    	availableToMove=board.MoveCheck(oldX, oldY, newX, newY);//check if available to move
+    
         
-        //isCheckOnMe(); // send to the opponent message to check if there is check from his side
-        
-        
-        //System.out.println(isChess());
-        
-    	if(check == 1) {//available to move the image (EMPTY SPACE)
+    	if(availableToMove == 1) {//available to move the image (EMPTY SPACE)
     		
     		ChangePiqtureLocation(oldX,oldY,newX, newY);
     		board.setPieceXY(firstPieceSelected, newX, newY);
     		EatOrNot = "NotEating";
     		
     	}
-    	else if(check == 2) { // move to black piece (eating)
+    	else if(availableToMove == 2) { // move to black piece (eating)
     		
     		board.removePiece(newX, newY);
     		board.setPieceXY(firstPieceSelected, newX, newY);
     		
     		deleteOpponentPicture(secondPieceSelected);
     		ChangePiqtureLocation(oldX,oldY,newX, newY);
-    		System.out.println("first ******" + firstPieceSelected.getname());
-    		System.out.println("seccccc ******" + secondPieceSelected.getname());
-    		//board.setPieceXY(firstPieceSelected, tempPieceToMove.getX(), tempPieceToMove.getY()); // change the x and y of the piece for the new x y
-    		//board.setName(firstPieceSelected, firstPieceSelected);
-    		System.out.println("first @@@@@@" + firstPieceSelected.getname());
-    		System.out.println("seccccc @@@@@@" + secondPieceSelected.getname());
     		EatOrNot = "Eating";
 
     		
@@ -557,15 +548,6 @@ public class GameController implements Initializable {
         imageViews[newX][newY].toFront();
         imageViews[oldX][oldY]=null;
         
-     /*   System.out.println("--------------------\n");
-        for (int i=0 ; i<8; i++)
-        	for (int j=0 ; j<8; j++) {
-        		if(imageViews[i][j]!=null) 
-        			System.out.println(" image in:" + (double)imageViews[i][j].getLayoutX() + "," + (double)imageViews[i][j].getLayoutY());
-        		if(board.getPiece(i, j)!=null) {
-        			System.out.println("piece in i,j: "+ board.getPiece(i,j).getname() + " in location: "+ i+"," + j);
-        		}
-        	}*/
    }
     
     
@@ -578,10 +560,7 @@ public class GameController implements Initializable {
     			oldPiece.setX(7-oldPiece.getX());
     			oldPiece.setY(7-oldPiece.getY());
     			newPiece.setX(7-newPiece.getX());
-    			newPiece.setY(7-newPiece.getY());
-    			
-    		//System.out.println("check: " + isChess(board));
-    			
+    			newPiece.setY(7-newPiece.getY());    			
     			
     			if(eatingOrNot.getname().equals("Eating")) {
     				deleteOpponentPicture(newPiece);
@@ -610,8 +589,7 @@ public class GameController implements Initializable {
     	 for( Piece p: options) {
     		 
     		 tempPiece = board.getPiece(p.getX(), p.getY());
-//    		 int currXPosition=tempPiece.getX();//save the current X position 
-//             int currYPosition=tempPiece.getY();//save the current Y position 
+
     		 // mark a square only if there are no pieces in the square to move or black piece
     		 if(tempPiece == null || !tempPiece.isWhite()) {		 
     			 Rectangle squareOption = new Rectangle( p.getX() * squareSize,p.getY() * squareSize, squareSize, squareSize);
@@ -629,7 +607,6 @@ public class GameController implements Initializable {
                  });  
                  
                  chessboardPane.getChildren().add(squareOption);
-                 //System.out.println("clear options to move: " + p.getX() + ","+p.getY());
                  
         		 if(tempPiece == null){	// empty place 
         			 squareOption.setStroke(Color.BLACK);
@@ -644,21 +621,6 @@ public class GameController implements Initializable {
     		 }	
     	 }
     }
-   /* public List<Rectangle> MoveOptions(ArrayList<Piece> options , Piece piece) {
-		List<Rectangle> square =  (List<Rectangle>) new Rectangle();
-    	 int i=0;
-    	 for( Piece p: options) {    
-    		 Rectangle newSquare = new Rectangle( p.getX() * squareSize,p.getY()*  squareSize, squareSize, squareSize);
-    		  square.add(newSquare);
-                 Color color;
-                 color = Color.LIGHTBLUE;
-                 square.get(i).setFill(color);
-                 chessboardPane.getChildren().add(square.get(i));
-                 System.out.println(p.getname() + "move option: " + p.getX() + ","+p.getY());
-                 }
-    	 return square;
-             }
-    */
     
     public boolean isChess(Board board1) {
 
@@ -722,19 +684,17 @@ public class GameController implements Initializable {
         secondPieceSelected = board.getPiece(x,y); // the place to move to
         
         movePiece(x,y);
-        
-       // secondPieceSelected = board.getPiece(x,y); // the place to move to
-        
-        System.out.println("opponent checked on me : " + isChessOnMe());
-        if(isChessOnMe()) {
+                
+        if(isChessOnMe()) { //Chess On ME
         	moveBack();
+        	cloudImage(true);
         }
         
+
+        
         else {   
-        	
-        	
-	        System.out.println("i did check on opponent: " + isChess(board));
-	        
+        		        
+        	cloudImage(false);
 	        boolean inCheck = isChess(board);
 	        
 	        if(inCheck) {
@@ -770,38 +730,55 @@ public class GameController implements Initializable {
 	        
         	
         	SendToServerChangePlayerTurn(inCheck);  // send to the opponent also if there is check on him
-        	//System.out.println("new move: " + piece.getX() + ", " + piece.getY());
 
         }
         
-        
-        for(int x1 = 0; x1<8; x1++) {
-            for(int y1 = 0; y1<8; y1++) {
-            	if(board.getPiece(x1, y1) == null) {
-            		System.out.println("empty in: " + x1 + " " + y1);
-            	}
-            	else {
-            		System.out.println(board.getPiece(x1, y1).getname() + ": " + board.getPiece(x1, y1).getX() + ": " + board.getPiece(x1, y1).getY());
-            	}
-            }
-        }
         
         
         
 
 	}
 	
+	
+	
+	private void cloudImage(boolean use) {
+		if(use) {
+		Piece kingFound =  new Piece(0,0,"KingW",true);
+		int newPositionX=0;
+		int newPositionY=0;
+		for (int x=0; x<8; x++)
+			for(int y=0; y<8 ; y++)
+				if(board.getPiece(x, y)!=null)//search for the KingW
+				{
+					if(board.getPiece(x, y).getname().equals(kingFound.getname())) {
+						 newPositionX=x;
+						 newPositionY=y;
+					}
+					
+				}
+		
+		 CloudImageView.setLayoutX(newPositionX * squareSize -35);
+		 CloudImageView.setLayoutY(newPositionY *squareSize -30);  
+		 CloudImageView.setVisible(true);
+		 if (!chessboardPane.getChildren().contains(CloudImageView)) { //if the image is not added to parent yet
+			 chessboardPane.getChildren().add(CloudImageView);
+			}
+	    		 
+		}
+	    else {
+	    
+	    	try {
+	    		 chessboardPane.getChildren().remove(CloudImageView);		
+	    		 }catch (NullPointerException e) {
+	    		 }
+	    	CloudImageView.setVisible(false);     
+	    	}
+	 }
+	
+
 	private void moveBack() {
 		// firstPieceSelected
 		// piece
-
-		
-		try {
-			//System.out.println(lastOpponentPiece.getname() + "," + lastOpponentPiece.getX() + "," + lastOpponentPiece.getY());
-		}catch (NullPointerException e) {
-			//System.out.println("empty");
-		}
-		//System.out.println(firstPieceSelected.getname() + "," + oldX + "," + oldY);
 		
 		if(secondPieceSelected == null) { // moving to empty place and check
 			
