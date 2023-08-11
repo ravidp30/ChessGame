@@ -6,7 +6,7 @@
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="backGroundPane" prefHeight="700.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="player.GameController">
+<Pane fx:id="backGroundPane" prefHeight="700.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="player.GameController">
    <children>
  		<Label fx:id="ChessHeadLineLbl" layoutX="323.0" layoutY="38.0" prefHeight="57.0" prefWidth="311.0" text="Chess Game:" />
       <Pane fx:id="chessboardPane" layoutX="96.0" layoutY="161.0" prefHeight="345.0" prefWidth="665.0" />
@@ -15,7 +15,8 @@
       <TextField fx:id="txtChat" layoutX="721.0" layoutY="597.0" prefHeight="30.0" prefWidth="210.0" />
       <Button layoutX="653.0" layoutY="658.0" mnemonicParsing="false" onAction="#sendGoodLuck" prefHeight="30.0" prefWidth="97.0" text="Good Luck  :-)" />
       <Label fx:id="lblTurnStatus" layoutX="705.0" layoutY="29.0" prefHeight="93.0" prefWidth="224.0" text="Loading..." />
-      <Label fx:id="ChatLabel" layoutX="786.0" layoutY="284.0" prefHeight="21.0" prefWidth="90.0" text="Chat:" />		   </children>
+      <Label fx:id="ChatLabel" layoutX="786.0" layoutY="284.0" prefHeight="21.0" prefWidth="90.0" text="Chat:" />
+      <Pane fx:id="addPiecesBar" layoutX="96.0" layoutY="95.0" prefHeight="57.0" prefWidth="665.0" />		   </children>
    <effect>
       <ColorAdjust />
    </effect>

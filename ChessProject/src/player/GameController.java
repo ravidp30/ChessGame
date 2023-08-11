@@ -92,6 +92,8 @@ public class GameController implements Initializable {
     @FXML
     private Pane backGroundPane;
     @FXML
+    private Pane addPiecesBar;
+    @FXML
     private TextField txtChat;
     @FXML
     private Label labelChatArea;
@@ -167,8 +169,17 @@ public class GameController implements Initializable {
         Timeline flickerTimeline = new Timeline(hideKeyFrame, showKeyFrame);
         flickerTimeline.setCycleCount(Animation.INDEFINITE);
         flickerTimeline.play();
-    
         
+        
+        addPiecesBar.setStyle("-fx-background-color: black;");
+        double spacing = 80; // Adjust as needed
+        addImageToAddPiecesBar(addPiecesBar, "/player/QueenW.png", 50);
+        addImageToAddPiecesBar(addPiecesBar, "/player/KnightW.png", 50 + spacing);
+        addImageToAddPiecesBar(addPiecesBar, "/player/BishopW.png", 50 + 2 * spacing);
+        addImageToAddPiecesBar(addPiecesBar, "/player/RookW.png", 50 + 3 * spacing);
+        //addPiecesBar.setVisible(false); 
+        
+
   
         changePlayerTurn(playerTurn, new Player("NotInCheck"));
         try {
@@ -181,10 +192,34 @@ public class GameController implements Initializable {
         
     }
     
-    private void drawChessboard() throws IOException {
+    public ImageView addImageToAddPiecesBar(Pane pane, String imagePath, double x) {
+        Image image = new Image(imagePath);
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(60);
+        imageView.setFitHeight(60);
+        double centerX = (pane.getWidth() - image.getWidth()) / 2 + x;
+        double centerY = (pane.getHeight() - image.getHeight()) / 2 + 100;
+        imageView.setX(centerX);
+        imageView.setY(centerY);
         
         
+        imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                onImageToAddPieceClicked(imageView);
+            }
+        });  
         
+        pane.getChildren().add(imageView);
+		return imageView;  
+    }
+    
+    
+    protected void onImageToAddPieceClicked(ImageView imageView) {
+		System.out.println(imageView.getId());
+	}
+
+	private void drawChessboard() throws IOException {
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 Rectangle square = new Rectangle(x * squareSize, y * squareSize, squareSize, squareSize);
@@ -705,6 +740,19 @@ public class GameController implements Initializable {
 	        if(inCheck) {
 	        	popUpCheck("chess");
 	        }
+	        
+	        
+	        // if soldier is at the end
+	        Piece soldierPiece = board.getPiece(x,y);
+	        if(soldierPiece != null && soldierPiece.getname().equals("soldierW")) {
+	        	if(soldierPiece.getY() == 0) {
+	        		
+	        	}
+	        }
+	        
+	        
+	        
+	        
 	        
 	        
 			// send to the server the piece was changed (old piece and new piece) and if eaten
