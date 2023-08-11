@@ -177,7 +177,7 @@ public class GameController implements Initializable {
         addImageToAddPiecesBar(addPiecesBar, "/player/KnightW.png", 50 + spacing);
         addImageToAddPiecesBar(addPiecesBar, "/player/BishopW.png", 50 + 2 * spacing);
         addImageToAddPiecesBar(addPiecesBar, "/player/RookW.png", 50 + 3 * spacing);
-        //addPiecesBar.setVisible(false); 
+        addPiecesBar.setVisible(false); 
         
 
   
@@ -746,7 +746,7 @@ public class GameController implements Initializable {
 	        Piece soldierPiece = board.getPiece(x,y);
 	        if(soldierPiece != null && soldierPiece.getname().equals("soldierW")) {
 	        	if(soldierPiece.getY() == 0) {
-	        		
+	        		addPiecesBar.setVisible(true);
 	        	}
 	        }
 	        
