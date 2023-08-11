@@ -184,7 +184,7 @@ public class GameController implements Initializable {
         changePlayerTurn(playerTurn, new Player("NotInCheck"));
         try {
 			drawChessboard();
-		} catch (IOException e) {
+		} catch (IOException e) {//
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
