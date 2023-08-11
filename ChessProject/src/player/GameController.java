@@ -41,6 +41,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -81,7 +82,13 @@ public class GameController implements Initializable {
     private int CountChess;
     Image Cloud ;
     ImageView CloudImageView ;
-
+    HBox hbox;
+    private String[] pieceImagePaths  = {
+	        "/player/QueenW.png",
+	        "/player/KnightW.png",
+	        "/player/BishopW.png",
+	        "/player/RookW.png"
+	    };;
     private ArrayList<Piece> pieces = new ArrayList<>();
 //    private LinkedList<Piece> pieceL = new LinkedList<>();
     private ArrayList<Piece> Kpieces = new ArrayList<>();
@@ -181,9 +188,24 @@ public class GameController implements Initializable {
         CloudImageView.setFitHeight(50);
         CloudImageView.toFront();
         CloudImageView.setVisible(false);
-        
+        //Hbox of pieces tool bar 
+         hbox = new HBox(10); // Set spacing between slots
+     	 hbox.setLayoutX(100);
+		 hbox.setLayoutY(100);
+		
+         for (int i = 0; i < 4; i++) {
+             ImageView HboxPiecesChoosing = new ImageView(new Image(pieceImagePaths[i]));
+             HboxPiecesChoosing.setFitWidth(50);
+             HboxPiecesChoosing.setFitHeight(50);
+             // Set an action when the image is clicked
+             int slotIndex = i;
+             HboxPiecesChoosing.setOnMouseClicked(event -> handlePieceClickOnHBOX(slotIndex));
+             hbox.getChildren().add(HboxPiecesChoosing);  
+         }
+         	hbox.setVisible(false);
+         	
         //setting up Bar choosing new player
-        addPiecesBar.setStyle("-fx-background-color: black;");
+    /*    addPiecesBar.setStyle("-fx-background-color: black;");
         double spacing = 80; // Adjust as needed
         addImageToAddPiecesBar(addPiecesBar, "/player/QueenW.png", 50);
         addImageToAddPiecesBar(addPiecesBar, "/player/KnightW.png", 50 + spacing);
@@ -191,7 +213,7 @@ public class GameController implements Initializable {
         addImageToAddPiecesBar(addPiecesBar, "/player/RookW.png", 50 + 3 * spacing);
         addPiecesBar.setVisible(false); 
         
-       
+      */ 
   
         changePlayerTurn(playerTurn, new Player("NotInCheck"));
         try {
@@ -204,33 +226,31 @@ public class GameController implements Initializable {
         
     }
     
-    public ImageView addImageToAddPiecesBar(Pane pane, String imagePath, double x) {
-        Image image = new Image(imagePath);
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(60);
-        imageView.setFitHeight(60);
-        double centerX = (pane.getWidth() - image.getWidth()) / 2 + x;
-        double centerY = (pane.getHeight() - image.getHeight()) / 2 + 100;
-        imageView.setX(centerX);
-        imageView.setY(centerY);
-        
-        
-        imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                onImageToAddPieceClicked(imageView);
-            }
-        });  
-        
-        pane.getChildren().add(imageView);
-		return imageView;  
-    }
-    
-    
-    protected void onImageToAddPieceClicked(ImageView imageView) {
-		System.out.println(imageView.getId());
+    private void handlePieceClickOnHBOX(int slotIndex) {//Queen knight bishop rook
+    	board.removePiece(lastOpponentPiece.getX(),lastOpponentPiece.getY());
+		deleteOpponentPicture(lastOpponentPiece);
+    	switch(slotIndex) {
+    	case 0:
+    		setUpPiece(lastOpponentPiece.getX(), lastOpponentPiece.getY(), "QueenW", true);
+    		break;
+    	case 1:
+    		setUpPiece(lastOpponentPiece.getX(), lastOpponentPiece.getY(), "KnightW", true);
+    		break;
+    	case 2:
+    		setUpPiece(lastOpponentPiece.getX(), lastOpponentPiece.getY(), "BishopW", true);
+    		break;
+    	case 3:
+    		setUpPiece(lastOpponentPiece.getX(), lastOpponentPiece.getY(), "RookW", true);
+    		break;
+    	default:
+    			System.out.println("Error");
+    	}
+    	
+		hbox.setVisible(false);
+
 	}
 
+	
 	private void drawChessboard() throws IOException {
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
@@ -706,7 +726,11 @@ public class GameController implements Initializable {
 	        Piece soldierPiece = board.getPiece(x,y);
 	        if(soldierPiece != null && soldierPiece.getname().equals("soldierW")) {
 	        	if(soldierPiece.getY() == 0) {
-	        		addPiecesBar.setVisible(true);
+	        		 if (!chessboardPane.getChildren().contains(hbox)) { //if the Hbox is not added to parent yet
+	        			 chessboardPane.getChildren().add(hbox);
+	        			}
+	        		
+	        		hbox.setVisible(true);
 	        	}
 	        }
 	        
@@ -741,6 +765,27 @@ public class GameController implements Initializable {
 	
 	
 	
+//	private void showHbox(boolean show) {
+//		if (show) {
+//			if (!chessboardPane.getChildren().contains(hbox)) { //if the hbox is not added to parent yet
+//				chessboardPane.getChildren().add(hbox);
+//				hbox.setVisible(true);
+//			}
+//			
+//		}
+//		else {
+//			try {
+//				chessboardPane.getChildren().remove(hbox);		
+//				hbox.setVisible(false);
+//				System.out.println("UnShow");
+//			}catch (NullPointerException e) {
+//			}
+//			
+//		}
+//		
+//	    		 
+//	}
+
 	private void cloudImage(boolean use) {
 		if(use) {
 		Piece kingFound =  new Piece(0,0,"KingW",true);

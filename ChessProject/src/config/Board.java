@@ -72,6 +72,8 @@ public class Board implements Serializable{
 	}
 	
 	
+	
+	
 	/*
 	public int MoveCheck(Piece firstPieceSelected ,Piece piece) {//move check function
 		

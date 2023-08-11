@@ -30,7 +30,7 @@ public class Piece implements Serializable{
 	public int getY() {
 		return this.y;
 	}
-
+	
 	public void setX(int newX) {
 		x=newX;
 	}
