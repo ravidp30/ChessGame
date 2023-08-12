@@ -1267,12 +1267,12 @@ public class GameController implements Initializable {
 				lblTurnStatus.setText("Your Turn");
 				if(inCheck.getPlayerId().equals("InCheck")) {
 					setUpPiecesHasMap();
-					if(!checkForMate()) {
+					/*if(!checkForMate()) {
 						popUpCheck("check on me");
 					}
 					else {
 						popUpCheck("mate on me");
-					}
+					}*/
 					
 					
 					
