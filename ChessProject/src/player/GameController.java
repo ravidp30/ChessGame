@@ -602,7 +602,12 @@ public class GameController implements Initializable {
 	            for(int i = 0; i < moveOptions.size(); i++) {
 	            	//newBoard = opponentBoard;
 	            	
-	            	newBoard = new Board(8 * squareSize, 8 * squareSize, board.getPieces());
+	            	newBoard = new Board(8 * squareSize, 8 * squareSize, null);
+	            	for(int x = 0; x < 8; x++) {
+		            	for(int y = 0; y < 8; y++) {
+		            		newBoard.addPiece(board.getPiece(x, y));
+		            	}
+	            	}
 	
 		            newX = moveOptions.get(i).getX();
 		            newY = moveOptions.get(i).getY();
