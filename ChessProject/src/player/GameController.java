@@ -1239,18 +1239,19 @@ public class GameController implements Initializable {
 	
 	// inCheck.getplayerId() = "InCheck" / "NotInCheck"
 	public void changePlayerTurn(Player newPlayerTurn, Player inCheck) {
+		ArrayList<Piece> pieces_arr = new ArrayList<>();
+		pieces_arr.addAll(board.getPieces());
 		Platform.runLater(() -> {
 			/*if(isChess(board)) {
 				System.out.println(123123);
 			}*/
 			
-			ArrayList<Piece> pieces_arr = new ArrayList<>();
-			pieces_arr.addAll(board.getPieces());
+
 			
 			
 			playerTurn = newPlayerTurn;
 			if(playerTurn.getPlayerId().equals(player.getPlayerId())) {
-				board.setPieces(pieces_arr);
+				
 				lblTurnStatus.setText("Your Turn");
 				if(inCheck.getPlayerId().equals("InCheck")) {
 
@@ -1278,6 +1279,7 @@ public class GameController implements Initializable {
 				lblTurnStatus.setText("Opponent's Turn");
 			}
 		});
+		board.setPieces(pieces_arr);
 	}
 	
 
