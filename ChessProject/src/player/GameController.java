@@ -1256,6 +1256,7 @@ public class GameController implements Initializable {
 				if(inCheck.getPlayerId().equals("InCheck")) {
 					ArrayList<Piece> piecesArr = new ArrayList<>();
 					piecesArr = board.getPieces();
+					System.out.println(piecesArr);
 					if(!checkForMate(setUpPiecesHasMap())) {
 						popUpCheck("check on me");
 					}
@@ -1264,7 +1265,8 @@ public class GameController implements Initializable {
 					}
 					
 					board = new Board(8 * squareSize, 8 * squareSize, piecesArr);
-
+					System.out.println(1);
+					System.out.println(piecesArr);
 					
 					
 					
