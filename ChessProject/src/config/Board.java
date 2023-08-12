@@ -52,6 +52,10 @@ public class Board implements Serializable{
 		return pieces;
 	}
 	
+	public void setPieces(ArrayList<Piece> pieces){
+		this.pieces = pieces;
+	}
+	
 	
 	public int MoveCheck(int oldX, int oldY, int newX, int newY) {//move check function
 		

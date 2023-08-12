@@ -1243,13 +1243,20 @@ public class GameController implements Initializable {
 			/*if(isChess(board)) {
 				System.out.println(123123);
 			}*/
+			
+			ArrayList<Piece> pieces_arr = new ArrayList<>();
+			pieces_arr.addAll(board.getPieces());
+			
+			
 			playerTurn = newPlayerTurn;
 			if(playerTurn.getPlayerId().equals(player.getPlayerId())) {
 				lblTurnStatus.setText("Your Turn");
 				if(inCheck.getPlayerId().equals("InCheck")) {
 
 					if(!checkForMate(setUpPiecesHasMap())) {
+						board.setPieces(pieces_arr);
 						popUpCheck("check on me");
+						
 					}
 					else {
 						popUpCheck("mate on me");
