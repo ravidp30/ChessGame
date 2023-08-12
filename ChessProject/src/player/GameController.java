@@ -832,27 +832,27 @@ public class GameController implements Initializable {
 						//-------WHITE------
 			
 				        case "KingW":
-				        	tempPiece = new King(x, y, "KingB", false);
+				        	tempPiece = new King(x, y, "KingW", true);
 				        	piecesInMap.put(tempPiece, ((King)tempPiece).Move(board));
 				            break;
 				        case "QueenW":
-				        	tempPiece = new Queen(x, y, "QueenB", false);
+				        	tempPiece = new Queen(x, y, "QueenW", true);
 				        	piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(board));
 				        	break;
 				        case "RookW":
-				        	tempPiece = new Rook(x, y, "RookB", false);
+				        	tempPiece = new Rook(x, y, "RookW", true);
 				        	piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(board));
 				        	break; 
 				        case "BishopW":
-				        	tempPiece = new Bishop(x, y, "BishopB", false);
+				        	tempPiece = new Bishop(x, y, "BishopW", true);
 				        	piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(board));
 				        	break; 
 				        case "KnightW":
-				        	tempPiece = new Knight(x, y, "KnightB", false);
+				        	tempPiece = new Knight(x, y, "KnightW", true);
 				        	piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(board));
 				        	break;
 				        case "soldierW":
-				        	tempPiece = new Soldier(x, y, "soldierB", false);
+				        	tempPiece = new Soldier(x, y, "soldierW", true);
 				        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(board));
 				        	break; 	
 				        default:
