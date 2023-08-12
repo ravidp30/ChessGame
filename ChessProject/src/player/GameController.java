@@ -600,7 +600,8 @@ public class GameController implements Initializable {
 	            System.out.println("------------------------------------------");
 	            
 	            for(int i = 0; i < moveOptions.size(); i++) {
-	            	newBoard = opponentBoard;
+	            	//newBoard = opponentBoard;
+	            	newBoard = board;
 	
 		            newX = moveOptions.get(i).getX();
 		            newY = moveOptions.get(i).getY();
@@ -625,7 +626,7 @@ public class GameController implements Initializable {
 		        		break;
 		        	}*/
 		            if(!isChessOnMe(newBoard)) {
-		            	System.out.println("no chess on me");
+		            	System.out.println("no chess on ,e");
 		            	//return false;
 		            }
 		        }
