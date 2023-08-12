@@ -808,11 +808,11 @@ public class GameController implements Initializable {
     	piecesInMap = new HashMap<>();
     	for(int x = 0; x < 8; x++) {
         	for(int y = 0; y < 8; y++) {
-        		Piece tempPiece = new Piece(board.getPiece(x, y).getX(), board.getPiece(x, y).getY(), board.getPiece(x, y).getname(), board.getPiece(x, y).isWhite());
-        		//Piece tempPiece = board.getPiece(x, y);
+       		//Piece tempPiece = board.getPiece(x, y);
         		
         		try {
-        		
+            		Piece tempPiece = new Piece(x, y, board.getPiece(x, y).getname(), board.getPiece(x, y).isWhite());
+            		 
 	        		switch (tempPiece.getname()) {
 //				        case "soldierB":
 //				        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(opponentBoard));
