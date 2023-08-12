@@ -600,8 +600,8 @@ public class GameController implements Initializable {
 	            System.out.println("------------------------------------------");
 	            
 	            for(int i = 0; i < moveOptions.size(); i++) {
-	            	//newBoard = opponentBoard;
-	            	newBoard = board;
+	            	newBoard = opponentBoard;
+	            	//newBoard = board;
 	
 		            newX = moveOptions.get(i).getX();
 		            newY = moveOptions.get(i).getY();
@@ -622,10 +622,9 @@ public class GameController implements Initializable {
 		
 		        		
 		        	}
-		        	/*else if(availableToMove == 0) {
-		        		break;
-		        	}*/
-		            if(!isChessOnMe(newBoard)) {
+		        	
+
+		            if(!isChess(newBoard)) {
 		            	System.out.println("no chess on ,e");
 		            	//return false;
 		            }
@@ -797,7 +796,7 @@ public class GameController implements Initializable {
     	piecesInMap = new HashMap<>();
     	for(int x = 0; x < 8; x++) {
         	for(int y = 0; y < 8; y++) {
-        		Piece tempPiece = opponentBoard.getPiece(x, y);
+        		Piece tempPiece = board.getPiece(x, y);
         		
         		try {
         		
