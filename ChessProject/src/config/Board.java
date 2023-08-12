@@ -42,6 +42,10 @@ public class Board implements Serializable{
 		}
 	}
 	
+	public ArrayList<Piece> getPieces(){
+		return pieces;
+	}
+	
 	
 	public int MoveCheck(int oldX, int oldY, int newX, int newY) {//move check function
 		
