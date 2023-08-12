@@ -620,6 +620,9 @@ public class GameController implements Initializable {
 		
 		        		
 		        	}
+		        	else if(availableToMove == 0) {
+		        		break;
+		        	}
 		            if(!isChess(newBoard)) {
 		            	return false;
 		            }
