@@ -590,6 +590,7 @@ public class GameController implements Initializable {
     	
         for (Piece keyPiece : piecesInMap.keySet()) {
         	if(keyPiece != null && keyPiece.isWhite()) {
+        		System.out.println("123 " + keyPiece);
 	            ArrayList<Piece> moveOptions = piecesInMap.get(keyPiece);
 	
 	            // Now you can work with keyPiece and valueList
