@@ -598,7 +598,7 @@ public class GameController implements Initializable {
 
 	            	System.out.println(1);
 	            	System.out.println("piece: " + keyPiece);
-	            	System.out.println("moves: " + moveOptions);
+	            	System.out.println("moves: " + moveOptions.get(i));
 	            	System.out.println(1);
 	            	
 	            	ArrayList<Piece> piecesTemp = new ArrayList<>();
