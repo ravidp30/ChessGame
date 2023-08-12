@@ -585,6 +585,9 @@ public class GameController implements Initializable {
     	
     	int availableToMove=0;
     	
+    	ArrayList<Piece> piecesTemp = new ArrayList<>();
+    	piecesTemp.addAll(board.getPieces());
+    	
     	
         for (Piece keyPiece : piecesInMap.keySet()) {
         	if(keyPiece != null && keyPiece.isWhite()) {
@@ -601,8 +604,6 @@ public class GameController implements Initializable {
 	            	System.out.println("moves: " + moveOptions.get(i));
 	            	System.out.println(1);
 	            	
-	            	ArrayList<Piece> piecesTemp = new ArrayList<>();
-	            	piecesTemp.addAll(board.getPieces());
 	            	
 	            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, piecesTemp);
 
@@ -1253,7 +1254,11 @@ public class GameController implements Initializable {
 					
 					
 					
-					
+					for(int x = 0; x<8; x++) {
+						for(int y = 0; y<8; y++) {
+							System.out.println(board.getPiece(x, y));
+						}
+					}
 					
 					
 					
