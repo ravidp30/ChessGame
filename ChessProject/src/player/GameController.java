@@ -894,6 +894,7 @@ public class GameController implements Initializable {
         	
         	
         	System.out.println(piecesInMap);
+        	System.out.println("------------------------------------------");
         	if(!checkForMate(tempBoard, piecesInMap)) {
         		popUpCheck("chess");   
         	}
