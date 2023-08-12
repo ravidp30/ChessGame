@@ -519,7 +519,7 @@ public class GameController implements Initializable {
 		        	
 				        case "KingW":
 				        	king=(King) firstPieceSelected;
-				        	Kpieces=king.Move();
+				        	Kpieces=king.Move(board);
 				        	MoveOptions(Kpieces,king);
 				            break;
 				            
@@ -620,9 +620,9 @@ public class GameController implements Initializable {
 		
 		        		
 		        	}
-		        	else if(availableToMove == 0) {
+		        	/*else if(availableToMove == 0) {
 		        		break;
-		        	}
+		        	}*/
 		            if(!isChess(newBoard)) {
 		            	return false;
 		            }
@@ -805,7 +805,7 @@ public class GameController implements Initializable {
 				        	break; 
 				        case "KingB":
 				        	tempPiece = new King(x, y, tempPiece.getname(), false);
-				        	piecesInMap.put(tempPiece, ((King)tempPiece).Move());
+				        	piecesInMap.put(tempPiece, ((King)tempPiece).Move(board));
 				        	break;
 				        case "RookB":
 				        	tempPiece = new Rook(x, y, tempPiece.getname(), false);
@@ -828,7 +828,7 @@ public class GameController implements Initializable {
 			
 				        case "KingW":
 				        	tempPiece = new King(x, y, tempPiece.getname(), true);
-				        	piecesInMap.put(tempPiece, ((King)tempPiece).Move());
+				        	piecesInMap.put(tempPiece, ((King)tempPiece).Move(board));
 				            break;
 				        case "QueenW":
 				        	tempPiece = new Queen(x, y, tempPiece.getname(), true);
@@ -875,7 +875,7 @@ public class GameController implements Initializable {
     					switch (currPiece.getname()) {
 
 	    					case "KingW":
-	    						moveOptions = ((King) currPiece).Move();
+	    						moveOptions = ((King) currPiece).Move(board1);
 	    						break;
 	
 	    					case "QueenW":

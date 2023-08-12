@@ -9,16 +9,23 @@ public class King extends Piece{
 		// TODO Auto-generated constructor stub
 	}
 
-	public ArrayList<Piece>  Move() {
+	public ArrayList<Piece>  Move(Board board) {
 		int currX=this.getX();
 		int currY=this.getY();
+		Piece piece;
 		ArrayList<Piece> pieces = new ArrayList<>();
 		
 		// going all the squares around the king
 		for(int x = currX - 1; x <= currX + 1; x++) {
 			for(int y = currY - 1; y <= currY + 1; y++) {
 				if(x >= 0 && x <= 7 && y >= 0 && y <= 7) { // inside the board
-					pieces.add(new Piece(x, y, "KingW", true));
+					piece = board.getPiece(x, y);
+					if(piece != null && !piece.isWhite()) {
+						pieces.add(new Piece(x, y, piece.getname(), piece.isWhite()));
+					}
+					else if(piece == null){
+						pieces.add(new Piece(x, y, "empty", true));
+					}
 				}
 			}
 		}
