@@ -43,7 +43,9 @@ public class Board implements Serializable{
 	}
 	
 	public ArrayList<Piece> getPieces(){
-		return pieces;
+		ArrayList<Piece> tempPieces = new ArrayList<>();
+		tempPieces = pieces;
+		return tempPieces;
 	}
 	
 	
