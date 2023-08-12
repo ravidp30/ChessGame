@@ -591,7 +591,8 @@ public class GameController implements Initializable {
         for (Piece keyPiece : piecesInMap.keySet()) {
         	if(keyPiece != null && keyPiece.isWhite()) {
         		//System.out.println("123 " + keyPiece);
-	            ArrayList<Piece> moveOptions = piecesInMap.get(keyPiece);
+	            ArrayList<Piece> moveOptions = new ArrayList<>();
+	            moveOptions = piecesInMap.get(keyPiece);
 	
 	            // Now you can work with keyPiece and valueList
 	            System.out.println("------------------------------------------");
@@ -602,16 +603,11 @@ public class GameController implements Initializable {
 	            for(int i = 0; i < moveOptions.size(); i++) {
 	            	//newBoard = opponentBoard;
 	            	
-	            	newBoard = new Board(8 * squareSize, 8 * squareSize, null);
+	            	ArrayList<Piece> piecesTemp = new ArrayList<>();
+	            	piecesTemp = board.getPieces();
 	            	
-	            	for(int x = 0; x < 8; x++) {
-		            	for(int y = 0; y < 8; y++) {
-		            		Piece piece = new Piece(x, y, board.getPiece(x, y).getname(), board.getPiece(x, y).isWhite());
-		            		//piece = board.getPiece(x, y);
-		            		if(piece != null)
-		            			newBoard.addPiece(piece);
-		            	}
-	            	}
+	            	newBoard = new Board(8 * squareSize, 8 * squareSize, piecesTemp);
+	            	
 	
 		            newX = moveOptions.get(i).getX();
 		            newY = moveOptions.get(i).getY();
@@ -809,12 +805,12 @@ public class GameController implements Initializable {
     	piecesInMap = new HashMap<>();
     	for(int x = 0; x < 8; x++) {
         	for(int y = 0; y < 8; y++) {
-       		//Piece tempPiece = board.getPiece(x, y);
+       		Piece tempPiece;
         		
         		try {
-            		Piece tempPiece = new Piece(x, y, board.getPiece(x, y).getname(), board.getPiece(x, y).isWhite());
+            		//Piece tempPiece = new Piece(x, y, board.getPiece(x, y).getname(), board.getPiece(x, y).isWhite());
             		 
-	        		switch (tempPiece.getname()) {
+	        		switch (board.getPiece(x, y).getname()) {
 //				        case "soldierB":
 //				        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(opponentBoard));
 //				        	break; 
@@ -842,27 +838,27 @@ public class GameController implements Initializable {
 						//-------WHITE------
 			
 				        case "KingW":
-				        	//tempPiece = new King(x, y, "KingW", true);
+				        	tempPiece = new King(x, y, "KingW", true);
 				        	piecesInMap.put(tempPiece, ((King)tempPiece).Move(board));
 				            break;
 				        case "QueenW":
-				        	//tempPiece = new Queen(x, y, "QueenW", true);
+				        	tempPiece = new Queen(x, y, "QueenW", true);
 				        	piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(board));
 				        	break;
 				        case "RookW":
-				        	//tempPiece = new Rook(x, y, "RookW", true);
+				        	tempPiece = new Rook(x, y, "RookW", true);
 				        	piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(board));
 				        	break; 
 				        case "BishopW":
-				        	//tempPiece = new Bishop(x, y, "BishopW", true);
+				        	tempPiece = new Bishop(x, y, "BishopW", true);
 				        	piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(board));
 				        	break; 
 				        case "KnightW":
-				        	//tempPiece = new Knight(x, y, "KnightW", true);
+				        	tempPiece = new Knight(x, y, "KnightW", true);
 				        	piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(board));
 				        	break;
 				        case "soldierW":
-				        	//tempPiece = new Soldier(x, y, "soldierW", true);
+				        	tempPiece = new Soldier(x, y, "soldierW", true);
 				        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(board));
 				        	break; 	
 				        default:
