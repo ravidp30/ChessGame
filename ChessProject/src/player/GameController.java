@@ -1260,13 +1260,13 @@ public class GameController implements Initializable {
 			if(playerTurn.getPlayerId().equals(player.getPlayerId())) {
 				lblTurnStatus.setText("Your Turn");
 				if(inCheck.getPlayerId().equals("InCheck")) {
-				/*	setUpPiecesHasMap();
+					setUpPiecesHasMap();
 					if(!checkForMate()) {
 						popUpCheck("check on me");
 					}
 					else {
 						popUpCheck("mate on me");
-					}*/
+					}
 					
 					
 					
