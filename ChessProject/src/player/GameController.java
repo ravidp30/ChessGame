@@ -792,61 +792,63 @@ public class GameController implements Initializable {
         	for(int y = 0; y < 8; y++) {
         		Piece tempPiece = board.getPiece(x, y);
         		
+        		try {
         		
-        		
-        		switch (tempPiece.getname()) {
-			        case "soldierB":
-			        	tempPiece = new Soldier(x, y, tempPiece.getname(), false);
-			        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(board));
-			        	break; 
-			        case "KingB":
-			        	tempPiece = new King(x, y, tempPiece.getname(), false);
-			        	piecesInMap.put(tempPiece, ((King)tempPiece).Move());
-			        	break;
-			        case "RookB":
-			        	tempPiece = new Rook(x, y, tempPiece.getname(), false);
-			        	piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(board));
-			        	break;
-			        case "KnightB":
-			        	tempPiece = new Knight(x,y, tempPiece.getname(), false);
-			        	piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(board));
-			        	break;
-			        case "BishopB":
-			        	tempPiece = new Bishop(x,y, tempPiece.getname(), false);
-			        	piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(board));
-			        	break;
-			        case "QueenB":
-			        	tempPiece = new Queen(x, y, tempPiece.getname(), false);
-			        	piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(board));
-			        	break;
-		
-					//-------WHITE------
-		
-			        case "KingW":
-			        	tempPiece = new King(x, y, tempPiece.getname(), true);
-			        	piecesInMap.put(tempPiece, ((King)tempPiece).Move());
-			            break;
-			        case "QueenW":
-			        	tempPiece = new Queen(x, y, tempPiece.getname(), true);
-			        	piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(board));
-			        	break;
-			        case "RookW":
-			        	tempPiece = new Rook(x, y, tempPiece.getname(), true);
-			        	piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(board));
-			        	break; 
-			        case "BishopW":
-			        	tempPiece = new Bishop(x, y, tempPiece.getname(), true);
-			        	piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(board));
-			        	break; 
-			        case "KnightW":
-			        	tempPiece = new Knight(x, y, tempPiece.getname(), true);
-			        	piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(board));
-			        	break;
-			        case "soldierW":
-			        	tempPiece = new Soldier(x, y, tempPiece.getname(), true);
-			        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(board));
-			        	break; 	
-        		}
+	        		switch (tempPiece.getname()) {
+				        case "soldierB":
+				        	tempPiece = new Soldier(x, y, tempPiece.getname(), false);
+				        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(board));
+				        	break; 
+				        case "KingB":
+				        	tempPiece = new King(x, y, tempPiece.getname(), false);
+				        	piecesInMap.put(tempPiece, ((King)tempPiece).Move());
+				        	break;
+				        case "RookB":
+				        	tempPiece = new Rook(x, y, tempPiece.getname(), false);
+				        	piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(board));
+				        	break;
+				        case "KnightB":
+				        	tempPiece = new Knight(x,y, tempPiece.getname(), false);
+				        	piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(board));
+				        	break;
+				        case "BishopB":
+				        	tempPiece = new Bishop(x,y, tempPiece.getname(), false);
+				        	piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(board));
+				        	break;
+				        case "QueenB":
+				        	tempPiece = new Queen(x, y, tempPiece.getname(), false);
+				        	piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(board));
+				        	break;
+			
+						//-------WHITE------
+			
+				        case "KingW":
+				        	tempPiece = new King(x, y, tempPiece.getname(), true);
+				        	piecesInMap.put(tempPiece, ((King)tempPiece).Move());
+				            break;
+				        case "QueenW":
+				        	tempPiece = new Queen(x, y, tempPiece.getname(), true);
+				        	piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(board));
+				        	break;
+				        case "RookW":
+				        	tempPiece = new Rook(x, y, tempPiece.getname(), true);
+				        	piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(board));
+				        	break; 
+				        case "BishopW":
+				        	tempPiece = new Bishop(x, y, tempPiece.getname(), true);
+				        	piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(board));
+				        	break; 
+				        case "KnightW":
+				        	tempPiece = new Knight(x, y, tempPiece.getname(), true);
+				        	piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(board));
+				        	break;
+				        case "soldierW":
+				        	tempPiece = new Soldier(x, y, tempPiece.getname(), true);
+				        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(board));
+				        	break; 	
+	        		}
+        	
+        		}catch (NullPointerException e) {}
         	}
     	}
     	
