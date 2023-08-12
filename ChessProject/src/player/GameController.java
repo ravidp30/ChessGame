@@ -600,8 +600,8 @@ public class GameController implements Initializable {
 	            System.out.println("------------------------------------------");
 	            
 	            for(int i = 0; i < moveOptions.size(); i++) {
-	            	newBoard = opponentBoard;
-	            	//newBoard = board;
+	            	//newBoard = opponentBoard;
+	            	newBoard = board;
 	
 		            newX = moveOptions.get(i).getX();
 		            newY = moveOptions.get(i).getY();
@@ -623,9 +623,9 @@ public class GameController implements Initializable {
 		        		
 		        	}
 		        	
-		        	if(!isChessOnMe(newBoard, false)){
+		        	if(!isChessOnMe(newBoard)){
 		            	System.out.println("no chess on ,e");
-		            	//return false;
+		            	return false;
 		        	}
 		           /* if(!isChess(newBoard)) {
 		            	System.out.println("no chess on ,e");
@@ -832,27 +832,27 @@ public class GameController implements Initializable {
 			
 				        case "KingW":
 				        	//tempPiece = new King(7-x, 7-y, "KingB", false);
-				        	piecesInMap.put(tempPiece, ((King)tempPiece).Move(opponentBoard));
+				        	piecesInMap.put(tempPiece, ((King)tempPiece).Move(board));
 				            break;
 				        case "QueenW":
 				        	//tempPiece = new Queen(7-x, 7-y, "QueenB", false);
-				        	piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(opponentBoard));
+				        	piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(board));
 				        	break;
 				        case "RookW":
 				        	//tempPiece = new Rook(7-x, 7-y, "RookB", false);
-				        	piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(opponentBoard));
+				        	piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(board));
 				        	break; 
 				        case "BishopW":
 				        	//tempPiece = new Bishop(7-x, 7-y, "BishopB", false);
-				        	piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(opponentBoard));
+				        	piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(board));
 				        	break; 
 				        case "KnightW":
 				        	//tempPiece = new Knight(7-x, 7-y, "KnightB", false);
-				        	piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(opponentBoard));
+				        	piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(board));
 				        	break;
 				        case "soldierW":
 				        	//tempPiece = new Soldier(7-x, 7-y, "soldierB", false);
-				        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(opponentBoard));
+				        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(board));
 				        	break; 	
 				        default:
 				        	break;
@@ -929,7 +929,7 @@ public class GameController implements Initializable {
         movePiece(x,y);
 
         
-        if(isChessOnMe(board, true)) { //Chess On ME
+        if(isChessOnMe(board)) { //Chess On ME
         	moveBack();
         	cloudImage(true);
         }
@@ -1127,7 +1127,7 @@ public class GameController implements Initializable {
 		
 	}
 
-	private boolean isChessOnMe(Board newBoard, boolean saveBoard) {//d
+	private boolean isChessOnMe(Board newBoard) {//d
 		
 		
 		ArrayList<Piece> tempPieces = new ArrayList<>();
@@ -1238,9 +1238,6 @@ public class GameController implements Initializable {
 					System.out.println(tempBoard.getPiece(i, j).getname() + ", " + tempBoard.getPiece(i, j).getX() + ", " + tempBoard.getPiece(i, j).getY());
 			}
 		}*/
-		if(saveBoard) {
-			opponentBoard = tempBoard;
-		}
 		
 
 		return isChess(tempBoard);
@@ -1273,7 +1270,19 @@ public class GameController implements Initializable {
 			if(playerTurn.getPlayerId().equals(player.getPlayerId())) {
 				lblTurnStatus.setText("Your Turn");
 				if(inCheck.getPlayerId().equals("InCheck")) {
-					popUpCheck("check on me");
+					setUpPiecesHasMap();
+					if(!checkForMate()) {
+						popUpCheck("check on me");
+					}
+					else {
+						popUpCheck("mate on me");
+					}
+					
+					
+					
+					
+					
+					
 				}
 			}
 			else {
