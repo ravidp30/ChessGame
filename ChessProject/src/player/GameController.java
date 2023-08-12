@@ -97,7 +97,7 @@ public class GameController implements Initializable {
 	        "/player/KnightW.png",
 	        "/player/BishopW.png",
 	        "/player/RookW.png"
-	    };;
+	    };
     //private ArrayList<Piece> pieces = new ArrayList<>();
 //    private LinkedList<Piece> pieceL = new LinkedList<>();
     private ArrayList<Piece> Kpieces = new ArrayList<>();
@@ -107,7 +107,6 @@ public class GameController implements Initializable {
     private ArrayList<Piece> Bpieces = new ArrayList<>();
     private ArrayList<Piece> KNpieces = new ArrayList<>();
     
-    private HashMap<Piece, ArrayList<Piece>> piecesInMap;
     private Board opponentBoard;
 
     
@@ -579,7 +578,7 @@ public class GameController implements Initializable {
 
      
     //function that move the specific piece 
-    public boolean checkForMate() {
+    public boolean checkForMate(HashMap<Piece, ArrayList<Piece>> piecesInMap) {
     	Board newBoard;
     	
     	int newX;
@@ -801,8 +800,8 @@ public class GameController implements Initializable {
     	 }
     }
     
-    public void setUpPiecesHasMap() {
-    	piecesInMap = new HashMap<>();
+    public HashMap<Piece, ArrayList<Piece>> setUpPiecesHasMap() {
+        HashMap<Piece, ArrayList<Piece>> piecesInMap = new HashMap<>();;
     	for(int x = 0; x < 8; x++) {
         	for(int y = 0; y < 8; y++) {
        		Piece tempPiece;
@@ -869,7 +868,7 @@ public class GameController implements Initializable {
         	}
     	}
     	
-    	
+    	return piecesInMap;
     }
     
     public boolean isChess(Board board1) {
@@ -1266,13 +1265,12 @@ public class GameController implements Initializable {
 			if(playerTurn.getPlayerId().equals(player.getPlayerId())) {
 				lblTurnStatus.setText("Your Turn");
 				if(inCheck.getPlayerId().equals("InCheck")) {
-					setUpPiecesHasMap();
-					/*if(!checkForMate()) {
+					if(!checkForMate(setUpPiecesHasMap())) {
 						popUpCheck("check on me");
 					}
 					else {
 						popUpCheck("mate on me");
-					}*/
+					}
 					
 					
 					
