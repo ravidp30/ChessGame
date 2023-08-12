@@ -617,13 +617,7 @@ public class GameController implements Initializable {
 	            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, piecesTemp);
 	            	
 	
-					System.out.println(2);
-					for(int x = 0; x < 8; x++) {
-						for(int y = 0; y < 8; y++) {
-							System.out.println(board.getPiece(x, y));
-						}
-					}
-					System.out.println(2);
+
 	            	
 	            	
 		            newX = moveOptions.get(i).getX();
@@ -631,36 +625,69 @@ public class GameController implements Initializable {
 		            
 		            availableToMove = newBoard.MoveCheck(keyPiece.getX(), keyPiece.getY(), newX, newY);//check if available to move
 		            
-					System.out.println(3);
-					for(int x = 0; x < 8; x++) {
-						for(int y = 0; y < 8; y++) {
-							System.out.println(board.getPiece(x, y));
-						}
-					}
-					System.out.println(3);
-		            
+
 		        	if(availableToMove == 1) {//available to move the image (EMPTY SPACE)
 		        		
+						System.out.println(1);
+						System.out.println("asdasd: " + newX + ", " + newY);
+						for(int x = 0; x < 8; x++) {
+							for(int y = 0; y < 8; y++) {
+								System.out.println(board.getPiece(x, y));
+							}
+						}
+						System.out.println(1);
+		        		
 		        		newBoard.setPieceXY(keyPiece, newX, newY);
+		        		
+						System.out.println(2);
+						System.out.println("asdasd: " + newX + ", " + newY);
+						for(int x = 0; x < 8; x++) {
+							for(int y = 0; y < 8; y++) {
+								System.out.println(board.getPiece(x, y));
+							}
+						}
+						System.out.println(2);
 		        		
 		        	}
 		        	else if(availableToMove == 2 && !newBoard.getPiece(newX, newY).getname().equals("KingB")) { // move to black piece (eating)
 		        		
+						System.out.println(3);
+						System.out.println("asdasd: " + newX + ", " + newY);
+						for(int x = 0; x < 8; x++) {
+							for(int y = 0; y < 8; y++) {
+								System.out.println(board.getPiece(x, y));
+							}
+						}
+						System.out.println(3);
+		        		
 		        		newBoard.removePiece(newX, newY);
+		        		
+						System.out.println(4);
+						System.out.println("asdasd: " + newX + ", " + newY);
+						for(int x = 0; x < 8; x++) {
+							for(int y = 0; y < 8; y++) {
+								System.out.println(board.getPiece(x, y));
+							}
+						}
+						System.out.println(4);
+		        		
 		        		newBoard.setPieceXY(keyPiece, newX, newY);
+		        		
+						System.out.println(5);
+						System.out.println("asdasd: " + newX + ", " + newY);
+						for(int x = 0; x < 8; x++) {
+							for(int y = 0; y < 8; y++) {
+								System.out.println(board.getPiece(x, y));
+							}
+						}
+						System.out.println(5);
 		        		
 		
 		        		
 		        	}
 		        	
 		        	
-					System.out.println(4);
-					for(int x = 0; x < 8; x++) {
-						for(int y = 0; y < 8; y++) {
-							System.out.println(board.getPiece(x, y));
-						}
-					}
-					System.out.println(4);
+
 		        	
 		        	if(!isChessOnMe(newBoard)){
 		            	System.out.println("no chess on ,e");
