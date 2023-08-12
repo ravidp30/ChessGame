@@ -625,7 +625,7 @@ public class GameController implements Initializable {
 		        		break;
 		        	}*/
 		            if(!isChessOnMe(newBoard)) {
-		            	System.out.println("no chess");
+		            	System.out.println("no chess on me");
 		            	//return false;
 		            }
 		        }
