@@ -579,7 +579,7 @@ public class GameController implements Initializable {
      
     //function that move the specific piece 
     public boolean checkForMate(HashMap<Piece, ArrayList<Piece>> piecesInMap) {
-    	Board newBoard;
+    	//Board newBoard;
     	
     	int newX;
     	int newY;
@@ -605,7 +605,7 @@ public class GameController implements Initializable {
 	            	ArrayList<Piece> piecesTemp = new ArrayList<>();
 	            	piecesTemp = board.getPieces();
 	            	
-	            	newBoard = new Board(8 * squareSize, 8 * squareSize, piecesTemp);
+	            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, piecesTemp);
 	            	
 	
 		            newX = moveOptions.get(i).getX();
@@ -801,70 +801,52 @@ public class GameController implements Initializable {
     }
     
     public HashMap<Piece, ArrayList<Piece>> setUpPiecesHasMap() {
-        HashMap<Piece, ArrayList<Piece>> piecesInMap = new HashMap<>();;
+        HashMap<Piece, ArrayList<Piece>> piecesInMap = new HashMap<>();
+        ArrayList<Piece> moveOptions = new ArrayList<>();
+        
     	for(int x = 0; x < 8; x++) {
         	for(int y = 0; y < 8; y++) {
-       		Piece tempPiece;
+       		Piece tempPiece = null;
         		
         		try {
             		//Piece tempPiece = new Piece(x, y, board.getPiece(x, y).getname(), board.getPiece(x, y).isWhite());
             		 
 	        		switch (board.getPiece(x, y).getname()) {
-//				        case "soldierB":
-//				        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(opponentBoard));
-//				        	break; 
-//				        case "KingB":
-//				        	//tempPiece = new King(7-x, 7-y, "KingW", true);
-//				        	piecesInMap.put(tempPiece, ((King)tempPiece).Move(opponentBoard));
-//				        	break;
-//				        case "RookB":
-//				        	//tempPiece = new Rook(7-x, 7-y, "RookW", true);
-//				        	piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(opponentBoard));
-//				        	break;
-//				        case "KnightB":
-//				        	//tempPiece = new Knight(7-x,7-y, "KnightW", true);
-//				        	piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(opponentBoard));
-//				        	break;
-//				        case "BishopB":
-//				        	//tempPiece = new Bishop(7-x,7-y, "BishopW", true);
-//				        	piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(opponentBoard));
-//				        	break;
-//				        case "QueenB":
-//				        	//tempPiece = new Queen(7-x, 7-y, "QueenW", true);
-//				        	piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(opponentBoard));
-//				        	break;
 			
 						//-------WHITE------
 			
 				        case "KingW":
 				        	tempPiece = new King(x, y, "KingW", true);
-				        	piecesInMap.put(tempPiece, ((King)tempPiece).Move(board));
+				        	moveOptions = ((King)tempPiece).Move(board);
 				            break;
 				        case "QueenW":
 				        	tempPiece = new Queen(x, y, "QueenW", true);
-				        	piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(board));
+				        	moveOptions = ((Queen)tempPiece).Move(board);
 				        	break;
 				        case "RookW":
 				        	tempPiece = new Rook(x, y, "RookW", true);
-				        	piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(board));
+				        	moveOptions = ((Rook)tempPiece).Move(board);
 				        	break; 
 				        case "BishopW":
 				        	tempPiece = new Bishop(x, y, "BishopW", true);
-				        	piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(board));
+				        	moveOptions = ((Bishop)tempPiece).Move(board);
 				        	break; 
 				        case "KnightW":
 				        	tempPiece = new Knight(x, y, "KnightW", true);
-				        	piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(board));
+				        	moveOptions = ((Knight)tempPiece).Move(board);
 				        	break;
 				        case "soldierW":
 				        	tempPiece = new Soldier(x, y, "soldierW", true);
-				        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(board));
+				        	moveOptions = ((Soldier)tempPiece).Move(board);
 				        	break; 	
 				        default:
 				        	break;
 	        		}
+	        		
+	        		piecesInMap.put(tempPiece, moveOptions);
         	
         		}catch (NullPointerException e) {}
+        		
         	}
     	}
     	
