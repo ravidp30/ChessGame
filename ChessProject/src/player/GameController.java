@@ -593,6 +593,9 @@ public class GameController implements Initializable {
             // Now you can work with keyPiece and valueList
             System.out.println("Key Piece: " + keyPiece);
             System.out.println("Value List: " + moveOptions);
+            System.out.println("------------------------------------------");
+            System.out.println("------------------------------------------");
+            System.out.println("------------------------------------------");
             
             for(int i = 0; i < moveOptions.size(); i++) {
             	
@@ -893,7 +896,7 @@ public class GameController implements Initializable {
         	Board tempBoard = board;
         	
         	
-        	System.out.println(piecesInMap);
+        	//System.out.println(piecesInMap);
         	System.out.println("------------------------------------------");
         	if(!checkForMate(tempBoard, piecesInMap)) {
         		popUpCheck("chess");   
