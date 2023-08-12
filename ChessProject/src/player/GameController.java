@@ -581,6 +581,15 @@ public class GameController implements Initializable {
     public boolean checkForMate(HashMap<Piece, ArrayList<Piece>> piecesInMap) {
     	//Board newBoard;
     	
+		System.out.println(1);
+		for(int x = 0; x < 8; x++) {
+			for(int y = 0; y < 8; y++) {
+				System.out.println(board.getPiece(x, y));
+			}
+		}
+		System.out.println(1);
+    	
+    	
     	int newX;
     	int newY;
     	
@@ -594,10 +603,10 @@ public class GameController implements Initializable {
 	            moveOptions = piecesInMap.get(keyPiece);
 	
 	            // Now you can work with keyPiece and valueList
-	            System.out.println("------------------------------------------");
+	            /*System.out.println("------------------------------------------");
 	            System.out.println("Key Piece: " + keyPiece);
 	            System.out.println("Value List: " + moveOptions);
-	            System.out.println("------------------------------------------");
+	            System.out.println("------------------------------------------");*/
 	            
 	            for(int i = 0; i < moveOptions.size(); i++) {
 	            	//newBoard = opponentBoard;
@@ -608,11 +617,27 @@ public class GameController implements Initializable {
 	            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, piecesTemp);
 	            	
 	
+					System.out.println(2);
+					for(int x = 0; x < 8; x++) {
+						for(int y = 0; y < 8; y++) {
+							System.out.println(board.getPiece(x, y));
+						}
+					}
+					System.out.println(2);
+	            	
+	            	
 		            newX = moveOptions.get(i).getX();
 		            newY = moveOptions.get(i).getY();
 		            
 		            availableToMove = newBoard.MoveCheck(keyPiece.getX(), keyPiece.getY(), newX, newY);//check if available to move
 		            
+					System.out.println(3);
+					for(int x = 0; x < 8; x++) {
+						for(int y = 0; y < 8; y++) {
+							System.out.println(board.getPiece(x, y));
+						}
+					}
+					System.out.println(3);
 		            
 		        	if(availableToMove == 1) {//available to move the image (EMPTY SPACE)
 		        		
@@ -627,6 +652,15 @@ public class GameController implements Initializable {
 		
 		        		
 		        	}
+		        	
+		        	
+					System.out.println(4);
+					for(int x = 0; x < 8; x++) {
+						for(int y = 0; y < 8; y++) {
+							System.out.println(board.getPiece(x, y));
+						}
+					}
+					System.out.println(4);
 		        	
 		        	if(!isChessOnMe(newBoard)){
 		            	System.out.println("no chess on ,e");
@@ -1247,6 +1281,8 @@ public class GameController implements Initializable {
 			if(playerTurn.getPlayerId().equals(player.getPlayerId())) {
 				lblTurnStatus.setText("Your Turn");
 				if(inCheck.getPlayerId().equals("InCheck")) {
+					
+					
 					if(!checkForMate(setUpPiecesHasMap())) {
 						popUpCheck("check on me");
 					}
@@ -1254,13 +1290,7 @@ public class GameController implements Initializable {
 						popUpCheck("mate on me");
 					}
 					
-					System.out.println(1);
-					for(int x = 0; x < 8; x++) {
-						for(int y = 0; y < 8; y++) {
-							System.out.println(board.getPiece(x, y));
-						}
-					}
-					System.out.println(1);
+
 					
 					
 					
