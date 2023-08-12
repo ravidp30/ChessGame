@@ -600,7 +600,8 @@ public class GameController implements Initializable {
         	if(keyPiece != null && keyPiece.isWhite()) {
         		//System.out.println("123 " + keyPiece);
 	            ArrayList<Piece> moveOptions = new ArrayList<>();
-	            moveOptions = piecesInMap.get(keyPiece);
+	            moveOptions.addAll(piecesInMap.get(keyPiece));
+	            //moveOptions = piecesInMap.get(keyPiece);
 	
 	            // Now you can work with keyPiece and valueList
 	            /*System.out.println("------------------------------------------");
@@ -612,7 +613,8 @@ public class GameController implements Initializable {
 	            	//newBoard = opponentBoard;
 	            	
 	            	ArrayList<Piece> piecesTemp = new ArrayList<>();
-	            	piecesTemp = board.getPieces();
+	            	piecesTemp.addAll(board.getPieces());
+	            	//piecesTemp = board.getPieces();
 	            	//ArrayList<Piece> piecesTemp = board.getPieces();
 	            	
 	            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, piecesTemp);
@@ -1254,9 +1256,7 @@ public class GameController implements Initializable {
 			if(playerTurn.getPlayerId().equals(player.getPlayerId())) {
 				lblTurnStatus.setText("Your Turn");
 				if(inCheck.getPlayerId().equals("InCheck")) {
-					ArrayList<Piece> piecesArr = new ArrayList<>();
-					piecesArr.addAll(board.getPieces());
-					System.out.println(piecesArr);
+
 					if(!checkForMate(setUpPiecesHasMap())) {
 						popUpCheck("check on me");
 					}
@@ -1264,9 +1264,6 @@ public class GameController implements Initializable {
 						popUpCheck("mate on me");
 					}
 					
-					board = new Board(8 * squareSize, 8 * squareSize, piecesArr);
-					System.out.println(1);
-					System.out.println(piecesArr);
 					
 					
 					
