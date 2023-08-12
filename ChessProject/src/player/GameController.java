@@ -107,7 +107,7 @@ public class GameController implements Initializable {
     private ArrayList<Piece> Bpieces = new ArrayList<>();
     private ArrayList<Piece> KNpieces = new ArrayList<>();
     
-    private HashMap<Piece, ArrayList<Piece>> piecesInMap = new HashMap<>();
+    private HashMap<Piece, ArrayList<Piece>> piecesInMap;
 
     
     
@@ -787,7 +787,7 @@ public class GameController implements Initializable {
     }
     
     public void setUpPiecesHasMap() {
-    	piecesInMap = null;
+    	piecesInMap = new HashMap<>();
     	for(int x = 0; x < 8; x++) {
         	for(int y = 0; y < 8; y++) {
         		Piece tempPiece = board.getPiece(x, y);
