@@ -603,10 +603,11 @@ public class GameController implements Initializable {
 	            	//newBoard = opponentBoard;
 	            	
 	            	newBoard = new Board(8 * squareSize, 8 * squareSize, null);
-	            	Piece piece;
+	            	
 	            	for(int x = 0; x < 8; x++) {
 		            	for(int y = 0; y < 8; y++) {
-		            		piece = board.getPiece(x, y);
+		            		Piece piece = new Piece(x, y, board.getPiece(x, y).getname(), board.getPiece(x, y).isWhite());
+		            		//piece = board.getPiece(x, y);
 		            		if(piece != null)
 		            			newBoard.addPiece(piece);
 		            	}
@@ -841,27 +842,27 @@ public class GameController implements Initializable {
 						//-------WHITE------
 			
 				        case "KingW":
-				        	tempPiece = new King(x, y, "KingW", true);
+				        	//tempPiece = new King(x, y, "KingW", true);
 				        	piecesInMap.put(tempPiece, ((King)tempPiece).Move(board));
 				            break;
 				        case "QueenW":
-				        	tempPiece = new Queen(x, y, "QueenW", true);
+				        	//tempPiece = new Queen(x, y, "QueenW", true);
 				        	piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(board));
 				        	break;
 				        case "RookW":
-				        	tempPiece = new Rook(x, y, "RookW", true);
+				        	//tempPiece = new Rook(x, y, "RookW", true);
 				        	piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(board));
 				        	break; 
 				        case "BishopW":
-				        	tempPiece = new Bishop(x, y, "BishopW", true);
+				        	//tempPiece = new Bishop(x, y, "BishopW", true);
 				        	piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(board));
 				        	break; 
 				        case "KnightW":
-				        	tempPiece = new Knight(x, y, "KnightW", true);
+				        	//tempPiece = new Knight(x, y, "KnightW", true);
 				        	piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(board));
 				        	break;
 				        case "soldierW":
-				        	tempPiece = new Soldier(x, y, "soldierW", true);
+				        	//tempPiece = new Soldier(x, y, "soldierW", true);
 				        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(board));
 				        	break; 	
 				        default:
