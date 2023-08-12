@@ -612,7 +612,7 @@ public class GameController implements Initializable {
 		        		newBoard.setPieceXY(keyPiece, newX, newY);
 		        		
 		        	}
-		        	else if(availableToMove == 2) { // move to black piece (eating)
+		        	else if(availableToMove == 2 && !newBoard.getPiece(newX, newY).getname().equals("KingB")) { // move to black piece (eating)
 		        		
 		        		newBoard.removePiece(newX, newY);
 		        		newBoard.setPieceXY(keyPiece, newX, newY);
