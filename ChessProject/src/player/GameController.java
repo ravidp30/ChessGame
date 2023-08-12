@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 import javafx.scene.effect.DropShadow;
@@ -105,6 +106,8 @@ public class GameController implements Initializable {
     private ArrayList<Piece> Rpieces = new ArrayList<>();
     private ArrayList<Piece> Bpieces = new ArrayList<>();
     private ArrayList<Piece> KNpieces = new ArrayList<>();
+    
+    private HashMap<Piece, ArrayList<Piece>> piecesInMap = new HashMap<>();
 
     
     
@@ -569,6 +572,64 @@ public class GameController implements Initializable {
     	}
         
     }
+    
+    
+    
+
+     
+    //function that move the specific piece 
+    public boolean checkForMate(Board newBoard, HashMap<Piece, ArrayList<Piece>> movementForEachPiece) {
+    	
+    	
+    	int newX;
+    	int newY;
+    	
+    	int availableToMove=0;
+    	
+    	
+        for (Piece keyPiece : movementForEachPiece.keySet()) {
+            ArrayList<Piece> moveOptions = movementForEachPiece.get(keyPiece);
+
+            // Now you can work with keyPiece and valueList
+            System.out.println("Key Piece: " + keyPiece);
+            System.out.println("Value List: " + moveOptions);
+            
+            for(int i = 0; i < moveOptions.size(); i++) {
+            	
+
+	            newX = moveOptions.get(i).getX();
+	            newY = moveOptions.get(i).getY();
+	            
+	            availableToMove = newBoard.MoveCheck(keyPiece.getX(), keyPiece.getY(), newX, newY);//check if available to move
+	            
+	            
+	        	if(availableToMove == 1) {//available to move the image (EMPTY SPACE)
+	        		
+	        		newBoard.setPieceXY(keyPiece, newX, newY);
+	        		
+	        	}
+	        	else if(availableToMove == 2) { // move to black piece (eating)
+	        		
+	        		newBoard.removePiece(newX, newY);
+	        		newBoard.setPieceXY(keyPiece, newX, newY);
+	        		
+	
+	        		
+	        	}
+	            if(!isChess(newBoard)) {
+	            	return false;
+	            }
+	        }
+    	
+    	
+        }
+        
+        return true;
+    	
+
+    }
+    
+
 
 
     //function that move the specific piece 
@@ -763,6 +824,7 @@ public class GameController implements Initializable {
 	    					default:
 	    						System.out.println("no way");
 	    				}
+    					piecesInMap.put(currPiece, moveOptions);
     					//System.out.println("\n\ncurr piece: " + currPiece.getname());
     					for(Piece optionsToMove : moveOptions) {
     						//System.out.println(optionsToMove.getname());
@@ -828,13 +890,22 @@ public class GameController implements Initializable {
         boolean inCheck = isChess(board);
         
         if(inCheck) {
-        	popUpCheck("chess");
+        	Board tempBoard = board;
+        	
+        	
+        	
+        	if(!checkForMate(tempBoard, piecesInMap)) {
+        		popUpCheck("chess");   
+        	}
+        	else {
+        		popUpCheck("Mate");
+        	}
         }
         
-        System.out.println("@@@@@@@@@@");
+        /*System.out.println("@@@@@@@@@@");
         System.out.println(firstPieceSelected.getname());
         System.out.println(lastChosenPiece.getname());
-        System.out.println("@@@@@@@@@@");
+        System.out.println("@@@@@@@@@@");*/
 
    
 		// send to the server the piece was changed (old piece and new piece) and if eaten
@@ -853,6 +924,21 @@ public class GameController implements Initializable {
     	
     	SendToServerChangePlayerTurn(inCheck);  // send to the opponent also if there is check on him
 	}
+	
+	
+	/*public HashMap<Piece, ArrayList<Piece>> buildHashMapForPieces(){
+		
+		HashMap<Piece, ArrayList<Piece>> piecesInMap = new HashMap<>();
+		
+		
+		for(int x = 0; x < 8; x++) {
+			
+		}
+		
+		
+		
+		return piecesInMap;
+	}*/
 	
 	
 	
