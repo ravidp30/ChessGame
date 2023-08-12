@@ -579,17 +579,7 @@ public class GameController implements Initializable {
      
     //function that move the specific piece 
     public boolean checkForMate(HashMap<Piece, ArrayList<Piece>> piecesInMap) {
-    	//Board newBoard;
-    	
-		System.out.println(1);
-		for(int x = 0; x < 8; x++) {
-			for(int y = 0; y < 8; y++) {
-				System.out.println(board.getPiece(x, y));
-			}
-		}
-		System.out.println(1);
-    	
-    	
+    		
     	int newX;
     	int newY;
     	
@@ -598,24 +588,21 @@ public class GameController implements Initializable {
     	
         for (Piece keyPiece : piecesInMap.keySet()) {
         	if(keyPiece != null && keyPiece.isWhite()) {
-        		//System.out.println("123 " + keyPiece);
+
 	            ArrayList<Piece> moveOptions = new ArrayList<>();
 	            moveOptions.addAll(piecesInMap.get(keyPiece));
-	            //moveOptions = piecesInMap.get(keyPiece);
-	
-	            // Now you can work with keyPiece and valueList
-	            /*System.out.println("------------------------------------------");
-	            System.out.println("Key Piece: " + keyPiece);
-	            System.out.println("Value List: " + moveOptions);
-	            System.out.println("------------------------------------------");*/
+	            
+	            
 	            
 	            for(int i = 0; i < moveOptions.size(); i++) {
-	            	//newBoard = opponentBoard;
+
+	            	System.out.println(1);
+	            	System.out.println("piece: " + keyPiece);
+	            	System.out.println("moves: " + moveOptions);
+	            	System.out.println(1);
 	            	
 	            	ArrayList<Piece> piecesTemp = new ArrayList<>();
 	            	piecesTemp.addAll(board.getPieces());
-	            	//piecesTemp = board.getPieces();
-	            	//ArrayList<Piece> piecesTemp = board.getPieces();
 	            	
 	            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, piecesTemp);
 
