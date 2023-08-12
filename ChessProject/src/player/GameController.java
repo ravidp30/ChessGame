@@ -612,7 +612,7 @@ public class GameController implements Initializable {
 		        		newBoard.setPieceXY(keyPiece, newX, newY);
 		        		
 		        	}
-		        	else if(availableToMove == 2 && !newBoard.getPiece(newX, newY).getname().equals("KingW")) { // move to black piece (eating)
+		        	else if(availableToMove == 2 && !newBoard.getPiece(newX, newY).getname().equals("KingB")) { // move to black piece (eating)
 		        		
 		        		newBoard.removePiece(newX, newY);
 		        		newBoard.setPieceXY(keyPiece, newX, newY);
@@ -623,7 +623,7 @@ public class GameController implements Initializable {
 		        	/*else if(availableToMove == 0) {
 		        		break;
 		        	}*/
-		            if(!isChess(newBoard)) {
+		            if(!isChessOnMe(newBoard)) {
 		            	return false;
 		            }
 		        }
@@ -923,7 +923,7 @@ public class GameController implements Initializable {
         movePiece(x,y);
 
         
-        if(isChessOnMe()) { //Chess On ME
+        if(isChessOnMe(board)) { //Chess On ME
         	moveBack();
         	cloudImage(true);
         }
@@ -1121,7 +1121,7 @@ public class GameController implements Initializable {
 		
 	}
 
-	private boolean isChessOnMe() {//d
+	private boolean isChessOnMe(Board newBoard) {//d
 		
 		
 		ArrayList<Piece> tempPieces = new ArrayList<>();
@@ -1131,7 +1131,7 @@ public class GameController implements Initializable {
 		for(int x = 0; x < 8; x++) {
 			for(int y = 0; y < 8; y++) {
 				try {			
-					tempPiece = board.getPiece(x, y);
+					tempPiece = newBoard.getPiece(x, y);
 	
 					if(tempPiece.getname().endsWith("W")) {
 						//System.out.println("white: " + tempPiece.getX() + "," + tempPiece.getY());
