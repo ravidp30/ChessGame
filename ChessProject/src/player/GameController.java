@@ -623,11 +623,14 @@ public class GameController implements Initializable {
 		        		
 		        	}
 		        	
-
-		            if(!isChess(newBoard)) {
+		        	if(!isChessOnMe(newBoard, false)){
 		            	System.out.println("no chess on ,e");
 		            	//return false;
-		            }
+		        	}
+		           /* if(!isChess(newBoard)) {
+		            	System.out.println("no chess on ,e");
+		            	//return false;
+		            }*/
 		        }
         	}
     	
@@ -926,7 +929,7 @@ public class GameController implements Initializable {
         movePiece(x,y);
 
         
-        if(isChessOnMe(board)) { //Chess On ME
+        if(isChessOnMe(board, true)) { //Chess On ME
         	moveBack();
         	cloudImage(true);
         }
@@ -1124,7 +1127,7 @@ public class GameController implements Initializable {
 		
 	}
 
-	private boolean isChessOnMe(Board newBoard) {//d
+	private boolean isChessOnMe(Board newBoard, boolean saveBoard) {//d
 		
 		
 		ArrayList<Piece> tempPieces = new ArrayList<>();
@@ -1235,8 +1238,9 @@ public class GameController implements Initializable {
 					System.out.println(tempBoard.getPiece(i, j).getname() + ", " + tempBoard.getPiece(i, j).getX() + ", " + tempBoard.getPiece(i, j).getY());
 			}
 		}*/
-		
-		opponentBoard = tempBoard;
+		if(saveBoard) {
+			opponentBoard = tempBoard;
+		}
 		
 
 		return isChess(tempBoard);
