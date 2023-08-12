@@ -611,8 +611,9 @@ public class GameController implements Initializable {
 	            for(int i = 0; i < moveOptions.size(); i++) {
 	            	//newBoard = opponentBoard;
 	            	
-	            	//ArrayList<Piece> piecesTemp = new ArrayList<>();
-	            	ArrayList<Piece> piecesTemp = board.getPieces();
+	            	ArrayList<Piece> piecesTemp = new ArrayList<>();
+	            	piecesTemp = board.getPieces();
+	            	//ArrayList<Piece> piecesTemp = board.getPieces();
 	            	
 	            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, piecesTemp);
 	            	
@@ -863,12 +864,12 @@ public class GameController implements Initializable {
     
     public HashMap<Piece, ArrayList<Piece>> setUpPiecesHasMap() {
         HashMap<Piece, ArrayList<Piece>> piecesInMap = new HashMap<>();
-        ArrayList<Piece> moveOptions = new ArrayList<>();
+        ArrayList<Piece> moveOptions;
         
     	for(int x = 0; x < 8; x++) {
         	for(int y = 0; y < 8; y++) {
        		Piece tempPiece = null;
-        		
+       		moveOptions = new ArrayList<>();
         		try {
             		//Piece tempPiece = new Piece(x, y, board.getPiece(x, y).getname(), board.getPiece(x, y).isWhite());
             		 

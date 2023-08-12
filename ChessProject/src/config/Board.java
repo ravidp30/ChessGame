@@ -42,10 +42,14 @@ public class Board implements Serializable{
 		}
 	}
 	
-	public ArrayList<Piece> getPieces(){
+	/*public ArrayList<Piece> getPieces(){
 		ArrayList<Piece> tempPieces = new ArrayList<>();
 		tempPieces = pieces;
 		return tempPieces;
+	}*/
+	
+	public ArrayList<Piece> getPieces(){
+		return pieces;
 	}
 	
 	
