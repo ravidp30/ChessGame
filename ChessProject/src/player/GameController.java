@@ -1255,7 +1255,7 @@ public class GameController implements Initializable {
 				lblTurnStatus.setText("Your Turn");
 				if(inCheck.getPlayerId().equals("InCheck")) {
 					ArrayList<Piece> piecesArr = new ArrayList<>();
-					piecesArr = board.getPieces();
+					piecesArr.addAll(board.getPieces());
 					System.out.println(piecesArr);
 					if(!checkForMate(setUpPiecesHasMap())) {
 						popUpCheck("check on me");
