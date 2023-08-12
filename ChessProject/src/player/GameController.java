@@ -588,42 +588,43 @@ public class GameController implements Initializable {
     	
     	
         for (Piece keyPiece : piecesInMap.keySet()) {
-            ArrayList<Piece> moveOptions = piecesInMap.get(keyPiece);
-
-            // Now you can work with keyPiece and valueList
-            System.out.println("Key Piece: " + keyPiece);
-            System.out.println("Value List: " + moveOptions);
-            System.out.println("------------------------------------------");
-            System.out.println("------------------------------------------");
-            System.out.println("------------------------------------------");
-            
-            for(int i = 0; i < moveOptions.size(); i++) {
-            	newBoard = board;
-
-	            newX = moveOptions.get(i).getX();
-	            newY = moveOptions.get(i).getY();
-	            
-	            availableToMove = newBoard.MoveCheck(keyPiece.getX(), keyPiece.getY(), newX, newY);//check if available to move
-	            
-	            
-	        	if(availableToMove == 1) {//available to move the image (EMPTY SPACE)
-	        		
-	        		newBoard.setPieceXY(keyPiece, newX, newY);
-	        		
-	        	}
-	        	else if(availableToMove == 2) { // move to black piece (eating)
-	        		
-	        		newBoard.removePiece(newX, newY);
-	        		newBoard.setPieceXY(keyPiece, newX, newY);
-	        		
+        	if(keyPiece.isWhite()) {
+	            ArrayList<Piece> moveOptions = piecesInMap.get(keyPiece);
 	
-	        		
-	        	}
-	            if(!isChess(newBoard)) {
-	            	return false;
-	            }
-	        }
-    	
+	            // Now you can work with keyPiece and valueList
+	            System.out.println("Key Piece: " + keyPiece);
+	            System.out.println("Value List: " + moveOptions);
+	            System.out.println("------------------------------------------");
+	            System.out.println("------------------------------------------");
+	            System.out.println("------------------------------------------");
+	            
+	            for(int i = 0; i < moveOptions.size(); i++) {
+	            	newBoard = board;
+	
+		            newX = moveOptions.get(i).getX();
+		            newY = moveOptions.get(i).getY();
+		            
+		            availableToMove = newBoard.MoveCheck(keyPiece.getX(), keyPiece.getY(), newX, newY);//check if available to move
+		            
+		            
+		        	if(availableToMove == 1) {//available to move the image (EMPTY SPACE)
+		        		
+		        		newBoard.setPieceXY(keyPiece, newX, newY);
+		        		
+		        	}
+		        	else if(availableToMove == 2) { // move to black piece (eating)
+		        		
+		        		newBoard.removePiece(newX, newY);
+		        		newBoard.setPieceXY(keyPiece, newX, newY);
+		        		
+		
+		        		
+		        	}
+		            if(!isChess(newBoard)) {
+		            	return false;
+		            }
+		        }
+        	}
     	
         }
         
