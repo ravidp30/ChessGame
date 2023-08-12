@@ -971,18 +971,7 @@ public class GameController implements Initializable {
         boolean inCheck = isChess(board);
         
         if(inCheck) {
-        	//Board tempBoard = board;
-        	
-        	
-        	//System.out.println(piecesInMap);
-        	System.out.println("------------------------------------------");
-        	setUpPiecesHasMap();
-        	if(!checkForMate()) {
-        		popUpCheck("chess");   
-        	}
-        	else {
-        		popUpCheck("Mate");
-        	}
+        	popUpCheck("chess");   
         }
         
         /*System.out.println("@@@@@@@@@@");
