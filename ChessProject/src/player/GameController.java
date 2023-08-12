@@ -586,7 +586,6 @@ public class GameController implements Initializable {
     	int availableToMove=0;
     	
     	ArrayList<Piece> piecesTemp = new ArrayList<>();
-    	piecesTemp.addAll(board.getPieces());
     	
     	
         for (Piece keyPiece : piecesInMap.keySet()) {
@@ -599,6 +598,10 @@ public class GameController implements Initializable {
 	            
 	            for(int i = 0; i < moveOptions.size(); i++) {
 
+	            	piecesTemp.clear();
+	            	piecesTemp.addAll(board.getPieces());
+	            	
+	            	
 	            	System.out.println(1);
 	            	System.out.println("piece: " + keyPiece);
 	            	System.out.println("moves: " + moveOptions.get(i));
