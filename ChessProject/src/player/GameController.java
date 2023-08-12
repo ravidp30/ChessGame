@@ -590,14 +590,13 @@ public class GameController implements Initializable {
     	
         for (Piece keyPiece : piecesInMap.keySet()) {
         	if(keyPiece != null && keyPiece.isWhite()) {
-        		System.out.println("123 " + keyPiece);
+        		//System.out.println("123 " + keyPiece);
 	            ArrayList<Piece> moveOptions = piecesInMap.get(keyPiece);
 	
 	            // Now you can work with keyPiece and valueList
+	            System.out.println("------------------------------------------");
 	            System.out.println("Key Piece: " + keyPiece);
 	            System.out.println("Value List: " + moveOptions);
-	            System.out.println("------------------------------------------");
-	            System.out.println("------------------------------------------");
 	            System.out.println("------------------------------------------");
 	            
 	            for(int i = 0; i < moveOptions.size(); i++) {
@@ -626,7 +625,8 @@ public class GameController implements Initializable {
 		        		break;
 		        	}*/
 		            if(!isChess(newBoard)) {
-		            	return false;
+		            	System.out.println("no chess");
+		            	//return false;
 		            }
 		        }
         	}
