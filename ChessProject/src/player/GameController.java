@@ -578,8 +578,8 @@ public class GameController implements Initializable {
 
      
     //function that move the specific piece 
-    public boolean checkForMate(Board newBoard, HashMap<Piece, ArrayList<Piece>> movementForEachPiece) {
-    	
+    public boolean checkForMate() {
+    	Board newBoard;
     	
     	int newX;
     	int newY;
@@ -587,8 +587,8 @@ public class GameController implements Initializable {
     	int availableToMove=0;
     	
     	
-        for (Piece keyPiece : movementForEachPiece.keySet()) {
-            ArrayList<Piece> moveOptions = movementForEachPiece.get(keyPiece);
+        for (Piece keyPiece : piecesInMap.keySet()) {
+            ArrayList<Piece> moveOptions = piecesInMap.get(keyPiece);
 
             // Now you can work with keyPiece and valueList
             System.out.println("Key Piece: " + keyPiece);
@@ -598,7 +598,7 @@ public class GameController implements Initializable {
             System.out.println("------------------------------------------");
             
             for(int i = 0; i < moveOptions.size(); i++) {
-            	
+            	newBoard = board;
 
 	            newX = moveOptions.get(i).getX();
 	            newY = moveOptions.get(i).getY();
@@ -786,6 +786,73 @@ public class GameController implements Initializable {
     	 }
     }
     
+    public void setUpPiecesHasMap() {
+    	piecesInMap = null;
+    	for(int x = 0; x < 8; x++) {
+        	for(int y = 0; y < 8; y++) {
+        		Piece tempPiece = board.getPiece(x, y);
+        		
+        		
+        		
+        		switch (tempPiece.getname()) {
+			        case "soldierB":
+			        	tempPiece = new Soldier(x, y, tempPiece.getname(), false);
+			        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(board));
+			        	break; 
+			        case "KingB":
+			        	tempPiece = new King(x, y, tempPiece.getname(), false);
+			        	piecesInMap.put(tempPiece, ((King)tempPiece).Move());
+			        	break;
+			        case "RookB":
+			        	tempPiece = new Rook(x, y, tempPiece.getname(), false);
+			        	piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(board));
+			        	break;
+			        case "KnightB":
+			        	tempPiece = new Knight(x,y, tempPiece.getname(), false);
+			        	piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(board));
+			        	break;
+			        case "BishopB":
+			        	tempPiece = new Bishop(x,y, tempPiece.getname(), false);
+			        	piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(board));
+			        	break;
+			        case "QueenB":
+			        	tempPiece = new Queen(x, y, tempPiece.getname(), false);
+			        	piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(board));
+			        	break;
+		
+					//-------WHITE------
+		
+			        case "KingW":
+			        	tempPiece = new King(x, y, tempPiece.getname(), true);
+			        	piecesInMap.put(tempPiece, ((King)tempPiece).Move());
+			            break;
+			        case "QueenW":
+			        	tempPiece = new Queen(x, y, tempPiece.getname(), true);
+			        	piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(board));
+			        	break;
+			        case "RookW":
+			        	tempPiece = new Rook(x, y, tempPiece.getname(), true);
+			        	piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(board));
+			        	break; 
+			        case "BishopW":
+			        	tempPiece = new Bishop(x, y, tempPiece.getname(), true);
+			        	piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(board));
+			        	break; 
+			        case "KnightW":
+			        	tempPiece = new Knight(x, y, tempPiece.getname(), true);
+			        	piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(board));
+			        	break;
+			        case "soldierW":
+			        	tempPiece = new Soldier(x, y, tempPiece.getname(), true);
+			        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(board));
+			        	break; 	
+        		}
+        	}
+    	}
+    	
+    	
+    }
+    
     public boolean isChess(Board board1) {
 
     	ArrayList<Piece> moveOptions = new ArrayList<>();
@@ -827,7 +894,6 @@ public class GameController implements Initializable {
 	    					default:
 	    						System.out.println("no way");
 	    				}
-    					piecesInMap.put(currPiece, moveOptions);
     					//System.out.println("\n\ncurr piece: " + currPiece.getname());
     					for(Piece optionsToMove : moveOptions) {
     						//System.out.println(optionsToMove.getname());
@@ -898,7 +964,8 @@ public class GameController implements Initializable {
         	
         	//System.out.println(piecesInMap);
         	System.out.println("------------------------------------------");
-        	if(!checkForMate(tempBoard, piecesInMap)) {
+        	setUpPiecesHasMap();
+        	if(!checkForMate()) {
         		popUpCheck("chess");   
         	}
         	else {
