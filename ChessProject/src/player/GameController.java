@@ -108,6 +108,7 @@ public class GameController implements Initializable {
     private ArrayList<Piece> KNpieces = new ArrayList<>();
     
     private HashMap<Piece, ArrayList<Piece>> piecesInMap;
+    private Board opponentBoard;
 
     
     
@@ -588,7 +589,7 @@ public class GameController implements Initializable {
     	
     	
         for (Piece keyPiece : piecesInMap.keySet()) {
-        	if(!keyPiece.isWhite()) {
+        	if(keyPiece.isWhite()) {
 	            ArrayList<Piece> moveOptions = piecesInMap.get(keyPiece);
 	
 	            // Now you can work with keyPiece and valueList
@@ -599,7 +600,7 @@ public class GameController implements Initializable {
 	            System.out.println("------------------------------------------");
 	            
 	            for(int i = 0; i < moveOptions.size(); i++) {
-	            	newBoard = board;
+	            	newBoard = opponentBoard;
 	
 		            newX = moveOptions.get(i).getX();
 		            newY = moveOptions.get(i).getY();
@@ -623,7 +624,7 @@ public class GameController implements Initializable {
 		        	/*else if(availableToMove == 0) {
 		        		break;
 		        	}*/
-		            if(!isChessOnMe(newBoard)) {
+		            if(!isChess(newBoard)) {
 		            	return false;
 		            }
 		        }
@@ -965,12 +966,12 @@ public class GameController implements Initializable {
         boolean inCheck = isChess(board);
         
         if(inCheck) {
-        	Board tempBoard = board;
+        	//Board tempBoard = board;
         	
         	
         	//System.out.println(piecesInMap);
         	System.out.println("------------------------------------------");
-        	setUpPiecesHasMap();
+        	//setUpPiecesHasMap();
         	if(!checkForMate()) {
         		popUpCheck("chess");   
         	}
@@ -1142,21 +1143,27 @@ public class GameController implements Initializable {
 						switch (modifiedString) {
 					        case "soldierB":
 					        	tempPiece = new Soldier(7-x, 7-y, modifiedString, false);
+					        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(newBoard));
 					        	break; 
 					        case "KingB":
 					        	tempPiece = new King(7-x, 7-y, modifiedString, false);
+					        	piecesInMap.put(tempPiece, ((King)tempPiece).Move(newBoard));
 					        	break;
 					        case "RookB":
 					        	tempPiece = new Rook(7-x, 7-y, modifiedString, false);
+					        	piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(newBoard));
 					        	break;
 					        case "KnightB":
 					        	tempPiece = new Knight(7-x,7-y, modifiedString, false);
+					        	piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(newBoard));
 					        	break;
 					        case "BishopB":
 					        	tempPiece = new Bishop(7-x,7-y, modifiedString, false);
+					        	piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(newBoard));
 					        	break;
 					        case "QueenB":
 					        	tempPiece = new Queen(7-x, 7-y, modifiedString, false);
+					        	piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(newBoard));
 					        	break;
 					        default:
 					            System.out.println("Invalid choice");
@@ -1175,21 +1182,27 @@ public class GameController implements Initializable {
 		    	
 					        case "KingW":
 					        	tempPiece = new King(7-x, 7-y, modifiedString, true);
+					        	piecesInMap.put(tempPiece, ((King)tempPiece).Move(newBoard));
 					            break;
 					        case "QueenW":
 					        	tempPiece = new Queen(7-x, 7-y, modifiedString, true);
+					        	piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(newBoard));
 					        	break;
 					        case "RookW":
 					        	tempPiece = new Rook(7-x, 7-y, modifiedString, true);
+					        	piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(newBoard));
 					        	break; 
 					        case "BishopW":
 					        	tempPiece = new Bishop(7-x, 7-y, modifiedString, true);
+					        	piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(newBoard));
 					        	break; 
 					        case "KnightW":
 					        	tempPiece = new Knight(7-x, 7-y, modifiedString, true);
+					        	piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(newBoard));
 					        	break;
 					        case "soldierW":
 					        	tempPiece = new Soldier(7-x, 7-y, modifiedString, true);
+					        	piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(newBoard));
 					        	break; 
 					        default:
 					            System.out.println("Invalid choice");
@@ -1221,7 +1234,7 @@ public class GameController implements Initializable {
 			}
 		}*/
 		
-
+		opponentBoard = tempBoard;
 		
 
 		return isChess(tempBoard);
