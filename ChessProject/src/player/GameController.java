@@ -577,75 +577,13 @@ public class GameController implements Initializable {
     
 
      
-    //function that move the specific piece 
+   /* //function that move the specific piece 
     public boolean checkForMate(HashMap<Piece, ArrayList<Piece>> piecesInMap) {
     		
-    	int newX;
-    	int newY;
-    	
-    	int availableToMove=0;
-    	
-    	ArrayList<Piece> piecesTemp = new ArrayList<>();
-    	Piece tempKeyPiece;
     	
     	
-        for (Piece keyPiece : piecesInMap.keySet()) {
-        	if(keyPiece != null && keyPiece.isWhite()) {
-        		tempKeyPiece = new Piece(keyPiece.getX(), keyPiece.getY(), keyPiece.getname(), keyPiece.isWhite());
-	            ArrayList<Piece> moveOptions = new ArrayList<>();
-	            moveOptions.addAll(piecesInMap.get(keyPiece));
-	            
-	            
-	            
-	            for(int i = 0; i < moveOptions.size(); i++) {
-
-	            	piecesTemp.clear();
-	            	piecesTemp.addAll(board.getPieces());
-	            	
-	            	
-	            	System.out.println(1);
-	            	System.out.println("piece: " + tempKeyPiece);
-	            	System.out.println("moves: " + moveOptions.get(i));
-	            	System.out.println(1);
-	            	
-	            	
-	            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, piecesTemp);
-
-		            newX = moveOptions.get(i).getX();
-		            newY = moveOptions.get(i).getY();
-		            
-		            availableToMove = newBoard.MoveCheck(keyPiece.getX(), keyPiece.getY(), newX, newY);//check if available to move
-		            
-
-		        	if(availableToMove == 1) {//available to move the image (EMPTY SPACE)
-		        		
-		        		newBoard.setPieceXY(tempKeyPiece, newX, newY);
-  		
-		        	}
-		        	else if(availableToMove == 2 && !newBoard.getPiece(newX, newY).getname().equals("KingB")) { // move to black piece (eating)
-	        		
-		        		newBoard.removePiece(newX, newY);
- 		
-		        		newBoard.setPieceXY(tempKeyPiece, newX, newY);
-
-		        		
-		        	}
-		        	
-
-		        	if(!isChessOnMe(newBoard)){
-		            	System.out.println("no chess on ,e");
-		            	return false;
-		        	}
-
-		        }
-        	}
     	
-        }
-        
-        return true;
-    	
-
-    }
+    }*/
     
 
 
@@ -1257,14 +1195,18 @@ public class GameController implements Initializable {
 				
 				lblTurnStatus.setText("Your Turn");
 				if(inCheck.getPlayerId().equals("InCheck")) {
+					
+					HashMap<Piece, ArrayList<Piece>> arr = new HashMap<>();
+					
+					arr = setUpPiecesHasMap();
 
-					if(!checkForMate(setUpPiecesHasMap())) {
+					//if(!checkForMate(setUpPiecesHasMap())) {
 						popUpCheck("check on me");
 						
-					}
-					else {
-						popUpCheck("mate on me");
-					}
+					//}
+					//else {
+						//popUpCheck("mate on me");
+				//	}
 					
 					
 					
