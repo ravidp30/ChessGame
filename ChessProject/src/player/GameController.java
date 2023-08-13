@@ -581,7 +581,7 @@ public class GameController implements Initializable {
     public boolean checkForMate(HashMap<Piece, ArrayList<Piece>> piecesInMap) {
     	
     	
-    	
+    	try {
     	
     	
     	
@@ -652,7 +652,7 @@ public class GameController implements Initializable {
     	}
     	
     	
-    		
+    	}catch (Exception e) {}
     	
     	return true;
     	
