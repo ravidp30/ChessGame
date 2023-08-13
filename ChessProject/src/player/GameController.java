@@ -1196,7 +1196,7 @@ public class GameController implements Initializable {
 				lblTurnStatus.setText("Your Turn");
 				if(inCheck.getPlayerId().equals("InCheck")) {
 					
-					HashMap<Piece, ArrayList<Piece>> arr = new HashMap<>();
+					HashMap<Piece, ArrayList<Piece>> arr;
 					
 					arr = setUpPiecesHasMap();
 
