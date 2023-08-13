@@ -581,7 +581,7 @@ public class GameController implements Initializable {
     public boolean checkForMate(HashMap<Piece, ArrayList<Piece>> piecesInMap) {
     	
     	
-    	try {
+
     	
     	
     	
@@ -620,7 +620,7 @@ public class GameController implements Initializable {
 	            	if(optionToMove.getname().equals("empty")) {//available to move the image (EMPTY SPACE)
 	
 	            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
-	            		
+	            		System.out.println("asdasd: " + optionToMove);
 	            		System.out.println(1);
 	            		
 	            	}
@@ -652,7 +652,6 @@ public class GameController implements Initializable {
     	}
     	
     	
-    	}catch (Exception e) {}
     	
     	return true;
     	
