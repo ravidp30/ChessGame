@@ -969,8 +969,8 @@ public class GameController implements Initializable {
 	
 	public void TurnContinueAfterMovement() {
 		
-		if(secondPieceSelected != null) {
-			lastChosenPiece = board.getPiece(secondPieceSelected.getX(), secondPieceSelected.getY());
+		if(lastChosenPiece != null) {
+			lastChosenPiece = board.getPiece(lastChosenPiece.getX(), lastChosenPiece.getY());
 		}
 		
     	cloudImage(false);
