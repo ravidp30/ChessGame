@@ -980,10 +980,10 @@ public class GameController implements Initializable {
         	popUpCheck("chess");   
         }
         
-        /*System.out.println("@@@@@@@@@@");
-        System.out.println(firstPieceSelected.getname());
-        System.out.println(lastChosenPiece.getname());
-        System.out.println("@@@@@@@@@@");*/
+        System.out.println("777777777777777777");
+        System.out.println(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite()));
+        System.out.println(lastChosenPiece);
+        System.out.println("777777777777777777");
 
    
 		// send to the server the piece was changed (old piece and new piece) and if eaten
