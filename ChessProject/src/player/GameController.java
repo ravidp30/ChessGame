@@ -1266,7 +1266,7 @@ public class GameController implements Initializable {
 					
 					arr = setUpPiecesHasMap();
 
-					if(!checkForMate(setUpPiecesHasMap())) {
+					if(!checkForMate(arr)) {
 						popUpCheck("check on me");
 						
 					}
