@@ -62,7 +62,7 @@ public class Board implements Serializable{
 		Piece newPiece = getPiece(newX, newY);
 		//Piece oldPiece  = getPiece(oldX, oldY);
 		
-		if(newPiece == null) { // move to empty place
+		if(newPiece == null || newPiece.getname().equals("empty")) { // move to empty place
 			//setPieceXY(oldPiece, newX, newY);
 			return 1; //Available to move to empty place
 		}
