@@ -601,6 +601,9 @@ public class GameController implements Initializable {
     	for (HashMap.Entry<Piece, ArrayList<Piece>> entry : piecesInMap.entrySet()) {
     		//if(entry.getKey() != null) {
 	            key = new Piece(entry.getKey().getX(), entry.getKey().getY(), entry.getKey().getname(), entry.getKey().isWhite());
+	            
+	            System.out.println(entry.getValue());
+	            
 	            moveOptions.addAll(entry.getValue());
 	            
 	            for(Piece optionToMove : moveOptions) {
