@@ -599,47 +599,47 @@ public class GameController implements Initializable {
     	ArrayList<Piece> moveOptions = null;
     	
     	for (HashMap.Entry<Piece, ArrayList<Piece>> entry : piecesInMap.entrySet()) {
-    		
-            key = new Piece(entry.getKey().getX(), entry.getKey().getY(), entry.getKey().getname(), entry.getKey().isWhite());
-            moveOptions.addAll(entry.getValue());
-            
-            for(Piece optionToMove : moveOptions) {
-            	
-            	
-            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, pieces);
-            	
-            	int availableToMove = 0;
-            	
-            	availableToMove = newBoard.MoveCheck(key.getX(), key.getY(), optionToMove.getX(), optionToMove.getY());//check if available to move
-                   
-            	if(availableToMove == 1) {//available to move the image (EMPTY SPACE)
-
-            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
-            		
-            	}
-            	else if(availableToMove == 2 && !newBoard.getPiece(optionToMove.getX(), optionToMove.getY()).getname().equals("KingB")) { // move to black piece (eating)
-            		
-
-            		
-            		newBoard.removePiece(optionToMove.getX(), optionToMove.getY());
-            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
-
-            		
-            	}
-            	
-            	
-            	if(!isChessOnMe(newBoard)) {
-            		return false;
-            	}
-            	
-            	
-            	
-            }
-            
-            
-            
-           
-            
+    		//if(entry.getKey() != null) {
+	            key = new Piece(entry.getKey().getX(), entry.getKey().getY(), entry.getKey().getname(), entry.getKey().isWhite());
+	            moveOptions.addAll(entry.getValue());
+	            
+	            for(Piece optionToMove : moveOptions) {
+	            	
+	            	
+	            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, pieces);
+	            	
+	            	int availableToMove = 0;
+	            	
+	            	availableToMove = newBoard.MoveCheck(key.getX(), key.getY(), optionToMove.getX(), optionToMove.getY());//check if available to move
+	                   
+	            	if(availableToMove == 1) {//available to move the image (EMPTY SPACE)
+	
+	            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
+	            		
+	            	}
+	            	else if(availableToMove == 2 && !newBoard.getPiece(optionToMove.getX(), optionToMove.getY()).getname().equals("KingB")) { // move to black piece (eating)
+	            		
+	
+	            		
+	            		newBoard.removePiece(optionToMove.getX(), optionToMove.getY());
+	            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
+	
+	            		
+	            	}
+	            	
+	            	
+	            	if(!isChessOnMe(newBoard)) {
+	            		return false;
+	            	}
+	            	
+	            	
+	            	
+	            }
+	            
+	            
+	            
+	           
+	    	//}
             
             
     	}
@@ -849,8 +849,9 @@ public class GameController implements Initializable {
 				        default:
 				        	break;
 	        		}
-	        		
-	        		piecesInMap.put(tempPiece, moveOptions);
+	        		if(tempPiece != null) {
+	        			piecesInMap.put(tempPiece, moveOptions);
+	        		}
         	
         		}catch (NullPointerException e) {}
         		
