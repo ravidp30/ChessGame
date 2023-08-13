@@ -596,13 +596,13 @@ public class GameController implements Initializable {
     	
     	
     	Piece key;
-    	ArrayList<Piece> moveOptions = new ArrayList<>();
+    	
     	
     	for (HashMap.Entry<Piece, ArrayList<Piece>> entry : piecesInMap.entrySet()) {
     		//if(entry.getKey() != null) {
 	            key = new Piece(entry.getKey().getX(), entry.getKey().getY(), entry.getKey().getname(), entry.getKey().isWhite());
 	            
-	            moveOptions.clear();
+	            ArrayList<Piece> moveOptions = new ArrayList<>();
 	            
 	            moveOptions.addAll(entry.getValue());
 	            
@@ -621,15 +621,16 @@ public class GameController implements Initializable {
 	
 	            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
 	            		
-	            		System.out.println("after moving: " + key + "to " + optionToMove);
+	            		System.out.println(1111111111);
+	            		System.out.println("after moving: " + key + " to " + optionToMove);
+	            		System.out.println(1111111111);
 	            		for(int x = 0; x<8; x++) {
 		            		for(int y = 0; y<8; y++) {
 		            			System.out.println(newBoard.getPiece(x, y));
 		            		}
 	            		}
 	            		
-	            		System.out.println("asdasd: " + optionToMove);
-	            		System.out.println(1);
+	            		System.out.println(1111111111);
 	            		
 	            	}
 	            	else if(!optionToMove.isWhite() && !newBoard.getPiece(optionToMove.getX(), optionToMove.getY()).getname().equals("KingB")) { // move to black piece (eating)
