@@ -620,6 +620,14 @@ public class GameController implements Initializable {
 	            	if(optionToMove.getname().equals("empty")) {//available to move the image (EMPTY SPACE)
 	
 	            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
+	            		
+	            		
+	            		for(int x = 0; x<8; x++) {
+		            		for(int y = 0; y<8; y++) {
+		            			System.out.println(newBoard.getPiece(x, y));
+		            		}
+	            		}
+	            		
 	            		System.out.println("asdasd: " + optionToMove);
 	            		System.out.println(1);
 	            		
