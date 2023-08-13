@@ -577,14 +577,10 @@ public class GameController implements Initializable {
     
 
      
-    //function that move the specific piece 
+    //function that move the specific piece and check for mate
     public boolean checkForMate(HashMap<Piece, ArrayList<Piece>> piecesInMap) {
     	
-    	
-
-    	
-    	
-    	
+    	//save the original board.
     	ArrayList<Piece> pieces = new ArrayList<>();
     	for (Piece originalPiece : board.getPieces()) {
     	    // Create new instances of the pieces and copy their properties
