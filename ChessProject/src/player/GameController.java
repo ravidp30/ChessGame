@@ -606,7 +606,7 @@ public class GameController implements Initializable {
 	            
 	            moveOptions.addAll(entry.getValue());
 	            
-	            System.out.println(moveOptions);
+	            //System.out.println(moveOptions);
 	            
 	            for(Piece optionToMove : moveOptions) {
 	            	
@@ -856,8 +856,10 @@ public class GameController implements Initializable {
 				        default:
 				        	break;
 	        		}
+	        		System.out.println("first: " + moveOptions);
 	        		if(tempPiece != null) {
 	        			piecesInMap.put(tempPiece, moveOptions);
+	        			System.out.println("\n\n\nsecond: " + moveOptions);
 	        		}
         	
         		}catch (NullPointerException e) {}
