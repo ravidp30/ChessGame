@@ -602,11 +602,11 @@ public class GameController implements Initializable {
     		//if(entry.getKey() != null) {
 	            key = new Piece(entry.getKey().getX(), entry.getKey().getY(), entry.getKey().getname(), entry.getKey().isWhite());
 	            
-	            
+	            moveOptions.clear();
 	            
 	            moveOptions.addAll(entry.getValue());
 	            
-	            //System.out.println(moveOptions);
+	            System.out.println(moveOptions);
 	            
 	            for(Piece optionToMove : moveOptions) {
 	            	
@@ -856,10 +856,10 @@ public class GameController implements Initializable {
 				        default:
 				        	break;
 	        		}
-	        		System.out.println("first: " + moveOptions);
+	        		//System.out.println("first: " + moveOptions);
 	        		if(tempPiece != null) {
 	        			piecesInMap.put(tempPiece, moveOptions);
-	        			System.out.println("\n\n\nsecond: " + moveOptions);
+	        			//System.out.println("\n\n\nsecond: " + moveOptions);
 	        		}
         	
         		}catch (NullPointerException e) {}
@@ -1272,7 +1272,7 @@ public class GameController implements Initializable {
 				lblTurnStatus.setText("Your Turn");
 				if(inCheck.getPlayerId().equals("InCheck")) {
 					
-					HashMap<Piece, ArrayList<Piece>> arr;
+					HashMap<Piece, ArrayList<Piece>> arr = new HashMap<>();
 					
 					arr = setUpPiecesHasMap();
 
