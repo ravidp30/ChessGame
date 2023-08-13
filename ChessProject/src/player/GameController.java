@@ -602,9 +602,11 @@ public class GameController implements Initializable {
     		//if(entry.getKey() != null) {
 	            key = new Piece(entry.getKey().getX(), entry.getKey().getY(), entry.getKey().getname(), entry.getKey().isWhite());
 	            
-	            System.out.println(entry.getValue());
+	            
 	            
 	            moveOptions.addAll(entry.getValue());
+	            
+	            System.out.println(moveOptions);
 	            
 	            for(Piece optionToMove : moveOptions) {
 	            	
