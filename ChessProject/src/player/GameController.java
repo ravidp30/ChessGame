@@ -802,12 +802,14 @@ public class GameController implements Initializable {
     
     public HashMap<Piece, ArrayList<Piece>> setUpPiecesHasMap() {
         HashMap<Piece, ArrayList<Piece>> piecesInMap = new HashMap<>();
-        ArrayList<Piece> moveOptions;
+        ArrayList<Piece> moveOptions = new ArrayList<>();
         
     	for(int x = 0; x < 8; x++) {
         	for(int y = 0; y < 8; y++) {
        		Piece tempPiece = null;
-       		moveOptions = new ArrayList<>();
+       		//moveOptions = null;
+       		moveOptions.clear();
+       		
         		try {
             		//Piece tempPiece = new Piece(x, y, board.getPiece(x, y).getname(), board.getPiece(x, y).isWhite());
             		 
@@ -817,27 +819,27 @@ public class GameController implements Initializable {
 			
 				        case "KingW":
 				        	tempPiece = new King(x, y, "KingW", true);
-				        	moveOptions = ((King)tempPiece).Move(board);
+				        	moveOptions.addAll(((King)tempPiece).Move(board));
 				            break;
 				        case "QueenW":
 				        	tempPiece = new Queen(x, y, "QueenW", true);
-				        	moveOptions = ((Queen)tempPiece).Move(board);
+				        	moveOptions.addAll(((Queen)tempPiece).Move(board));
 				        	break;
 				        case "RookW":
 				        	tempPiece = new Rook(x, y, "RookW", true);
-				        	moveOptions = ((Rook)tempPiece).Move(board);
+				        	moveOptions.addAll(((Rook)tempPiece).Move(board));
 				        	break; 
 				        case "BishopW":
 				        	tempPiece = new Bishop(x, y, "BishopW", true);
-				        	moveOptions = ((Bishop)tempPiece).Move(board);
+				        	moveOptions.addAll(((Bishop)tempPiece).Move(board));
 				        	break; 
 				        case "KnightW":
 				        	tempPiece = new Knight(x, y, "KnightW", true);
-				        	moveOptions = ((Knight)tempPiece).Move(board);
+				        	moveOptions.addAll(((Knight)tempPiece).Move(board));
 				        	break;
 				        case "soldierW":
 				        	tempPiece = new Soldier(x, y, "soldierW", true);
-				        	moveOptions = ((Soldier)tempPiece).Move(board);
+				        	moveOptions.addAll(((Soldier)tempPiece).Move(board));
 				        	break; 	
 				        default:
 				        	break;
