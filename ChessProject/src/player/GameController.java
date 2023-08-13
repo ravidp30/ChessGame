@@ -616,6 +616,8 @@ public class GameController implements Initializable {
 	
 	            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
 	            		
+	            		System.out.println(1);
+	            		
 	            	}
 	            	else if(availableToMove == 2 && !newBoard.getPiece(optionToMove.getX(), optionToMove.getY()).getname().equals("KingB")) { // move to black piece (eating)
 	            		
