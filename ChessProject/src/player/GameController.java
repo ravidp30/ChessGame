@@ -865,33 +865,34 @@ public class GameController implements Initializable {
     	for(int x = 0; x < 8; x++) {
     		for(int y = 0; y < 8; y++) {
     			try {
+    				moveOptions.clear();
 	    			currPiece = board1.getPiece(x, y);
 	    			if(currPiece.isWhite()){
 	    				
     					switch (currPiece.getname()) {
 
 	    					case "KingW":
-	    						moveOptions = ((King) currPiece).Move(board1);
+	    						moveOptions.addAll(((King) currPiece).Move(board1));
 	    						break;
 	
 	    					case "QueenW":
-	    						moveOptions = ((Queen) currPiece).Move(board1);
+	    						moveOptions.addAll(((Queen) currPiece).Move(board1));
 	    						break;
 	
 	    					case "RookW":
-	    						moveOptions = ((Rook) currPiece).Move(board1);
+	    						moveOptions.addAll(((Rook) currPiece).Move(board1));
 	    						break; 
 	
 	    					case "BishopW":
-	    						moveOptions = ((Bishop) currPiece).Move(board1);
+	    						moveOptions.addAll(((Bishop) currPiece).Move(board1));
 	    						break; 
 	
 	    					case "KnightW":
-	    						moveOptions = ((Knight) currPiece).Move(board1);
+	    						moveOptions.addAll(((Knight) currPiece).Move(board1));
 	    						break;
 	
 	    					case "soldierW":
-	    						moveOptions = ((Soldier) currPiece).Move(board1);
+	    						moveOptions.addAll(((Soldier) currPiece).Move(board1));
 	    						break; 
 	    					default:
 	    						System.out.println("no way");
@@ -1241,8 +1242,7 @@ public class GameController implements Initializable {
 	
 	// inCheck.getplayerId() = "InCheck" / "NotInCheck"
 	public void changePlayerTurn(Player newPlayerTurn, Player inCheck) {
-		ArrayList<Piece> pieces_arr = new ArrayList<>();
-		pieces_arr.addAll(board.getPieces());
+
 		Platform.runLater(() -> {
 			/*if(isChess(board)) {
 				System.out.println(123123);
@@ -1274,7 +1274,7 @@ public class GameController implements Initializable {
 				lblTurnStatus.setText("Opponent's Turn");
 			}
 		});
-		board.setPieces(pieces_arr);
+
 	}
 	
 
