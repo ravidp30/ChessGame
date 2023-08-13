@@ -1275,7 +1275,11 @@ public class GameController implements Initializable {
 					HashMap<Piece, ArrayList<Piece>> arr = new HashMap<>();
 					
 					arr = setUpPiecesHasMap();
-
+					
+					System.out.println("@@@@@@@@@@@@@@@@@@");
+					System.out.println(arr);
+					System.out.println("@@@@@@@@@@@@@@@@@@");
+					
 					if(!checkForMate(arr)) {
 						popUpCheck("check on me");
 						
