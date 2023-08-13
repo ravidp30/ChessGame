@@ -946,7 +946,9 @@ public class GameController implements Initializable {
         int x = (int)squareOption.getX() / squareSize;
         int y =	(int)squareOption.getY() / squareSize;
         secondPieceSelected = board.getPiece(x,y); // the place to move to
-        
+        //castlingCheck();
+        		
+        	
         movePiece(x,y);
 
         
@@ -982,6 +984,8 @@ public class GameController implements Initializable {
 
 	}
 	
+	
+
 	public void TurnContinueAfterMovement() {
 		
 		if(lastChosenPiece != null) {
@@ -994,11 +998,7 @@ public class GameController implements Initializable {
         if(inCheck) {
         	popUpCheck("chess");   
         }
-        
-        System.out.println("777777777777777777");
-        System.out.println(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite()));
-        System.out.println(lastChosenPiece);
-        System.out.println("777777777777777777");
+     
 
    
 		// send to the server the piece was changed (old piece and new piece) and if eaten
@@ -1343,7 +1343,37 @@ public class GameController implements Initializable {
 		Check.setHeaderText(string );
         Check.showAndWait();
 
-
 	}
-
+	
+	private void castlingCheck() {
+		 if((firstPieceSelected.getname().equals("RookW") && secondPieceSelected.getname().equals("KingW")) || (firstPieceSelected.getname().equals("KingW") && secondPieceSelected.getname().equals("RookW") ))
+	        	if((firstPieceSelected.getX()==0 && firstPieceSelected.getY()==7) || (secondPieceSelected.getX()==7 && secondPieceSelected.getY()==0))
+	        		popUpCastling("Do Castling?");
+	        		//if(yes) ->		
+	}
+	
+	public void popUpCastling (String string) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+	    alert.setTitle(string);
+	    alert.setHeaderText("Are you want to do castling??");
+	    
+	    ButtonType yesButton = new ButtonType("YES");
+	    ButtonType noButton = new ButtonType("NO");
+	    alert.getButtonTypes().setAll(yesButton, noButton);
+	    
+	    alert.showAndWait().ifPresent(answer -> {
+	        if (answer == yesButton) {
+	            // User want to do Castling
+	            System.out.println("doing castling...");
+	            
+	            
+	            
+	            
+				
+	       
+	            
+	        }
+	        else return;
+	    });
+	}
 }
