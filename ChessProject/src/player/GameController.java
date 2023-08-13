@@ -577,13 +577,79 @@ public class GameController implements Initializable {
     
 
      
-   /* //function that move the specific piece 
+    //function that move the specific piece 
     public boolean checkForMate(HashMap<Piece, ArrayList<Piece>> piecesInMap) {
+    	
+    	
+    	
+    	
+    	
+    	
+    	ArrayList<Piece> pieces = new ArrayList<>();
+    	for (Piece originalPiece : board.getPieces()) {
+    	    // Create new instances of the pieces and copy their properties
+    	    Piece newPiece = new Piece(originalPiece.getX(), originalPiece.getY(), originalPiece.getname(), originalPiece.isWhite());
+    	    pieces.add(newPiece);
+    	}
+    	
+    	
+    	
+    	
+    	Piece key;
+    	ArrayList<Piece> moveOptions = null;
+    	
+    	for (HashMap.Entry<Piece, ArrayList<Piece>> entry : piecesInMap.entrySet()) {
+    		
+            key = new Piece(entry.getKey().getX(), entry.getKey().getY(), entry.getKey().getname(), entry.getKey().isWhite());
+            moveOptions.addAll(entry.getValue());
+            
+            for(Piece optionToMove : moveOptions) {
+            	
+            	
+            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, pieces);
+            	
+            	int availableToMove = 0;
+            	
+            	availableToMove = newBoard.MoveCheck(key.getX(), key.getY(), optionToMove.getX(), optionToMove.getY());//check if available to move
+                   
+            	if(availableToMove == 1) {//available to move the image (EMPTY SPACE)
+
+            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
+            		
+            	}
+            	else if(availableToMove == 2 && !newBoard.getPiece(optionToMove.getX(), optionToMove.getY()).getname().equals("KingB")) { // move to black piece (eating)
+            		
+
+            		
+            		newBoard.removePiece(optionToMove.getX(), optionToMove.getY());
+            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
+
+            		
+            	}
+            	
+            	
+            	if(!isChessOnMe(newBoard)) {
+            		return false;
+            	}
+            	
+            	
+            	
+            }
+            
+            
+            
+           
+            
+            
+            
+    	}
+    	
+    	
     		
     	
+    	return true;
     	
-    	
-    }*/
+    }
     
 
 
