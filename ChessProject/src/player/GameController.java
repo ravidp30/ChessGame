@@ -134,6 +134,9 @@ public class GameController implements Initializable {
     private Pane chessboardPane;
     @FXML
 	private Button exitBtn;
+    @FXML
+   	private ImageView WinnerGif;
+   
     
     
     public GameController() {
@@ -182,10 +185,12 @@ public class GameController implements Initializable {
     	board = new Board(8 * squareSize, 8 * squareSize, null);
         ChessHeadLineLbl.setText("Chess Game:\nYou (id: " + player.getPlayerId() + ") VS opponent (id: " + opponent.getPlayerId() + ")");
         ChessHeadLineLbl.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
-        backGroundPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5); -fx-border-color: black; -fx-border-width: 1px;");
+        backGroundPane.setStyle("-fx-background-color: rgba(0, 0, 0, 1); -fx-border-width: 1px;");
         labelChatArea.setStyle("-fx-text-fill: white; -fx-font-size: 15px;-fx-border-color: blue; -fx-border-width: 2px; -fx-font-weight: bold;");
         ChatLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
-        lblTurnStatus.setStyle("-fx-text-fill: #FF8080; -fx-font-weight: bold; -fx-font-size: 25px;");
+        lblTurnStatus.setStyle("-fx-text-fill: #EE101F; -fx-font-weight: bold; -fx-font-size: 25px;");
+        WinnerGif.setVisible(false);
+
         // Create a Timeline animation for flickering
         KeyFrame hideKeyFrame = new KeyFrame(Duration.seconds(0.5), event -> lblTurnStatus.setVisible(false));
         KeyFrame showKeyFrame = new KeyFrame(Duration.seconds(1), event -> lblTurnStatus.setVisible(true));
@@ -1284,18 +1289,15 @@ public class GameController implements Initializable {
 					
 					HashMap<Piece, ArrayList<Piece>> arr = new HashMap<>();
 					
-					//arr = setUpPiecesHasMap();
-					
-					System.out.println("@@@@@@@@@@@@@@@@@@");
-					System.out.println(setUpPiecesHasMap());
-					System.out.println("@@@@@@@@@@@@@@@@@@");
 					
 					if(!checkForMate(setUpPiecesHasMap())) {
-						popUpCheck("check on me");
+						popUpCheck("Check on me");
 						
 					}
 					else {
-						popUpCheck("mate on me");
+						popUpCheck("Mate on me");
+						//WinnerGif.toFront();
+						//WinnerGif.setVisible(true);
 					}
 					
 					
@@ -1334,20 +1336,14 @@ public class GameController implements Initializable {
         squareOption.setEffect(dropShadow);
 	}
 	
-	//pop-up window - check is on.
+	// alert window - check is on.
 	public void popUpCheck(String string){
-		
-		 String message = "<html><h1 style='font-size: 24px; color: #007bff;'>Check!</h1>"
-                 + "<p style='font-size: 18px; color: #333;'>"
-                  + player.getPlayerId()+ string + ".</p></html>";
+		Alert Check = new Alert(AlertType.CONFIRMATION);
+		Check.setTitle("Check");
+		Check.setHeaderText(string );
+        Check.showAndWait();
 
-		 JLabel messageLabel = new JLabel(message);
-		 JOptionPane.showMessageDialog(
-				 null,
-				 messageLabel,
-				 "Check",
-				 JOptionPane.INFORMATION_MESSAGE
-);
+
 	}
 
 }

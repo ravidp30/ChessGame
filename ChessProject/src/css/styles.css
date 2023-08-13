@@ -284,3 +284,10 @@
     -fx-text-fill: white;
     -fx-font-size: 16px;
 }
+.tab-header-area {
+    -fx-background-color: darkgray; /* Change this color as needed */
+}
+
+.tab-selected .tab-header-area {
+    -fx-background-color: gray; /* Change this color as needed */
+}
