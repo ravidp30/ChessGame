@@ -621,7 +621,7 @@ public class GameController implements Initializable {
 	
 	            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
 	            		
-	            		
+	            		System.out.println("after moving: " + key + "to " + optionToMove);
 	            		for(int x = 0; x<8; x++) {
 		            		for(int y = 0; y<8; y++) {
 		            			System.out.println(newBoard.getPiece(x, y));
