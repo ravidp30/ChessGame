@@ -611,7 +611,14 @@ public class GameController implements Initializable {
 	            for(Piece optionToMove : moveOptions) {
 	            	
 	            	
-	            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, pieces);
+	                // Create a new set of pieces based on the original pieces
+	                ArrayList<Piece> newPieces = new ArrayList<>();
+	                for (Piece originalPiece : pieces) {
+	                    newPieces.add(new Piece(originalPiece.getX(), originalPiece.getY(), originalPiece.getname(), originalPiece.isWhite()));
+	                }
+	            	
+	            	
+	            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, newPieces);
 	            	
 	            	int availableToMove = 0;
 	            	
@@ -621,7 +628,6 @@ public class GameController implements Initializable {
 	
 	            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
 	            		
-	            		System.out.println(1111111111);
 	            		System.out.println("after moving: " + key + " to " + optionToMove);
 	            		System.out.println(1111111111);
 	            		for(int x = 0; x<8; x++) {
