@@ -1266,13 +1266,13 @@ public class GameController implements Initializable {
 					
 					arr = setUpPiecesHasMap();
 
-					//if(!checkForMate(setUpPiecesHasMap())) {
+					if(!checkForMate(setUpPiecesHasMap())) {
 						popUpCheck("check on me");
 						
-					//}
-					//else {
-						//popUpCheck("mate on me");
-				//	}
+					}
+					else {
+						popUpCheck("mate on me");
+					}
 					
 					
 					
