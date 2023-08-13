@@ -612,7 +612,7 @@ public class GameController implements Initializable {
 	            	
 	            	availableToMove = newBoard.MoveCheck(key.getX(), key.getY(), optionToMove.getX(), optionToMove.getY());//check if available to move
 	                   
-	            	if(availableToMove == 1) {//available to move the image (EMPTY SPACE)
+	            	if(availableToMove == 1 || optionToMove.getname().equals("empty")) {//available to move the image (EMPTY SPACE)
 	
 	            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
 	            		

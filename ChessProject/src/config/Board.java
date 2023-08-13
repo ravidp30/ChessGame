@@ -62,23 +62,21 @@ public class Board implements Serializable{
 		Piece newPiece = getPiece(newX, newY);
 		//Piece oldPiece  = getPiece(oldX, oldY);
 		
-		if(newPiece == null || newPiece.getname().equals("empty")) { // move to empty place
+		if(newPiece == null) { // move to empty place
 			//setPieceXY(oldPiece, newX, newY);
 			return 1; //Available to move to empty place
 		}
 		
-		//else { // move to a place with black / white piece
+		else { // move to a place with black / white piece
 		
 			if(newPiece.isWhite()) {
 				System.out.println("cant move there- someone is there");
 				return 0;
 			}
-			else if(!newPiece.isWhite()){
+			else {
 				System.out.println("eat");
 				return 2;
 			}
-			else {
-				return 1;
 		}
 	}
 	
