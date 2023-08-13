@@ -615,16 +615,16 @@ public class GameController implements Initializable {
 	            	
 	            	int availableToMove = 0;
 	            	
-	            	availableToMove = newBoard.MoveCheck(key.getX(), key.getY(), optionToMove.getX(), optionToMove.getY());//check if available to move
+	            	//availableToMove = newBoard.MoveCheck(key.getX(), key.getY(), optionToMove.getX(), optionToMove.getY());//check if available to move
 	                   
-	            	if(availableToMove == 1 || optionToMove.getname().equals("empty")) {//available to move the image (EMPTY SPACE)
+	            	if(optionToMove.getname().equals("empty")) {//available to move the image (EMPTY SPACE)
 	
 	            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
 	            		
 	            		System.out.println(1);
 	            		
 	            	}
-	            	else if(availableToMove == 2 && !newBoard.getPiece(optionToMove.getX(), optionToMove.getY()).getname().equals("KingB")) { // move to black piece (eating)
+	            	else if(!optionToMove.isWhite() && !newBoard.getPiece(optionToMove.getX(), optionToMove.getY()).getname().equals("KingB")) { // move to black piece (eating)
 	            		
 	
 	            		
