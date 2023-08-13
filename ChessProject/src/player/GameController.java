@@ -586,11 +586,12 @@ public class GameController implements Initializable {
     	int availableToMove=0;
     	
     	ArrayList<Piece> piecesTemp = new ArrayList<>();
+    	Piece tempKeyPiece;
     	
     	
         for (Piece keyPiece : piecesInMap.keySet()) {
         	if(keyPiece != null && keyPiece.isWhite()) {
-
+        		tempKeyPiece = new Piece(keyPiece.getX(), keyPiece.getY(), keyPiece.getname(), keyPiece.isWhite());
 	            ArrayList<Piece> moveOptions = new ArrayList<>();
 	            moveOptions.addAll(piecesInMap.get(keyPiece));
 	            
@@ -603,7 +604,7 @@ public class GameController implements Initializable {
 	            	
 	            	
 	            	System.out.println(1);
-	            	System.out.println("piece: " + keyPiece);
+	            	System.out.println("piece: " + tempKeyPiece);
 	            	System.out.println("moves: " + moveOptions.get(i));
 	            	System.out.println(1);
 	            	
@@ -618,14 +619,14 @@ public class GameController implements Initializable {
 
 		        	if(availableToMove == 1) {//available to move the image (EMPTY SPACE)
 		        		
-		        		newBoard.setPieceXY(keyPiece, newX, newY);
+		        		newBoard.setPieceXY(tempKeyPiece, newX, newY);
   		
 		        	}
 		        	else if(availableToMove == 2 && !newBoard.getPiece(newX, newY).getname().equals("KingB")) { // move to black piece (eating)
 	        		
 		        		newBoard.removePiece(newX, newY);
  		
-		        		newBoard.setPieceXY(keyPiece, newX, newY);
+		        		newBoard.setPieceXY(tempKeyPiece, newX, newY);
 
 		        		
 		        	}
