@@ -92,11 +92,11 @@ public class MenuController implements Initializable{
 		SceneManagment.createNewStage("/player/MenuGUI.fxml", null, "Menu").show();
 		
 		String message = "";
-		if(endStatus == 1) {
+		if(endStatus == 2) {
 			message = "You opponent has left the game\n\nYou WON!!!";
 		}
 		
-		if(endStatus == 2) {
+		if(endStatus == 1) {
 			message = "Looser, you quitted the game and LOST!!!";
 		}
 		

@@ -341,6 +341,22 @@ public class MessageHandler_Server {
                 	client.sendToClient("exited from the game succesfully");
                 	
                 	break;
+                	
+				case "PlayerWonWithMate":
+					// 1 - the player who won with mate
+					
+					if(player1id.equals(arrayListPlayer.get(1).getPlayerId())) {
+						player1.sendToClient("GameEndedPlayerWon");
+					}
+					else {
+						player2.sendToClient("GameEndedPlayerWon");
+					}
+					
+					client.sendToClient("message sent to the opponent that he won");
+					
+					
+					
+					break;
 					
             }
     	

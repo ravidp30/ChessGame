@@ -220,7 +220,13 @@ public class MessageHandler_Client {
 	    		
 	    	case "piece moved sucssefully":
 	    		
-	    		System.out.println("testttttttt");
+	    		//System.out.println("piece moved sucssefully");
+	    		
+	    		break;
+	    		
+	    	case "GameEndedPlayerWon":
+	    		
+	    		GameController.getInstance().wonTheGameMessage();
 	    		
 	    		break;
 	    		

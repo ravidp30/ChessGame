@@ -1296,6 +1296,10 @@ public class GameController implements Initializable {
 					}
 					else {
 						popUpCheck("Mate on me");
+						
+						// *********** looser message HERE *****************
+						
+						sendBackToOpponentIsMate(); // send to the opponent that he won with mate
 						//WinnerGif.toFront();
 						//WinnerGif.setVisible(true);
 					}
@@ -1310,6 +1314,13 @@ public class GameController implements Initializable {
 			}
 		});
 
+	}
+	
+	public void sendBackToOpponentIsMate() {
+		ArrayList<Player> mateSend_arr = new ArrayList<>();
+		mateSend_arr.add(new Player("PlayerWonWithMate"));
+		mateSend_arr.add(opponent);
+		ClientUI.chat.accept(mateSend_arr);
 	}
 	
 
@@ -1375,5 +1386,19 @@ public class GameController implements Initializable {
 	        }
 	        else return;
 	    });
+	}
+
+	public void wonTheGameMessage() {
+		
+		Platform.runLater(() -> {
+			
+			WinnerGif.toFront();
+			WinnerGif.setVisible(true);
+			String chickenEmoji = "\uD83D\uDC14";
+			lblTurnStatus.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 25px;");
+			lblTurnStatus.setText("Winner winner chiken dinner! " + chickenEmoji);
+		
+
+		});
 	}
 }
