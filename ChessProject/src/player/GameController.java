@@ -136,6 +136,8 @@ public class GameController implements Initializable {
 	private Button exitBtn;
     @FXML
    	private ImageView WinnerGif;
+    //@FXML
+   	//private ImageView LooseGif;
    
     
     
@@ -190,6 +192,7 @@ public class GameController implements Initializable {
         ChatLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
         lblTurnStatus.setStyle("-fx-text-fill: #EE101F; -fx-font-weight: bold; -fx-font-size: 25px;");
         WinnerGif.setVisible(false);
+        //LooseGif.setVisible(false);
 
         // Create a Timeline animation for flickering
         KeyFrame hideKeyFrame = new KeyFrame(Duration.seconds(0.5), event -> lblTurnStatus.setVisible(false));
@@ -561,6 +564,7 @@ public class GameController implements Initializable {
 				        default:
 				            System.out.println("Invalid choice");
 		        	}
+		        	castlingCheck();
 		        	return;
 		        }
 		        
@@ -946,7 +950,7 @@ public class GameController implements Initializable {
         int x = (int)squareOption.getX() / squareSize;
         int y =	(int)squareOption.getY() / squareSize;
         secondPieceSelected = board.getPiece(x,y); // the place to move to
-        //castlingCheck();
+        
         		
         	
         movePiece(x,y);
@@ -996,7 +1000,7 @@ public class GameController implements Initializable {
         boolean inCheck = isChess(board);
         
         if(inCheck) {
-        	popUpCheck("chess");   
+        	showAutoDisappearAlert("Check", "nice,\nYou did check", Duration.seconds(4));  
         }
      
 
@@ -1130,8 +1134,8 @@ public class GameController implements Initializable {
         	lastChosenPiece = null;
 		}
 		
-		popUpCheck("unvailable move");
-		
+		//popUpCheck("unvailable move");
+		showAutoDisappearAlert("Unvaliable Move", "You cannot move there", Duration.seconds(2)); 
 	
 		
 		
@@ -1291,17 +1295,17 @@ public class GameController implements Initializable {
 					
 					
 					if(!checkForMate(setUpPiecesHasMap())) {
-						popUpCheck("Check on me");
+						//popUpCheck("Check on me");
+						showAutoDisappearAlert("Check", "ohh\nYou are on check", Duration.seconds(4)); 
 						
 					}
 					else {
-						popUpCheck("Mate on me");
+						//popUpCheck("Mate on me");
 						
 						// *********** looser message HERE *****************
-						
+						//LooseGif.toFront();
+						//LooseGif.setVisible(true);
 						sendBackToOpponentIsMate(); // send to the opponent that he won with mate
-						//WinnerGif.toFront();
-						//WinnerGif.setVisible(true);
 					}
 					
 					
@@ -1357,16 +1361,75 @@ public class GameController implements Initializable {
 	}
 	
 	private void castlingCheck() {
-		 if((firstPieceSelected.getname().equals("RookW") && secondPieceSelected.getname().equals("KingW")) || (firstPieceSelected.getname().equals("KingW") && secondPieceSelected.getname().equals("RookW") ))
-	        	if((firstPieceSelected.getX()==0 && firstPieceSelected.getY()==7) || (secondPieceSelected.getX()==7 && secondPieceSelected.getY()==0))
-	        		popUpCastling("Do Castling?");
-	        		//if(yes) ->		
+		try {
+			if(firstPieceSelected.getname().equals("KingW"))
+	        	if(firstPieceSelected.getX()==3 && firstPieceSelected.getY()==7)
+	        		if(board.getPiece(0, 7).getname().equals("RookW"))
+		        		if(board.getPiece(1, 7) == null && board.getPiece(2, 7) == null)
+		        				popUpCastling("Do Castling?");
+	        		//if(yes) ->	
+		}catch (NullPointerException e) {}
 	}
+	
+	
+    public static void showAutoDisappearAlert(String title, String message, Duration duration) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        Timeline timeline = new Timeline(new KeyFrame(duration, event -> alert.hide()));
+
+        alert.show();
+        timeline.play();
+    }
+    
+    public void moveFirstPiece(int x, int y) {
+    	
+        secondPieceSelected = board.getPiece(x,y); // the place to move to
+        
+        		
+        	
+        movePiece(x,y);
+
+        
+        if(isChessOnMe(board)) { //Chess On ME
+        	moveBack();
+        	cloudImage(true);
+        }
+        
+
+        
+        else {   
+        	
+        	
+	        // if soldier is at the end
+	        Piece soldierPiece = board.getPiece(x,y);
+	        if(soldierPiece != null && soldierPiece.getname().equals("soldierW") && soldierPiece.getY() == 0) {
+	        	/*if (!backGroundPane.getChildren().contains(hbox)) { //if the Hbox is not added to parent yet
+	        		backGroundPane.getChildren().add(hbox);
+	        	}*/
+	        	continueTurn = false;
+	        	hbox.setVisible(true);
+	            //Line line = new Line(soldierPiece.getX()*squareSize, soldierPiece.getY()*squareSize, 130, 130);
+
+	            //hbox.getChildren().add(line);
+	        }
+	        else {
+	        	TurnContinueAfterMovement();
+	        }
+        	
+
+        }
+   
+    	
+    	
+    }
 	
 	public void popUpCastling (String string) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 	    alert.setTitle(string);
-	    alert.setHeaderText("Are you want to do castling??");
+	    alert.setHeaderText("Do you want to do castling??");
 	    
 	    ButtonType yesButton = new ButtonType("YES");
 	    ButtonType noButton = new ButtonType("NO");
@@ -1378,8 +1441,67 @@ public class GameController implements Initializable {
 	            System.out.println("doing castling...");
 	            
 	            
+	            // moving the king
+	            secondPieceSelected = board.getPiece(1,7); // the place to move to     	
+	            movePiece(1,7);          
+	            if(isChessOnMe(board)) { //Chess On ME
+	            	moveBack();
+	            	cloudImage(true);
+	            	System.out.println("cannot castling...");
+	            	return;
+	            }
+	            else {
+	            	
+		    		ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
+		    		updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
+		    		updatePieceMoce_arr.add(new Piece(0, 0, EatOrNot, true));
+		    		updatePieceMoce_arr.add(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
+		    		updatePieceMoce_arr.add(lastChosenPiece); // new piece
+		    		updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
+		    		ClientUI.chat.accept(updatePieceMoce_arr);
 	            
+		    		
+		    		// // moving the Rook
+		            firstPieceSelected = board.getPiece(0, 7); // the RookW
+		            oldX = 0;
+		            oldY = 7;
+		            secondPieceSelected = board.getPiece(2,7); // the place to move to    
+		            movePiece(2,7); 
+		            if(isChessOnMe(board)) { //Chess On ME
+		            	moveBack();
+		            	
+		            	// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+		            	
+		            	// need to change those:
+		            	//lastChosenPiece, oldX, oldY
+						//newXLastOpponent, newYLastOpponen
+		            	//firstPieceSelected
+		            	//secondPieceSelected
+		            	// and than calling moveback again to move back again (twice moving back total)
+		            	
+		            	//moveBack();
+		            	
+		            	// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+		            	
+		            	cloudImage(true);
+		            	
+		            	
+		            	System.out.println("cannot castling...");
+		            	return;
+		            }
+	            }
+	             
 	            
+	            // sending to the server that was הצרחה and do thing in the client (opponent)
+	    		ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
+	    		updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
+	    		updatePieceMoce_arr.add(new Piece(0, 0, EatOrNot, true));
+	    		updatePieceMoce_arr.add(new Piece(oldX, oldY, firstPieceSelected.getname(),firstPieceSelected.isWhite())); // old piece
+	    		updatePieceMoce_arr.add(lastChosenPiece); // new piece
+	    		updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
+	    		ClientUI.chat.accept(updatePieceMoce_arr);
+	            
+	    		SendToServerChangePlayerTurn(isChess(board));  // send to the opponent also if there is check on him
 				
 	       
 	            
