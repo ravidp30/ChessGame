@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="backGroundPane" prefHeight="700.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="player.GameController">
+<Pane fx:id="backGroundPane" prefHeight="700.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="player.GameController">
    <children>
       <ImageView fitHeight="726.0" fitWidth="985.0" layoutX="-10.0" layoutY="-4.0">
          <image>
@@ -29,20 +29,19 @@
          </children></Pane>
       <Pane fx:id="addPiecesBar" layoutX="96.0" layoutY="95.0" prefHeight="57.0" prefWidth="665.0">
          <children>
-            <Label fx:id="lblTurnStatus" layoutX="157.0" layoutY="-18.0" prefHeight="93.0" prefWidth="473.0" text="Loading..." />
+            <Label fx:id="lblTurnStatus" layoutX="3.0" layoutY="-18.0" prefHeight="93.0" prefWidth="473.0" text="Loading..." />
          </children></Pane>
-      <Button fx:id="exitGameBtn" layoutX="850.0" layoutY="25.0" mnemonicParsing="false" onAction="#onPlayerClickExitGame" text="Exit game" />
+      <Button fx:id="exitGameBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onPlayerClickExitGame" text="Exit game" />
       <TabPane layoutX="697.0" layoutY="161.0" prefHeight="507.0" prefWidth="244.0" style="-fx-background-color: rgba(0, 0, 1, 0.7)" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Chat">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label fx:id="labelChatArea" alignment="TOP_LEFT" layoutX="14.0" layoutY="78.0" prefHeight="292.0" prefWidth="210.0" />
-                        <Button fx:id="sendButton" layoutX="173.0" layoutY="401.0" mnemonicParsing="false" onAction="#onPlayerClickSend" text="Send" />
+                        <Label fx:id="labelChatArea" alignment="TOP_LEFT" layoutX="14.0" layoutY="7.0" prefHeight="363.0" prefWidth="210.0" />
+                        <Button fx:id="sendButton" layoutX="187.0" layoutY="407.0" mnemonicParsing="false" onAction="#onPlayerClickSend" text="Send" />
                         <TextField fx:id="txtChat" layoutX="17.0" layoutY="370.0" prefHeight="30.0" prefWidth="210.0" />
                         <Button layoutX="4.0" layoutY="413.0" mnemonicParsing="false" onAction="#sendGoodLuck" prefHeight="30.0" prefWidth="97.0" text="Good Luck  :-)" />
-                        <Label fx:id="ChatLabel" layoutX="56.0" layoutY="56.0" prefHeight="21.0" prefWidth="90.0" text="Chat:" />
                      </children>
                   </AnchorPane>
             </content>
