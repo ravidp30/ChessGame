@@ -1,6 +1,7 @@
 package player;
 
 import java.io.IOException;
+import javafx.scene.shape.Circle;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -23,6 +24,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 public class MenuController implements Initializable{
 	
@@ -114,8 +119,7 @@ public class MenuController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		ClientUI.chat.accept("UpdateCounterOfReadyPlayers");
-		
+		ClientUI.chat.accept("UpdateCounterOfReadyPlayers");	
 	}
 
 	public void setPlayerReady(int i) {

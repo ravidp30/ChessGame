@@ -743,6 +743,8 @@ public class GameController implements Initializable {
          rectangleListOptions.getItems().clear();
     	
          lastChosenPiece = board.getPiece(newX, newY);
+     	cursorImage=new Image("/player/arm.png");
+     	customCursor.setImage(cursorImage);
     }
     
     public void deleteOpponentPicture(Piece pieceToRemove) {
@@ -1158,10 +1160,15 @@ public class GameController implements Initializable {
 
 			
         	lastChosenPiece = null;
+        	
+        	cursorImage=new Image("/player/arm.png");
+        	customCursor.setImage(cursorImage);
 		}
 		
 		//popUpCheck("unvailable move");
-		showAutoDisappearAlert("Unvaliable Move", "You cannot move there", Duration.seconds(2)); 
+		showAutoDisappearAlert("Unvaliable Move", "You cannot move there", Duration.seconds(2));
+    	cursorImage=new Image("/player/arm.png");
+    	customCursor.setImage(cursorImage);
 	
 		
 		
@@ -1315,6 +1322,8 @@ public class GameController implements Initializable {
 			if(playerTurn.getPlayerId().equals(player.getPlayerId())) {
 				
 				lblTurnStatus.setText("Your Turn");
+		     	cursorImage=new Image("/player/arm.png");
+		     	customCursor.setImage(cursorImage);
 				if(inCheck.getPlayerId().equals("InCheck")) {
 					
 					HashMap<Piece, ArrayList<Piece>> arr = new HashMap<>();
@@ -1341,6 +1350,8 @@ public class GameController implements Initializable {
 			}
 			else {
 				lblTurnStatus.setText("Opponent's Turn");
+		     	cursorImage=new Image("/player/X.png");
+		     	customCursor.setImage(cursorImage);
 			}
 		});
 
@@ -1466,18 +1477,19 @@ public class GameController implements Initializable {
 	            // User want to do Castling
 	            System.out.println("doing castling...");
 	            
-	            
 	            // moving the king
 	            secondPieceSelected = board.getPiece(1,7); // the place to move to     	
 	            movePiece(1,7);          
 	            if(isChessOnMe(board)) { //Chess On ME
+		        	cursorImage=new Image("/player/arm.png");
+		        	customCursor.setImage(cursorImage);
 	            	moveBack();
 	            	cloudImage(true);
 	            	System.out.println("cannot castling...");
 	            	return;
 	            }
 	            else {
-	            	
+	            	// move the first piece for the opponent
 		    		ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
 		    		updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
 		    		updatePieceMoce_arr.add(new Piece(0, 0, EatOrNot, true));
@@ -1496,8 +1508,9 @@ public class GameController implements Initializable {
 		          
 		            
 	            }
-	             
 	            
+	             
+	            // move the second piece for the opponent
 	            // sending to the server that was הצרחה and do thing in the client (opponent)
 	    		ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
 	    		updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
@@ -1507,6 +1520,8 @@ public class GameController implements Initializable {
 	    		updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
 	    		ClientUI.chat.accept(updatePieceMoce_arr);
 	            
+
+	    		
 	    		SendToServerChangePlayerTurn(isChess(board));  // send to the opponent also if there is check on him
 				
 	       
