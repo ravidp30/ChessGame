@@ -24,6 +24,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import ClientAndServerLogin.SceneManagment;
@@ -58,11 +59,11 @@ import javafx.util.Duration;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.image.Image;
-
+import java.awt.event.MouseAdapter;
 
 
 public class GameController implements Initializable {
-    private boolean opponentFound =false;
+	private boolean opponentFound =false;
     private static Player player;
     private static Player opponent;
     private static Player playerTurn;
@@ -98,6 +99,9 @@ public class GameController implements Initializable {
 	        "/player/BishopW.png",
 	        "/player/RookW.png"
 	    };
+    ImageView customCursor;
+    Image cursorImage;
+   
     //private ArrayList<Piece> pieces = new ArrayList<>();
 //    private LinkedList<Piece> pieceL = new LinkedList<>();
     private ArrayList<Piece> Kpieces = new ArrayList<>();
@@ -143,6 +147,7 @@ public class GameController implements Initializable {
     
     public GameController() {
     	instance = this;
+    	
     }
     
     public static GameController getInstance() {
@@ -184,6 +189,7 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+    	
     	board = new Board(8 * squareSize, 8 * squareSize, null);
         ChessHeadLineLbl.setText("Chess Game:\nYou (id: " + player.getPlayerId() + ") VS opponent (id: " + opponent.getPlayerId() + ")");
         ChessHeadLineLbl.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
@@ -223,6 +229,22 @@ public class GameController implements Initializable {
              hbox.getChildren().add(HboxPiecesChoosing);  
          }
          	hbox.setVisible(false);
+         	// Create an ImageView to represent the custom cursor
+         	cursorImage = new Image("/player/arm.png");
+            customCursor = new ImageView(cursorImage);
+            customCursor.setVisible(false); // Initially hide the custom cursor
+            chessboardPane.setCursor(javafx.scene.Cursor.NONE); 
+            chessboardPane.getChildren().add(customCursor);/* your UI elements */
+            // Show the custom cursor and move it with the mouse
+            chessboardPane.setOnMouseMoved(event -> {
+            	customCursor.setVisible(true);
+            	customCursor.toFront();
+            	customCursor.setTranslateX(event.getX());
+            	customCursor.setTranslateY(event.getY()-10);
+
+            });
+            // Hide the custom cursor when the mouse leaves the scene
+            chessboardPane.setOnMouseExited(event -> customCursor.setVisible(false));
          	
         //setting up Bar choosing new player
     /*    addPiecesBar.setStyle("-fx-background-color: black;");
@@ -565,21 +587,24 @@ public class GameController implements Initializable {
 				            System.out.println("Invalid choice");
 		        	}
 		        	castlingCheck();
+		        	cursorImage=new Image("/player/" + firstPieceSelected.getname() +".png" ,cursorImage.getWidth(),cursorImage.getHeight(), true, true);
+		        	customCursor.setImage(cursorImage);
 		        	return;
 		        }
 		        
-		        //---------------- second click ---------------------
-		        
+		       
 		       
 		        else {
 		        	System.out.println("not our");
+		        	cursorImage=new Image("/player/arm.png");
+		        	customCursor.setImage(cursorImage);
 		        }
 	    	}
     	}
     	else {
     		System.out.println("not your turn");
     	}
-        
+    	
     }
     
     
@@ -984,8 +1009,9 @@ public class GameController implements Initializable {
         	
 
         }
-   
-
+        
+        cursorImage=new Image("/player/arm.png");
+    	customCursor.setImage(cursorImage);
 	}
 	
 	
@@ -1467,28 +1493,8 @@ public class GameController implements Initializable {
 		            oldY = 7;
 		            secondPieceSelected = board.getPiece(2,7); // the place to move to    
 		            movePiece(2,7); 
-		            if(isChessOnMe(board)) { //Chess On ME
-		            	moveBack();
-		            	
-		            	// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-		            	
-		            	// need to change those:
-		            	//lastChosenPiece, oldX, oldY
-						//newXLastOpponent, newYLastOpponen
-		            	//firstPieceSelected
-		            	//secondPieceSelected
-		            	// and than calling moveback again to move back again (twice moving back total)
-		            	
-		            	//moveBack();
-		            	
-		            	// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-		            	
-		            	cloudImage(true);
-		            	
-		            	
-		            	System.out.println("cannot castling...");
-		            	return;
-		            }
+		          
+		            
 	            }
 	             
 	            
