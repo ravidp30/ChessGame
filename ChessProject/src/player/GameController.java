@@ -1324,6 +1324,7 @@ public class GameController implements Initializable {
 				lblTurnStatus.setText("Your Turn");
 		     	cursorImage=new Image("/player/arm.png");
 		     	customCursor.setImage(cursorImage);
+		     	customCursor.toFront();
 				if(inCheck.getPlayerId().equals("InCheck")) {
 					
 					HashMap<Piece, ArrayList<Piece>> arr = new HashMap<>();
@@ -1352,6 +1353,7 @@ public class GameController implements Initializable {
 				lblTurnStatus.setText("Opponent's Turn");
 		     	cursorImage=new Image("/player/X.png");
 		     	customCursor.setImage(cursorImage);
+		     	customCursor.toFront();
 			}
 		});
 
