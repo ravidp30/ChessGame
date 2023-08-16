@@ -587,7 +587,7 @@ public class GameController implements Initializable {
 				            System.out.println("Invalid choice");
 		        	}
 		        	castlingCheck();
-		        	cursorImage=new Image("/player/" + firstPieceSelected.getname() +".png" ,cursorImage.getWidth(),cursorImage.getHeight(), true, true);
+		        	cursorImage=new Image("/player/" + firstPieceSelected.getname() +".png" ,cursorImage.getWidth(),cursorImage.getHeight(), true, false);
 		        	customCursor.setImage(cursorImage);
 		        	return;
 		        }
