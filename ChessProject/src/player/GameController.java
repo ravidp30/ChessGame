@@ -3,6 +3,8 @@ package player;
 import java.awt.Button;
 import java.awt.image.BufferedImage;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.io.File;
@@ -15,9 +17,11 @@ import java.util.ResourceBundle;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.shape.Line;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -47,13 +51,21 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.image.ImageView;
@@ -101,9 +113,10 @@ public class GameController implements Initializable {
 	    };
     ImageView customCursor;
     Image cursorImage;
+    ImageView winnerView;
+    Image winnerImage;
+ 
    
-    //private ArrayList<Piece> pieces = new ArrayList<>();
-//    private LinkedList<Piece> pieceL = new LinkedList<>();
     private ArrayList<Piece> Kpieces = new ArrayList<>();
     private ArrayList<Piece> Spieces = new ArrayList<>();
     private ArrayList<Piece> Qpieces = new ArrayList<>();
@@ -111,7 +124,6 @@ public class GameController implements Initializable {
     private ArrayList<Piece> Bpieces = new ArrayList<>();
     private ArrayList<Piece> KNpieces = new ArrayList<>();
     
-    private Board opponentBoard;
 
     
     
@@ -123,12 +135,18 @@ public class GameController implements Initializable {
     @FXML
     private TextField txtChat;
     @FXML
-    private Label labelChatArea;
+    private TextArea chatArea;
     @FXML
     private Label ChatLabel;
     @FXML
     private Button goodLuck;
-
+    @FXML
+    private Button sendGoodGame;
+    @FXML
+    private Button sendNiceMove;
+    @FXML
+    private Button sendThanks;
+    
     @FXML
     private Label ChessHeadLineLbl;
     @FXML
@@ -138,12 +156,8 @@ public class GameController implements Initializable {
     private Pane chessboardPane;
     @FXML
 	private Button exitBtn;
-    @FXML
-   	private ImageView WinnerGif;
-    //@FXML
-   	//private ImageView LooseGif;
-   
     
+   
     
     public GameController() {
     	instance = this;
@@ -162,8 +176,8 @@ public class GameController implements Initializable {
     
     public void sendMessage(String msg) {
     	
-    	String textInside = labelChatArea.getText();
-    	labelChatArea.setText(textInside + "\n(You): " + msg);
+    	String textInside = chatArea.getText();
+    	chatArea.setText(textInside + "\n(You): " + msg);
     	
     	// send the message to the server (to the opponent)
     	ArrayList<String> messageText_arr = new ArrayList<>();
@@ -176,7 +190,15 @@ public class GameController implements Initializable {
     public void sendGoodLuck(ActionEvent event) throws Exception {
     	sendMessage("Good luck  :-)");
     }
-
+    public void sendGoodGame(ActionEvent event) throws Exception {
+    	sendMessage("Good Game");
+    }
+    public void sendNiceMove(ActionEvent event) throws Exception {
+    	sendMessage("Nice Move");
+    }
+    public void sendThanks(ActionEvent event) throws Exception {
+    	sendMessage("Thanks");
+    }
     public static void start(Player player_temp, Player opponent_temp, Player playerStarting) throws IOException {
         player = player_temp;
       //  System.out.println(player.getStatus() + "asdasdsadsadsa");
@@ -190,16 +212,18 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     	
+    	    
     	board = new Board(8 * squareSize, 8 * squareSize, null);
         ChessHeadLineLbl.setText("Chess Game:\nYou (id: " + player.getPlayerId() + ") VS opponent (id: " + opponent.getPlayerId() + ")");
         ChessHeadLineLbl.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
         backGroundPane.setStyle("-fx-background-color: rgba(0, 0, 0, 1); -fx-border-width: 1px;");
-        labelChatArea.setStyle("-fx-text-fill: white; -fx-font-size: 15px;-fx-border-color: blue; -fx-border-width: 5px; -fx-font-weight: bold;");
-      //  ChatLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
+        //chatArea.setStyle("-fx-text-fill: black; -fx-font-size: 12px;-fx-font-weight: bold;");
         lblTurnStatus.setStyle("-fx-text-fill: #EE101F; -fx-font-weight: bold; -fx-font-size: 25px;");
-        WinnerGif.setVisible(false);
-        //LooseGif.setVisible(false);
-
+        winnerImage = new Image("/player/Winner.gif");
+        winnerView = new ImageView(winnerImage);
+        winnerView.setVisible(false); // Initially hide the animation
+        chessboardPane.getChildren().add(winnerView);       
+      
         // Create a Timeline animation for flickering
         KeyFrame hideKeyFrame = new KeyFrame(Duration.seconds(0.5), event -> lblTurnStatus.setVisible(false));
         KeyFrame showKeyFrame = new KeyFrame(Duration.seconds(1), event -> lblTurnStatus.setVisible(true));
@@ -216,7 +240,7 @@ public class GameController implements Initializable {
         //Hbox of pieces tool bar 
          hbox = new HBox(10); // Set spacing between slots
      	 hbox.setLayoutX(250);
-		 hbox.setLayoutY(100);
+		 hbox.setLayoutY(65);
 		 backGroundPane.getChildren().add(hbox);
          for (int i = 0; i < 4; i++) {
              ImageView HboxPiecesChoosing = new ImageView(new Image(pieceImagePaths[i]));
@@ -245,17 +269,7 @@ public class GameController implements Initializable {
             });
             // Hide the custom cursor when the mouse leaves the scene
             chessboardPane.setOnMouseExited(event -> customCursor.setVisible(false));
-         	
-        //setting up Bar choosing new player
-    /*    addPiecesBar.setStyle("-fx-background-color: black;");
-        double spacing = 80; // Adjust as needed
-        addImageToAddPiecesBar(addPiecesBar, "/player/QueenW.png", 50);
-        addImageToAddPiecesBar(addPiecesBar, "/player/KnightW.png", 50 + spacing);
-        addImageToAddPiecesBar(addPiecesBar, "/player/BishopW.png", 50 + 2 * spacing);
-        addImageToAddPiecesBar(addPiecesBar, "/player/RookW.png", 50 + 3 * spacing);
-        addPiecesBar.setVisible(false); 
-        
-      */ 
+     
         changePlayerTurn(playerTurn, new Player("NotInCheck"));
         try {
 			drawChessboard();
@@ -295,11 +309,11 @@ public class GameController implements Initializable {
     	Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Exit Game");
         alert.setHeaderText("Are you sure you want to exit the game?");
-        
         ButtonType exitButton = new ButtonType("Exit Game");
         ButtonType cancelButton = new ButtonType("Stay In The Game");
         alert.getButtonTypes().setAll(exitButton, cancelButton);
-        
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+        alert.getDialogPane().getStyleClass().add("custom-alert");
         alert.showAndWait().ifPresent(response -> {
             if (response == exitButton) {
                 // User clicked "Exit Game"
@@ -310,13 +324,7 @@ public class GameController implements Initializable {
                 playerExitedFromGame.add(player);
                 ClientUI.chat.accept(playerExitedFromGame);
                 
-    			/*((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
-    			try {
-					MenuController.start(player.getPlayerId());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
+    			
                 
                 exitActiveGame(1);
                 
@@ -484,43 +492,12 @@ public class GameController implements Initializable {
         imageViews[x][y].setLayoutX(x * squareSize);
         imageViews[x][y].setLayoutY(y * squareSize);
         
-     // Attach a click event handler to each Image
-       /* imageViews[x][y].setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                handleClickOnPiece(imageViews[x][y]);
-                System.out.println("ASas: " + piece.getX() + " " + piece.getY());
-            }
-        });*/
-        
-        
         chessboardPane.getChildren().add(imageViews[x][y]);
         
         board.addPiece(piece);
 
     }
     
-   /* private void handleClickOnPiece(ImageView imageViews) {
-    	System.out.println("from clicked: x = " + imageViews.getX() + ", y = " + imageViews.getY());
-    	currPiece=board.getPiece((int)imageViews.getX(), (int)imageViews.getY());
-    	
-    	System.out.println("test: " + currPiece.getX() + " " + currPiece.getY());
-       
-    }*/
-    
-   /* private void handleClickOnMoveTo(int x, int y) {
-    	try {
-        System.out.println("to clicked: x = " + x + ", y = " + y);
-        //check if EMPTY \ KILL
-        //.....
-        movePiece(currPiece.getX(), currPiece.getY(), x, y);
-        piece.setX(x);
-        piece.setY(y);
-    	}
-    	catch(NullPointerException e) {
-    		System.out.println("error");
-    	}
-    }*/
     
     private void handleClickOnMoveTo(Rectangle cell) {
     	
@@ -649,11 +626,7 @@ public class GameController implements Initializable {
 	            	
 	            	
 	            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, newPieces);
-	            	
-	            	int availableToMove = 0;
-	            	
-	            	//availableToMove = newBoard.MoveCheck(key.getX(), key.getY(), optionToMove.getX(), optionToMove.getY());//check if available to move
-	                   
+	            		            		                   
 	            	if(optionToMove.getname().equals("empty")) {//available to move the image (EMPTY SPACE)
 	
 	            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
@@ -691,7 +664,7 @@ public class GameController implements Initializable {
 	            
 	            
 	           
-	    	//}
+	    	
             
             
     	}
@@ -750,6 +723,7 @@ public class GameController implements Initializable {
     public void deleteOpponentPicture(Piece pieceToRemove) {
     	chessboardPane.getChildren().remove(imageViews[pieceToRemove.getX()][pieceToRemove.getY()]);
     	imageViews[pieceToRemove.getX()][pieceToRemove.getY()] = null;
+    	
     	System.out.println("image was deleted");
 	}
 
@@ -865,11 +839,9 @@ public class GameController implements Initializable {
     	for(int x = 0; x < 8; x++) {
         	for(int y = 0; y < 8; y++) {
        		Piece tempPiece = null;
-       		//moveOptions = null;
        		ArrayList<Piece> moveOptions = new ArrayList<>();
        		
         		try {
-            		//Piece tempPiece = new Piece(x, y, board.getPiece(x, y).getname(), board.getPiece(x, y).isWhite());
             		 
 	        		switch (board.getPiece(x, y).getname()) {
 			
@@ -902,10 +874,8 @@ public class GameController implements Initializable {
 				        default:
 				        	break;
 	        		}
-	        		//System.out.println("first: " + moveOptions);
 	        		if(tempPiece != null) {
 	        			piecesInMap.put(tempPiece, moveOptions);
-	        			//System.out.println("\n\n\nsecond: " + moveOptions);
 	        		}
         	
         		}catch (NullPointerException e) {}
@@ -958,9 +928,7 @@ public class GameController implements Initializable {
 	    					default:
 	    						System.out.println("no way");
 	    				}
-    					//System.out.println("\n\ncurr piece: " + currPiece.getname());
     					for(Piece optionsToMove : moveOptions) {
-    						//System.out.println(optionsToMove.getname());
     						if(optionsToMove.getname().equals("KingB")) {
     							return true;
     						}
@@ -996,14 +964,10 @@ public class GameController implements Initializable {
 	        // if soldier is at the end
 	        Piece soldierPiece = board.getPiece(x,y);
 	        if(soldierPiece != null && soldierPiece.getname().equals("soldierW") && soldierPiece.getY() == 0) {
-	        	/*if (!backGroundPane.getChildren().contains(hbox)) { //if the Hbox is not added to parent yet
-	        		backGroundPane.getChildren().add(hbox);
-	        	}*/
+	        	
 	        	continueTurn = false;
 	        	hbox.setVisible(true);
-	            //Line line = new Line(soldierPiece.getX()*squareSize, soldierPiece.getY()*squareSize, 130, 130);
-
-	            //hbox.getChildren().add(line);
+	          
 	        }
 	        else {
 	        	TurnContinueAfterMovement();
@@ -1051,42 +1015,11 @@ public class GameController implements Initializable {
 	}
 	
 	
-	/*public HashMap<Piece, ArrayList<Piece>> buildHashMapForPieces(){
-		
-		HashMap<Piece, ArrayList<Piece>> piecesInMap = new HashMap<>();
-		
-		
-		for(int x = 0; x < 8; x++) {
-			
-		}
-		
-		
-		
-		return piecesInMap;
-	}*/
 	
 	
 	
-//	private void showHbox(boolean show) {
-//		if (show) {
-//			if (!chessboardPane.getChildren().contains(hbox)) { //if the hbox is not added to parent yet
-//				chessboardPane.getChildren().add(hbox);
-//				hbox.setVisible(true);
-//			}
-//			
-//		}
-//		else {
-//			try {
-//				chessboardPane.getChildren().remove(hbox);		
-//				hbox.setVisible(false);
-//				System.out.println("UnShow");
-//			}catch (NullPointerException e) {
-//			}
-//			
-//		}
-//		
-//	    		 
-//	}
+	
+
 
 	private void cloudImage(boolean use) {
 		if(use) {
@@ -1165,7 +1098,6 @@ public class GameController implements Initializable {
         	customCursor.setImage(cursorImage);
 		}
 		
-		//popUpCheck("unvailable move");
 		showAutoDisappearAlert("Unvaliable Move", "You cannot move there", Duration.seconds(2));
     	cursorImage=new Image("/player/arm.png");
     	customCursor.setImage(cursorImage);
@@ -1187,35 +1119,26 @@ public class GameController implements Initializable {
 					tempPiece = newBoard.getPiece(x, y);
 	
 					if(tempPiece.getname().endsWith("W")) {
-						//System.out.println("white: " + tempPiece.getX() + "," + tempPiece.getY());
 						modifiedString = (tempPiece.getname()).substring(0, (tempPiece.getname()).length() - 1) + "B";
-						//System.out.println("white to black: " + modifiedString);
-						//System.out.println(modifiedString + " , " + tempPiece.getX() + " " + tempPiece.getY());
 						
 						switch (modifiedString) {
 					        case "soldierB":
 					        	tempPiece = new Soldier(7-x, 7-y, modifiedString, false);
-					        	//piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(newBoard));
 					        	break; 
 					        case "KingB":
 					        	tempPiece = new King(7-x, 7-y, modifiedString, false);
-					        	//piecesInMap.put(tempPiece, ((King)tempPiece).Move(newBoard));
 					        	break;
 					        case "RookB":
 					        	tempPiece = new Rook(7-x, 7-y, modifiedString, false);
-					        	//piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(newBoard));
 					        	break;
 					        case "KnightB":
 					        	tempPiece = new Knight(7-x,7-y, modifiedString, false);
-					        	//piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(newBoard));
 					        	break;
 					        case "BishopB":
 					        	tempPiece = new Bishop(7-x,7-y, modifiedString, false);
-					        	//piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(newBoard));
 					        	break;
 					        case "QueenB":
 					        	tempPiece = new Queen(7-x, 7-y, modifiedString, false);
-					        	//piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(newBoard));
 					        	break;
 					        default:
 					            System.out.println("Invalid choice");
@@ -1224,9 +1147,7 @@ public class GameController implements Initializable {
 					}
 					
 					else if (tempPiece.getname().endsWith("B")){
-						//System.out.println("black: " + tempPiece.getX() + "," + tempPiece.getY());
 						modifiedString = (tempPiece.getname()).substring(0, (tempPiece.getname()).length() - 1) + "W";
-						//System.out.println("black to white: " + modifiedString);
 						
 						
 						switch (modifiedString) {
@@ -1234,27 +1155,21 @@ public class GameController implements Initializable {
 		    	
 					        case "KingW":
 					        	tempPiece = new King(7-x, 7-y, modifiedString, true);
-					        	//piecesInMap.put(tempPiece, ((King)tempPiece).Move(newBoard));
 					            break;
 					        case "QueenW":
 					        	tempPiece = new Queen(7-x, 7-y, modifiedString, true);
-					        	//piecesInMap.put(tempPiece, ((Queen)tempPiece).Move(newBoard));
 					        	break;
 					        case "RookW":
 					        	tempPiece = new Rook(7-x, 7-y, modifiedString, true);
-					        	//piecesInMap.put(tempPiece, ((Rook)tempPiece).Move(newBoard));
 					        	break; 
 					        case "BishopW":
 					        	tempPiece = new Bishop(7-x, 7-y, modifiedString, true);
-					        	//piecesInMap.put(tempPiece, ((Bishop)tempPiece).Move(newBoard));
 					        	break; 
 					        case "KnightW":
 					        	tempPiece = new Knight(7-x, 7-y, modifiedString, true);
-					        	//piecesInMap.put(tempPiece, ((Knight)tempPiece).Move(newBoard));
 					        	break;
 					        case "soldierW":
 					        	tempPiece = new Soldier(7-x, 7-y, modifiedString, true);
-					        	//piecesInMap.put(tempPiece, ((Soldier)tempPiece).Move(newBoard));
 					        	break; 
 					        default:
 					            System.out.println("Invalid choice");
@@ -1264,27 +1179,13 @@ public class GameController implements Initializable {
 					}
 					tempPieces.add(tempPiece);
 				}catch (Exception e) {
-					//tempPieces.add(new Piece(x, y, "empty", true));
-					//System.out.println("empty: " + x + "," + y);
+					
 				}
 			}
 		}
-		/*int cnt = 0;
-		for(Piece a : tempPieces) {
-			cnt++;
-			System.out.println(a.getname() + ", " + a.getX() + ", " + a.getY());
-		}
-		System.out.println(cnt);*/	
+		
 		
 		Board tempBoard = new Board(8 * squareSize, 8 * squareSize, tempPieces);
-		
-		
-		/*for(int i = 0; i<8; i++) {
-			for(int j = 0; j<8; j++) {
-				if(tempBoard.getPiece(i, j) != null)
-					System.out.println(tempBoard.getPiece(i, j).getname() + ", " + tempBoard.getPiece(i, j).getX() + ", " + tempBoard.getPiece(i, j).getY());
-			}
-		}*/
 		
 
 		return isChess(tempBoard);
@@ -1311,13 +1212,7 @@ public class GameController implements Initializable {
 	public void changePlayerTurn(Player newPlayerTurn, Player inCheck) {
 
 		Platform.runLater(() -> {
-			/*if(isChess(board)) {
-				System.out.println(123123);
-			}*/
-			
 
-			
-			
 			playerTurn = newPlayerTurn;
 			if(playerTurn.getPlayerId().equals(player.getPlayerId())) {
 				
@@ -1327,24 +1222,19 @@ public class GameController implements Initializable {
 		     	customCursor.toFront();
 				if(inCheck.getPlayerId().equals("InCheck")) {
 					
-					HashMap<Piece, ArrayList<Piece>> arr = new HashMap<>();
-					
-					
 					if(!checkForMate(setUpPiecesHasMap())) {
-						//popUpCheck("Check on me");
 						showAutoDisappearAlert("Check", "ohh\nYou are on check", Duration.seconds(4)); 
 						
 					}
 					else {
-						//popUpCheck("Mate on me");
 						
 						// *********** looser message HERE *****************
-						//LooseGif.toFront();
-						//LooseGif.setVisible(true);
+			            showLosingPopup();
 						sendBackToOpponentIsMate(); // send to the opponent that he won with mate
 					}
 					
 					
+				
 					
 					
 				}
@@ -1359,6 +1249,21 @@ public class GameController implements Initializable {
 
 	}
 	
+	private void showLosingPopup() {
+		        // Create an Alert with a custom content area
+		        Alert alert = new Alert(AlertType.INFORMATION);
+		        alert.setTitle("You Lost!");
+		        alert.setHeaderText("Oops! You lost the game.");
+
+		        // Apply custom CSS to the alert
+		        alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+		        alert.getDialogPane().getStyleClass().add("custom-alert");
+
+		        // Show the alert
+		        alert.showAndWait();
+		    }
+	
+
 	public void sendBackToOpponentIsMate() {
 		ArrayList<Player> mateSend_arr = new ArrayList<>();
 		mateSend_arr.add(new Player("PlayerWonWithMate"));
@@ -1373,9 +1278,9 @@ public class GameController implements Initializable {
 		
 	    	String textInside;
 	    	
-	    	textInside = labelChatArea.getText();
+	    	textInside = chatArea.getText();
 	    	
-	    	labelChatArea.setText(textInside + "\n(Oponent): " + message);
+	    	chatArea.setText(textInside + "\n(Oponent): " + message);
     	
 		});
     	
@@ -1395,7 +1300,10 @@ public class GameController implements Initializable {
 		Alert Check = new Alert(AlertType.CONFIRMATION);
 		Check.setTitle("Check");
 		Check.setHeaderText(string );
+		Check.getDialogPane().getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+		Check.getDialogPane().getStyleClass().add("custom-alert");
         Check.showAndWait();
+        
 
 	}
 	
@@ -1411,12 +1319,13 @@ public class GameController implements Initializable {
 	}
 	
 	
-    public static void showAutoDisappearAlert(String title, String message, Duration duration) {
+    public  void showAutoDisappearAlert(String title, String message, Duration duration) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
-
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+        alert.getDialogPane().getStyleClass().add("custom-alert");
         Timeline timeline = new Timeline(new KeyFrame(duration, event -> alert.hide()));
 
         alert.show();
@@ -1445,14 +1354,10 @@ public class GameController implements Initializable {
 	        // if soldier is at the end
 	        Piece soldierPiece = board.getPiece(x,y);
 	        if(soldierPiece != null && soldierPiece.getname().equals("soldierW") && soldierPiece.getY() == 0) {
-	        	/*if (!backGroundPane.getChildren().contains(hbox)) { //if the Hbox is not added to parent yet
-	        		backGroundPane.getChildren().add(hbox);
-	        	}*/
+	        	
 	        	continueTurn = false;
 	        	hbox.setVisible(true);
-	            //Line line = new Line(soldierPiece.getX()*squareSize, soldierPiece.getY()*squareSize, 130, 130);
-
-	            //hbox.getChildren().add(line);
+	          
 	        }
 	        else {
 	        	TurnContinueAfterMovement();
@@ -1473,7 +1378,8 @@ public class GameController implements Initializable {
 	    ButtonType yesButton = new ButtonType("YES");
 	    ButtonType noButton = new ButtonType("NO");
 	    alert.getButtonTypes().setAll(yesButton, noButton);
-	    
+	    alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+        alert.getDialogPane().getStyleClass().add("custom-alert");
 	    alert.showAndWait().ifPresent(answer -> {
 	        if (answer == yesButton) {
 	            // User want to do Castling
@@ -1513,7 +1419,7 @@ public class GameController implements Initializable {
 	            
 	             
 	            // move the second piece for the opponent
-	            // sending to the server that was הצרחה and do thing in the client (opponent)
+	            // sending to the server that was and do thing in the client (opponent)
 	    		ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
 	    		updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
 	    		updatePieceMoce_arr.add(new Piece(0, 0, EatOrNot, true));
@@ -1536,9 +1442,8 @@ public class GameController implements Initializable {
 	public void wonTheGameMessage() {
 		
 		Platform.runLater(() -> {
-			
-			WinnerGif.toFront();
-			WinnerGif.setVisible(true);
+			winnerView.toFront();
+			  winnerView.setVisible(true); 
 			String chickenEmoji = "\uD83D\uDC14";
 			lblTurnStatus.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 25px;");
 			lblTurnStatus.setText("Winner winner chiken dinner! " + chickenEmoji);
@@ -1546,4 +1451,6 @@ public class GameController implements Initializable {
 
 		});
 	}
-}
+	
+	
+	 }

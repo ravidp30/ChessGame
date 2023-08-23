@@ -273,16 +273,16 @@
     -fx-text-fill: #FAF9F6;
 }
 .styled-button {
-    -fx-background-color: #4CAF50;
+    -fx-background-color: black;
     -fx-text-fill: white;
-    -fx-font-size: 16px;
+    -fx-font-size: 12px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0, 0, 2);
 }
 
 .styled-button:hover {
-    -fx-background-color: #45a049;
+    -fx-background-color: black;
     -fx-text-fill: white;
-    -fx-font-size: 16px;
+    -fx-font-size: 12px;
 }
 .tab-header-area {
     -fx-background-color: darkgray; /* Change this color as needed */
@@ -290,4 +290,49 @@
 
 .tab-selected .tab-header-area {
     -fx-background-color: gray; /* Change this color as needed */
+}
+.exit-button {
+    -fx-background-color: linear-gradient(to bottom, #1a237e, #0d47a1);
+    -fx-background-radius: 50%;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+.exit-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #0d47a1, #002171);
+}
+
+.text-area-chat {
+    -fx-background-color: #1a237e;
+    -fx-text-fill: black;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 7px;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    
+}
+
+.text-area-chat:focused {
+    -fx-border-color: #0d47a1;
+}
+
+.text-area-chat .scroll-pane {
+    -fx-background-color: #E0E0E0; /* Gray background inside the TextArea */
+}
+
+.custom-alert {
+    -fx-background-color: #f0f0f0; /* Background color of the alert */
+}
+
+.custom-alert .alert-header {
+    -fx-background-color: #333; /* Background color of the header */
+    -fx-text-fill: white; /* Text color of the header */
+}
+
+.custom-alert .dialog-pane {
+    -fx-background-color: transparent; /* Transparent background for the content area */
 }

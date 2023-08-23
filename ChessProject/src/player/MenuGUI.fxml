@@ -7,24 +7,24 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="392.0" prefWidth="512.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="player.MenuController">
+<Pane fx:id="MenuPane" prefHeight="392.0" prefWidth="512.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="player.MenuController">
    <children>
-      <ImageView fitHeight="399.0" fitWidth="518.0" layoutX="-4.0" layoutY="-2.0">
+      <ImageView fx:id="imageBG" fitHeight="399.0" fitWidth="518.0" layoutX="-4.0" layoutY="-2.0">
          <image>
             <Image url="@MenuBg.png" />
          </image>
       </ImageView>
-      <Button fx:id="exitBtn" layoutX="477.0" layoutY="1.0" onAction="#onClickExit" text="Exit" />
+      <Button fx:id="exitBtn" layoutX="2.0" layoutY="1.0" onAction="#onClickExit" styleClass="exit-button" text="Exit" />
       <Label layoutX="200.0" layoutY="14.0" prefHeight="51.0" prefWidth="110.0" text="Menu">
          <font>
             <Font name="System Bold" size="33.0" />
          </font></Label>
-      <Button fx:id="readyBtn" layoutX="390.0" layoutY="125.0" mnemonicParsing="false" onAction="#onClickReady" text="Ready" />
+      <Button fx:id="readyBtn" layoutX="390.0" layoutY="125.0" mnemonicParsing="false" onAction="#onClickReady" styleClass="styled-button" text="Ready" />
       <Label fx:id="playersReady" layoutX="397.0" layoutY="147.0" prefHeight="37.0" prefWidth="35.0" text="0/2">
          <font>
             <Font name="System Bold" size="16.0" />
          </font></Label>
-      <Button fx:id="StartGameBtn" layoutX="199.0" layoutY="125.0" mnemonicParsing="false" onAction="#onClickStartGame" prefHeight="80.0" prefWidth="99.0" text="StartGame" />
+      <Button fx:id="StartGameBtn" layoutX="199.0" layoutY="125.0" mnemonicParsing="false" onAction="#onClickStartGame" prefHeight="80.0" prefWidth="99.0" styleClass="styled-button" text="StartGame" />
       <ImageView fitHeight="189.0" fitWidth="99.0" layoutX="38.0" layoutY="56.0">
          <image>
             <Image url="@logo.gif" />
