@@ -120,11 +120,11 @@ public class MenuController implements Initializable{
 		
 		String message = "";
 		if(endStatus == 2) {
-			message = "You opponent has left the game\n\nYou WON!!!";
+			message = "Your opponent has left the game";
 		}
 		
 		if(endStatus == 1) {
-			message = "Looser, you quitted the game and LOST!!!";
+			message = "You left the game";
 		}
 		
 		if(endStatus == 1 || endStatus == 2) {

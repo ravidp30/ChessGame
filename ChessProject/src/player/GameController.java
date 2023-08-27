@@ -147,11 +147,14 @@ public class GameController implements Initializable {
     @FXML
     private Button sendThanks;
     
-    @FXML
-    private Label ChessHeadLineLbl;
+   // @FXML
+    //private Label ChessHeadLineLbl;
     @FXML
     private Label lblTurnStatus;
-
+    @FXML
+    private Label OpponentLbl;
+    @FXML
+    private Label YouLbl;
     @FXML
     private Pane chessboardPane;
     @FXML
@@ -214,8 +217,9 @@ public class GameController implements Initializable {
     	
     	    
     	board = new Board(8 * squareSize, 8 * squareSize, null);
-        ChessHeadLineLbl.setText("Chess Game:\nYou (id: " + player.getPlayerId() + ") VS opponent (id: " + opponent.getPlayerId() + ")");
-        ChessHeadLineLbl.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
+       // ChessHeadLineLbl.setText("Chess Game:\nYou (id: " + player.getPlayerId() + ") VS opponent (id: " + opponent.getPlayerId() + ")");
+        //OpponentLbl.
+       // ChessHeadLineLbl.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
         backGroundPane.setStyle("-fx-background-color: rgba(0, 0, 0, 1); -fx-border-width: 1px;");
         //chatArea.setStyle("-fx-text-fill: black; -fx-font-size: 12px;-fx-font-weight: bold;");
         lblTurnStatus.setStyle("-fx-text-fill: #EE101F; -fx-font-weight: bold; -fx-font-size: 25px;");
@@ -1229,8 +1233,8 @@ public class GameController implements Initializable {
 					else {
 						
 						// *********** looser message HERE *****************
-			            showLosingPopup();
 						sendBackToOpponentIsMate(); // send to the opponent that he won with mate
+						showFinishPopup("You Lost!","Oops! You lost the game.");
 					}
 					
 					
@@ -1249,18 +1253,32 @@ public class GameController implements Initializable {
 
 	}
 	
-	private void showLosingPopup() {
+	private void showFinishPopup(String title, String header) {
 		        // Create an Alert with a custom content area
-		        Alert alert = new Alert(AlertType.INFORMATION);
-		        alert.setTitle("You Lost!");
-		        alert.setHeaderText("Oops! You lost the game.");
-
-		        // Apply custom CSS to the alert
-		        alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+		        Alert alert = new Alert(AlertType.CONFIRMATION);
+		        alert.setTitle(title);
+		        alert.setHeaderText(header);
+		        alert.setContentText("Start A new game?");
+		        ButtonType yesButton = new ButtonType("YES");
+			    ButtonType noButton = new ButtonType("NO");
+			    alert.getButtonTypes().setAll(yesButton, noButton);
+			    alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 		        alert.getDialogPane().getStyleClass().add("custom-alert");
-
-		        // Show the alert
-		        alert.showAndWait();
+			    alert.showAndWait().ifPresent(answer -> {
+			        if (answer == yesButton) {
+			            System.out.println("New game");
+			            ArrayList<Player> playerExitedFromGame = new ArrayList<>();
+		                playerExitedFromGame.add(new Player("PlayerExitedFromActiveGame"));
+		                playerExitedFromGame.add(player);
+		                ClientUI.chat.accept(playerExitedFromGame);   
+		                exitActiveGame(1);
+		                
+			        }
+			        
+			    });
+			    
+//		        // Show the alert
+//		        alert.showAndWait();
 		    }
 	
 
@@ -1444,6 +1462,7 @@ public class GameController implements Initializable {
 		Platform.runLater(() -> {
 			winnerView.toFront();
 			  winnerView.setVisible(true); 
+			  showFinishPopup("You Won!","You did it, You won the game!!!");
 			String chickenEmoji = "\uD83D\uDC14";
 			lblTurnStatus.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 25px;");
 			lblTurnStatus.setText("Winner winner chiken dinner! " + chickenEmoji);
