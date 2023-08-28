@@ -40,6 +40,7 @@ import javafx.scene.paint.Color;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import javafx.scene.control.TextField;
 
 public class MenuController implements Initializable{
 	
@@ -47,7 +48,8 @@ public class MenuController implements Initializable{
 	private Button exitBtn;
 	@FXML
 	private Button readyBtn;
-	
+	@FXML
+	private TextField nameText;
 	@FXML
 	private Label playersReady;
 	@FXML
@@ -61,8 +63,6 @@ public class MenuController implements Initializable{
 	private static MenuController instance;
 	
 	private ActionEvent currEvent;
-	
-
 	    
 	public MenuController() {
 		instance = this;
@@ -73,11 +73,23 @@ public class MenuController implements Initializable{
 	
 	public void onClickReady(ActionEvent event) throws Exception {
 		currEvent = event;
-		if(player.getStatus() == 0) {
+		if(player.getStatus() == 0 ) {
+			if(nameText.getText().isEmpty()) {
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+		        alert.setTitle("name");
+		        alert.setHeaderText("Please enter your name before ready");
+		        alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+		        alert.getDialogPane().getStyleClass().add("custom-alert");
+		        ButtonType exitButton = new ButtonType("Close");
+		        alert.getButtonTypes().setAll(exitButton);
+		        alert.show();
+			}
+			else {
 			ArrayList<Player> clickOnReady_arr = new ArrayList<>();
 			clickOnReady_arr.add(new Player("PlayerClickedOnReady"));
 			clickOnReady_arr.add(player);
 			ClientUI.chat.accept(clickOnReady_arr);
+			}
 		}
 		else {
 			ArrayList<Player> clickOnUnReady_arr = new ArrayList<>();
@@ -115,6 +127,7 @@ public class MenuController implements Initializable{
 	
 	// endStatus: 0 - none , 1 - lost - 2 - won
 	public static void start(String pId, int endStatus) throws IOException {
+		
 		player = new Player(pId);
 		SceneManagment.createNewStage("/player/MenuGUI.fxml", null, "Menu").show();
 		
@@ -143,7 +156,6 @@ public class MenuController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
 	
 		ClientUI.chat.accept("UpdateCounterOfReadyPlayers");	
 	}
@@ -164,7 +176,7 @@ public class MenuController implements Initializable{
 
 	public void startGame(Player opponent, Player playerStarting) throws IOException {
 		player.setStatus(2); // in game
-		
+		player.setPlayerId(nameText.getText());
 		System.out.println("Game Started!!!");
 		System.out.println(player + " VS " + opponent);
 		
@@ -177,10 +189,10 @@ public class MenuController implements Initializable{
 				e.printStackTrace();
 			}
         });
+		}
 		
-		
-	}
-
+	
+	
 
 	public static MenuController getInstance() {
 		return instance;

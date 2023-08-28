@@ -16,11 +16,8 @@
             <Image url="@MenuBg.png" />
          </image>
       </ImageView>
-      <Pane fx:id="chessboardPane" layoutX="96.0" layoutY="129.0" prefHeight="345.0" prefWidth="665.0" />
-      <Pane fx:id="addPiecesBar" layoutX="96.0" layoutY="95.0" prefHeight="57.0" prefWidth="665.0">
-         <children>
-            <Label fx:id="lblTurnStatus" layoutX="3.0" layoutY="-41.0" prefHeight="93.0" prefWidth="232.0" text="Loading..." />
-         </children></Pane>
+      <Pane fx:id="chessboardPane" layoutX="178.0" layoutY="129.0" prefHeight="345.0" prefWidth="545.0" />
+      <Label fx:id="lblTurnStatus" layoutX="151.0" layoutY="56.0" prefHeight="93.0" prefWidth="232.0" text="Loading..." />
       <Button fx:id="exitGameBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onPlayerClickExitGame" styleClass="exit-button" text="Exit game" />
       <TextField fx:id="txtChat" layoutX="717.0" layoutY="524.0" prefHeight="30.0" prefWidth="158.0" promptText="write here..." />
       <Button fx:id="sendButton" layoutX="877.0" layoutY="524.0" mnemonicParsing="false" onAction="#onPlayerClickSend" styleClass="styled-button" stylesheets="@../css/ServerGUI.css" text="Send" />
@@ -28,7 +25,27 @@
       <Button layoutX="718.0" layoutY="607.0" mnemonicParsing="false" onAction="#sendGoodGame" prefHeight="30.0" prefWidth="97.0" styleClass="styled-button" text="Good Game" />
       <Button layoutX="718.0" layoutY="648.0" mnemonicParsing="false" onAction="#sendNiceMove" prefHeight="30.0" prefWidth="97.0" styleClass="styled-button" text="Nice Move" />
       <Button layoutX="833.0" layoutY="648.0" mnemonicParsing="false" onAction="#sendThanks" prefHeight="30.0" prefWidth="97.0" styleClass="styled-button" text="Thanks" />
-      <TextArea fx:id="chatArea" layoutX="715.0" layoutY="161.0" prefHeight="363.0" prefWidth="210.0" promptText="Chat" styleClass="text-area-chat" />		   </children>
+      <TextArea fx:id="chatArea" layoutX="715.0" layoutY="161.0" prefHeight="363.0" prefWidth="210.0" promptText="Chat" styleClass="text-area-chat" />
+      <Pane fx:id="oppPane" layoutX="9.0" layoutY="129.0" prefHeight="200.0" prefWidth="169.0">
+         <children>
+            <ImageView fitHeight="133.0" fitWidth="169.0" styleClass="main-pane">
+               <image>
+                  <Image url="@avatar1.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="oppName" layoutY="133.0" prefHeight="57.0" prefWidth="169.0" />
+         </children>
+      </Pane>
+      <Pane fx:id="myPane" layoutX="9.0" layoutY="407.0" prefHeight="200.0" prefWidth="169.0">
+         <children>
+            <ImageView fitHeight="133.0" fitWidth="169.0" styleClass="main-pane">
+               <image>
+                  <Image url="@avatar1.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="yourName" layoutY="133.0" prefHeight="57.0" prefWidth="169.0" />
+         </children>
+      </Pane>		   </children>
    <effect>
       <ColorAdjust />
    </effect>

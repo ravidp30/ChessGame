@@ -6,7 +6,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -22,7 +21,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -30,7 +28,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
 import ClientAndServerLogin.SceneManagment;
 import client.ClientUI;
 import config.Bishop;
@@ -105,6 +102,7 @@ public class GameController implements Initializable {
     private Image Cloud ;
     private ImageView CloudImageView ;
     private HBox hbox;
+    private HBox YourPiecesKilledBox;
     private String[] pieceImagePaths  = {
 	        "/player/QueenW.png",
 	        "/player/KnightW.png",
@@ -133,11 +131,19 @@ public class GameController implements Initializable {
     @FXML
     private Pane addPiecesBar;
     @FXML
+    private Pane myPane;
+    @FXML
+    private Pane oppPane;
+    @FXML
     private TextField txtChat;
     @FXML
     private TextArea chatArea;
     @FXML
     private Label ChatLabel;
+    @FXML
+    private Label oppName;
+    @FXML
+    private Label yourName;
     @FXML
     private Button goodLuck;
     @FXML
@@ -227,7 +233,8 @@ public class GameController implements Initializable {
         winnerView = new ImageView(winnerImage);
         winnerView.setVisible(false); // Initially hide the animation
         chessboardPane.getChildren().add(winnerView);       
-      
+        yourName.setText(player.getPlayerId());
+        oppName.setText(opponent.getPlayerId());
         // Create a Timeline animation for flickering
         KeyFrame hideKeyFrame = new KeyFrame(Duration.seconds(0.5), event -> lblTurnStatus.setVisible(false));
         KeyFrame showKeyFrame = new KeyFrame(Duration.seconds(1), event -> lblTurnStatus.setVisible(true));
@@ -243,20 +250,34 @@ public class GameController implements Initializable {
         CloudImageView.setVisible(false);
         //Hbox of pieces tool bar 
          hbox = new HBox(10); // Set spacing between slots
-     	 hbox.setLayoutX(250);
+     	 hbox.setLayoutX(300);
 		 hbox.setLayoutY(65);
 		 backGroundPane.getChildren().add(hbox);
          for (int i = 0; i < 4; i++) {
              ImageView HboxPiecesChoosing = new ImageView(new Image(pieceImagePaths[i]));
              HboxPiecesChoosing.setFitWidth(50);
              HboxPiecesChoosing.setFitHeight(50);
-             
              // Set an action when the image is clicked
              int slotIndex = i;
              HboxPiecesChoosing.setOnMouseClicked(event -> handlePieceClickOnHBOX(slotIndex));
              hbox.getChildren().add(HboxPiecesChoosing);  
          }
          	hbox.setVisible(false);
+//         //Hbox of your killed pieces  
+//         YourPiecesKilledBox = new HBox(10); // Set spacing between slots
+//         YourPiecesKilledBox.setLayoutX(530);
+//         YourPiecesKilledBox.setLayoutY(0);
+//   		 backGroundPane.getChildren().add(YourPiecesKilledBox);
+//            for (int i = 0; i < 15; i++) {
+//                ImageView HboxPiecesChoosing = new ImageView(new Image(pieceImagePaths[i]));
+//                HboxPiecesChoosing.setFitWidth(50);
+//                HboxPiecesChoosing.setFitHeight(50);
+//                // Set an action when the image is clicked
+//                int slotIndex = i;
+//                HboxPiecesChoosing.setOnMouseClicked(event -> handlePieceClickOnHBOX(slotIndex));
+//                hbox.getChildren().add(HboxPiecesChoosing);  
+//            }
+//            	hbox.setVisible(false);
          	// Create an ImageView to represent the custom cursor
          	cursorImage = new Image("/player/arm.png");
             customCursor = new ImageView(cursorImage);
@@ -297,6 +318,7 @@ public class GameController implements Initializable {
     		break;
     	case 2:
     		setUpPiece(lastChosenPiece.getX(), lastChosenPiece.getY(), "BishopW", true);
+    		break;
     	case 3:
     		setUpPiece(lastChosenPiece.getX(), lastChosenPiece.getY(), "RookW", true);
     		break;
@@ -1012,7 +1034,7 @@ public class GameController implements Initializable {
     	
     	
     	 firstPieceSelected=null;
-        
+    	 
         
     	
     	SendToServerChangePlayerTurn(inCheck);  // send to the opponent also if there is check on him
