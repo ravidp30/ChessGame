@@ -176,7 +176,6 @@ public class MenuController implements Initializable{
 
 	public void startGame(Player opponent, Player playerStarting) throws IOException {
 		player.setStatus(2); // in game
-		player.setPlayerId(nameText.getText());
 		System.out.println("Game Started!!!");
 		System.out.println(player + " VS " + opponent);
 		
