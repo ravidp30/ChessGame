@@ -102,7 +102,9 @@ public class GameController implements Initializable {
     private Image Cloud ;
     private ImageView CloudImageView ;
     private HBox hbox;
-    private HBox YourPiecesKilledBox;
+    private HBox yourPiecesKilledBox;
+    private HBox oppPiecesKilledBox;
+
     private String[] pieceImagePaths  = {
 	        "/player/QueenW.png",
 	        "/player/KnightW.png",
@@ -263,21 +265,19 @@ public class GameController implements Initializable {
              hbox.getChildren().add(HboxPiecesChoosing);  
          }
          	hbox.setVisible(false);
-//         //Hbox of your killed pieces  
-//         YourPiecesKilledBox = new HBox(10); // Set spacing between slots
-//         YourPiecesKilledBox.setLayoutX(530);
-//         YourPiecesKilledBox.setLayoutY(0);
-//   		 backGroundPane.getChildren().add(YourPiecesKilledBox);
-//            for (int i = 0; i < 15; i++) {
-//                ImageView HboxPiecesChoosing = new ImageView(new Image(pieceImagePaths[i]));
-//                HboxPiecesChoosing.setFitWidth(50);
-//                HboxPiecesChoosing.setFitHeight(50);
-//                // Set an action when the image is clicked
-//                int slotIndex = i;
-//                HboxPiecesChoosing.setOnMouseClicked(event -> handlePieceClickOnHBOX(slotIndex));
-//                hbox.getChildren().add(HboxPiecesChoosing);  
-//            }
-//            	hbox.setVisible(false);
+         //Hbox of your killed pieces  
+         
+         yourPiecesKilledBox = new HBox(5); // Set spacing between slots
+         yourPiecesKilledBox.setLayoutX(150);
+         yourPiecesKilledBox.setLayoutY(650);
+   		 backGroundPane.getChildren().add(yourPiecesKilledBox);
+   		 
+         //Hbox of opponent killed pieces  
+   		oppPiecesKilledBox = new HBox(5); 
+   		oppPiecesKilledBox.setLayoutX(150);	
+   		oppPiecesKilledBox.setLayoutY(675);
+		backGroundPane.getChildren().add(oppPiecesKilledBox);
+		     
          	// Create an ImageView to represent the custom cursor
          	cursorImage = new Image("/player/arm.png");
             customCursor = new ImageView(cursorImage);
@@ -747,9 +747,20 @@ public class GameController implements Initializable {
     }
     
     public void deleteOpponentPicture(Piece pieceToRemove) {
+    	ImageView pieceImageView = imageViews[pieceToRemove.getX()][pieceToRemove.getY()];
+        if (pieceImageView != null) {
+
     	chessboardPane.getChildren().remove(imageViews[pieceToRemove.getX()][pieceToRemove.getY()]);
     	imageViews[pieceToRemove.getX()][pieceToRemove.getY()] = null;
-    	
+    	pieceImageView.setFitWidth(20);
+		pieceImageView.setFitHeight(20);
+    	if(pieceToRemove.getname().contains("W")) {
+    		yourPiecesKilledBox.getChildren().add(pieceImageView);
+    	}
+    	else 
+    		oppPiecesKilledBox.getChildren().add(pieceImageView);
+
+        }
     	System.out.println("image was deleted");
 	}
 

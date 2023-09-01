@@ -45,6 +45,15 @@
             </ImageView>
             <Label fx:id="yourName" layoutY="133.0" prefHeight="57.0" prefWidth="169.0" />
          </children>
+      </Pane>
+      <Pane layoutX="682.0" layoutY="3.0" prefHeight="158.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="158.0" fitWidth="169.0" layoutX="21.0">
+               <image>
+                  <Image url="@logo.png" />
+               </image>
+            </ImageView>
+         </children>
       </Pane>		   </children>
    <effect>
       <ColorAdjust />
