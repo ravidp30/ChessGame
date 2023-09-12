@@ -235,8 +235,10 @@ public class GameController implements Initializable {
         winnerView = new ImageView(winnerImage);
         winnerView.setVisible(false); // Initially hide the animation
         chessboardPane.getChildren().add(winnerView);       
-        yourName.setText(player.getPlayerId());
-        oppName.setText(opponent.getPlayerId());
+        yourName.setText(player.getPlayerName());
+        oppName.setText(opponent.getPlayerName());
+        yourName.setStyle("-fx-font-weight: bold;");
+        oppName.setStyle("-fx-font-weight: bold;");
         // Create a Timeline animation for flickering
         KeyFrame hideKeyFrame = new KeyFrame(Duration.seconds(0.5), event -> lblTurnStatus.setVisible(false));
         KeyFrame showKeyFrame = new KeyFrame(Duration.seconds(1), event -> lblTurnStatus.setVisible(true));

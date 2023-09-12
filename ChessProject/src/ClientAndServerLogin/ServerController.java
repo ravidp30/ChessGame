@@ -319,5 +319,19 @@ public class ServerController implements Initializable {
 		
 	}
 	
+	public static void setPlayerName(Player player, String name) {
+		synchronized (connectedClients) {
+		for(int idx = 0; idx < connectedClients.size(); idx++) {
+			if(connectedClients.get(idx).getPlayer().getPlayerId().equals(player.getPlayerId())) {
+				connectedClients.get(idx).getPlayer().setPlayerName(name);
+				break;
+				
+			}
+		}
+		}
+	}
+	
+	
+	
 	
 }

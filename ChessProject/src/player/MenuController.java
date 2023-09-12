@@ -85,10 +85,11 @@ public class MenuController implements Initializable{
 		        alert.show();
 			}
 			else {
-			ArrayList<Player> clickOnReady_arr = new ArrayList<>();
-			clickOnReady_arr.add(new Player("PlayerClickedOnReady"));
-			clickOnReady_arr.add(player);
-			ClientUI.chat.accept(clickOnReady_arr);
+				player.setPlayerName(nameText.getText()); // set player name
+				ArrayList<Player> clickOnReady_arr = new ArrayList<>();
+				clickOnReady_arr.add(new Player("PlayerClickedOnReady"));
+				clickOnReady_arr.add(player);
+				ClientUI.chat.accept(clickOnReady_arr);
 			}
 		}
 		else {
