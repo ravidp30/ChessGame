@@ -274,7 +274,21 @@ public class MessageHandler_Client {
 		    		GameController.getInstance().getMessageFromOponent(arrayListStr.get(1));
 		    		break;
 		    		
-	            }       
+	            case "TimerUpdate":
+	            	// 1 - timerName
+	            	// 2 - time remaining (seconds)
+	            	try {
+	            		if(GameController.getInstance().getPlayer().getStatus() == 2 && GameController.getInstance().getOpponent().getStatus() == 2)
+	            			GameController.getInstance().updateTimer(arrayListStr.get(2));
+	            	}
+	            	catch (NullPointerException e) {
+	            		
+	            	}
+	            	
+	            	break;
+		    		
+	            }    
+	            
 	            
             }catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -25,6 +25,11 @@ public class MessageHandler_Server {
 	private static String player2id;
 	private static String playerIdTurn;
 	private static ObservableList<ConnectedClient> connectedClients;
+	
+	private static GameTimer gameTimerPlayer1;
+	private static GameTimer gameTimerPlayer2;
+	
+	private static Boolean gameOn = false;
 	//private static Thread ThreadTimer;
 	
 	/**
@@ -89,6 +94,8 @@ public class MessageHandler_Server {
 
 					try {
 						player2.sendToClient(pieceMoved_arr_toOponent);
+						gameTimerPlayer1.pause();
+						gameTimerPlayer2.resume();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -97,6 +104,8 @@ public class MessageHandler_Server {
 				else {
 					try {
 						player1.sendToClient(pieceMoved_arr_toOponent);
+						gameTimerPlayer2.pause();
+						gameTimerPlayer1.resume();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -211,7 +220,8 @@ public class MessageHandler_Server {
 					
 					Player currPlayer = arrayListPlayer.get(1);
 					//currPlayer.setStatus(2);
-					if(playersReady == 2) {
+					if(playersReady == 2 && !gameOn) {
+						gameOn = true;
 						ArrayList<Player> players_arr = new ArrayList<>();
 						players_arr.add(new Player("GameStarting"));
 						
@@ -246,8 +256,15 @@ public class MessageHandler_Server {
 									players_arr.set(2, connectedClients.get(i).getPlayer());
 									client.sendToClient(players_arr);
 									
-									//ThreadTimer = new Thread(GameTimer);
-									//ThreadTimer.start();
+									startGame();
+									
+							       /* gameTimerPlayer1 = new GameTimer("timer1", 60 * 5); // Set the initial timer duration to 5 minutes
+							        gameTimerPlayer1.start();
+							        gameTimerPlayer2 = new GameTimer("timer2", 60 * 5);
+							        gameTimerPlayer2.start();
+							        gameTimerPlayer2.pause();
+							        */
+							        
 									
 									break;
 								}
@@ -296,6 +313,7 @@ public class MessageHandler_Server {
                 	player2 = null;
                 	playeridCounter = 0;
                 	playersReady = 0;
+                	gameOn = false;
                 	
                 	client.sendToClient("exited from the game succesfully");
                 	
@@ -311,7 +329,17 @@ public class MessageHandler_Server {
 						player2.sendToClient("GameEndedPlayerWon");
 					}
 					
+                	player1id = null;
+                	player2id = null;
+                	player1 = null;
+                	player2 = null;
+                	playeridCounter = 0;
+                	playersReady = 0;
+                	gameOn = false;
+					
 					client.sendToClient("message sent to the opponent that he won");
+					
+					
 					
 					
 					
@@ -323,8 +351,36 @@ public class MessageHandler_Server {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
         }
-		
+        
 	}
+	
+	
+	public static void startGame() {
+		
+        Thread printThread = new Thread(() -> {
+            for (int i = 1; i <= 3; i++) { // Print for 3 seconds
+                System.out.println("Printing something - Second " + i);
+                try {
+                    Thread.sleep(1000); // Sleep for 1 second
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        printThread.start();
+        
+		
+	    gameTimerPlayer1 = new GameTimer("timer1", 60 * 5); // Set the initial timer duration to 5 minutes
+	    gameTimerPlayer1.start();
+	    gameTimerPlayer2 = new GameTimer("timer2", 60 * 5);
+	    gameTimerPlayer2.start();
+	    gameTimerPlayer2.pause();
+	    
+	    gameOn = true;
+	    
+	    
+	}
+	
 
 	/**
 	 * Determines the MessageType based on the type of the received message object.
@@ -479,5 +535,33 @@ public class MessageHandler_Server {
 		// Handle Map<String, String> messages
 		
 	}
+	
+    public static void notifyTimerUpdate(String timerName, int remainingTime) {
+    	
+    	
+        // Create a message indicating a timer update and include the remaining time
+        ArrayList<String> timerUpdateMessage = new ArrayList<>();
+        timerUpdateMessage.add("TimerUpdate");
+        timerUpdateMessage.add(timerName);
+        timerUpdateMessage.add(Integer.toString(remainingTime));
+
+        // Send the timer update message to all connected clients
+        
+        try {
+        	
+	        if(gameOn) {
+		        if(timerName.equals("timer1")) {
+					player1.sendToClient(timerUpdateMessage);
+		        }
+		        else {
+		        	player2.sendToClient(timerUpdateMessage);
+		        }
+		    }
+	        
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+    }
     
 }

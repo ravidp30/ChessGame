@@ -155,6 +155,9 @@ public class GameController implements Initializable {
     @FXML
     private Button sendThanks;
     
+    @FXML
+    private Label timerLabel;
+    
    // @FXML
     //private Label ChessHeadLineLbl;
     @FXML
@@ -1512,6 +1515,27 @@ public class GameController implements Initializable {
 			lblTurnStatus.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 25px;");
 			lblTurnStatus.setText("Winner winner chiken dinner! " + chickenEmoji);
 		});
+	}
+
+	public void updateTimer(String timeRemaining) {
+		
+		Platform.runLater(() -> {
+			
+	        int minutes = Integer.parseInt(timeRemaining) / 60;
+	        int seconds = Integer.parseInt(timeRemaining) % 60;
+			
+			timerLabel.setText(minutes + " : " + seconds);
+			
+		});
+		
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+	
+	public Player getOpponent() {
+		return opponent;
 	}
 	
 	
