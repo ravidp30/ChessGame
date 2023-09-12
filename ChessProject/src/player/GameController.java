@@ -230,7 +230,7 @@ public class GameController implements Initializable {
        // ChessHeadLineLbl.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
         backGroundPane.setStyle("-fx-background-color: rgba(0, 0, 0, 1); -fx-border-width: 1px;");
         //chatArea.setStyle("-fx-text-fill: black; -fx-font-size: 12px;-fx-font-weight: bold;");
-        lblTurnStatus.setStyle("-fx-text-fill: #EE101F; -fx-font-weight: bold; -fx-font-size: 25px;");
+        lblTurnStatus.setStyle("-fx-text-fill: #EE101F; -fx-font-weight: bold; -fx-font-size: 20px;");
         winnerImage = new Image("/player/Winner.gif");
         winnerView = new ImageView(winnerImage);
         winnerView.setVisible(false); // Initially hide the animation
@@ -265,17 +265,17 @@ public class GameController implements Initializable {
              hbox.getChildren().add(HboxPiecesChoosing);  
          }
          	hbox.setVisible(false);
+         	
          //Hbox of your killed pieces  
-         
          yourPiecesKilledBox = new HBox(5); // Set spacing between slots
-         yourPiecesKilledBox.setLayoutX(150);
-         yourPiecesKilledBox.setLayoutY(650);
+         yourPiecesKilledBox.setLayoutX(260);
+         yourPiecesKilledBox.setLayoutY(670);
    		 backGroundPane.getChildren().add(yourPiecesKilledBox);
    		 
          //Hbox of opponent killed pieces  
    		oppPiecesKilledBox = new HBox(5); 
-   		oppPiecesKilledBox.setLayoutX(150);	
-   		oppPiecesKilledBox.setLayoutY(675);
+   		oppPiecesKilledBox.setLayoutX(260);	
+   		oppPiecesKilledBox.setLayoutY(70);
 		backGroundPane.getChildren().add(oppPiecesKilledBox);
 		     
          	// Create an ImageView to represent the custom cursor
@@ -305,7 +305,13 @@ public class GameController implements Initializable {
         
         
     }
-    
+    /**
+     * Handles the selection of a new chess piece from a graphical user interface (GUI)
+     * component (HBOX) and performs the necessary actions based on the selected piece.
+     *
+     * @param slotIndex The index of the selected piece within the HBOX component.
+     *                  Possible values: 0 for Queen, 1 for Knight, 2 for Bishop, 3 for Rook.
+     */
     private void handlePieceClickOnHBOX(int slotIndex) {//Queen knight bishop rook
     	board.removePiece(lastChosenPiece.getX(),lastChosenPiece.getY());
 		deleteOpponentPicture(lastChosenPiece);
@@ -330,7 +336,12 @@ public class GameController implements Initializable {
 		continueTurn = true;
 
 	}
-    
+    /**
+     * Handles the event when a player clicks the "Exit Game" button in the user interface.
+     *
+     * @param event The ActionEvent representing the button click event.
+     * @throws Exception If an exception occurs during the game exit process.
+     */
     public void onPlayerClickExitGame(ActionEvent event) throws Exception {
     	Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Exit Game");
@@ -358,7 +369,14 @@ public class GameController implements Initializable {
         });
 
     }
-    
+    /**
+     * Exits the active game and displays an appropriate menu based on the end status.
+     *
+     * @param endStatus An integer representing the end status of the game:
+     *                  - 0: No specific end status (none).
+     *                  - 1: The player has lost the game.
+     *                  - 2: The player has won the game.
+     */
     // endStatus: 0 - none , 1 - lost - 2 - won
     public static void exitActiveGame(int endStatus) {
     	
@@ -376,7 +394,12 @@ public class GameController implements Initializable {
     }
     
 
-	
+    /**
+     * Draws a chessboard with squares, assigns colors to squares based on their positions,
+     * and sets up the initial chess pieces on the board.
+     *
+     * @throws IOException If an input/output exception occurs while drawing the chessboard.
+     */
 	private void drawChessboard() throws IOException {
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
@@ -460,7 +483,15 @@ public class GameController implements Initializable {
         chessboardPane.setPrefWidth(8 * squareSize);
         chessboardPane.setPrefHeight(8 * squareSize);
     }
-    
+	
+	/**
+	 * Sets up a chess piece on the chessboard at the specified position with the given properties.
+	 *
+	 * @param x       The x-coordinate (column) where the piece is to be placed.
+	 * @param y       The y-coordinate (row) where the piece is to be placed.
+	 * @param name    The name of the piece, e.g., "KingW" for White King or "soldierB" for Black Soldier.
+	 * @param isWhite A boolean indicating whether the piece is White (true) or Black (false).
+	 */
     public void setUpPiece(int x, int y, String name, boolean isWhite) {
     	Piece piece = null;
     	switch (name) {
@@ -524,7 +555,11 @@ public class GameController implements Initializable {
 
     }
     
-    
+    /**
+     * Handles the click event when a player clicks on a chessboard cell (Rectangle).
+     *
+     * @param cell The Rectangle representing the clicked chessboard cell.
+     */
     private void handleClickOnMoveTo(Rectangle cell) {
     	
     	if(playerTurn.getPlayerId().equals(player.getPlayerId()) && continueTurn) {
@@ -610,11 +645,13 @@ public class GameController implements Initializable {
     	
     }
     
-    
-    
-
-     
-    //function that move the specific piece and check for mate
+    /**
+     * Checks for a checkmate scenario in the chess game by analyzing all possible moves for the given pieces.
+     * It creates new board states for each move and checks if the current player is in check after the move.
+     *
+     * @param piecesInMap A HashMap containing the pieces and their possible moves.
+     * @return true if the current player is in checkmate, false otherwise.
+     */
     public boolean checkForMate(HashMap<Piece, ArrayList<Piece>> piecesInMap) {
     	
     	//save the original board.
@@ -625,127 +662,72 @@ public class GameController implements Initializable {
     	    pieces.add(newPiece);
     	}
     	
-    	
-    	
-    	
     	Piece key;
     	
-    	
     	for (HashMap.Entry<Piece, ArrayList<Piece>> entry : piecesInMap.entrySet()) {
-    		//if(entry.getKey() != null) {
-	            key = new Piece(entry.getKey().getX(), entry.getKey().getY(), entry.getKey().getname(), entry.getKey().isWhite());
-	            
-	            ArrayList<Piece> moveOptions = new ArrayList<>();
-	            
-	            moveOptions.addAll(entry.getValue());
-	            
-	            System.out.println(moveOptions);
-	            
+	            key = new Piece(entry.getKey().getX(), entry.getKey().getY(), entry.getKey().getname(), entry.getKey().isWhite());           
+	            ArrayList<Piece> moveOptions = new ArrayList<>();          
+	            moveOptions.addAll(entry.getValue());            	            
 	            for(Piece optionToMove : moveOptions) {
-	            	
-	            	
-	                // Create a new set of pieces based on the original pieces
+	             // Create a new set of pieces based on the original pieces
 	                ArrayList<Piece> newPieces = new ArrayList<>();
 	                for (Piece originalPiece : pieces) {
 	                    newPieces.add(new Piece(originalPiece.getX(), originalPiece.getY(), originalPiece.getname(), originalPiece.isWhite()));
-	                }
-	            	
-	            	
-	            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, newPieces);
-	            		            		                   
+	                }           
+	            	Board newBoard = new Board(8 * squareSize, 8 * squareSize, newPieces);	            		            		                   
 	            	if(optionToMove.getname().equals("empty")) {//available to move the image (EMPTY SPACE)
-	
-	            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
-	            		
-	            		System.out.println("after moving: " + key + " to " + optionToMove);
-	            		System.out.println(1111111111);
-	            		for(int x = 0; x<8; x++) {
-		            		for(int y = 0; y<8; y++) {
-		            			System.out.println(newBoard.getPiece(x, y));
-		            		}
-	            		}
-	            		
-	            		System.out.println(1111111111);
-	            		
+	            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());        	         		
 	            	}
-	            	else if(!optionToMove.isWhite() && !newBoard.getPiece(optionToMove.getX(), optionToMove.getY()).getname().equals("KingB")) { // move to black piece (eating)
-	            		
-	
-	            		
+	            	else if(!optionToMove.isWhite() && !newBoard.getPiece(optionToMove.getX(), optionToMove.getY()).getname().equals("KingB")) { // move to black piece (eating)        		
 	            		newBoard.removePiece(optionToMove.getX(), optionToMove.getY());
-	            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());
-	
-	            		
-	            	}
-	            	
-	            	
+	            		newBoard.setPieceXY(key, optionToMove.getX(), optionToMove.getY());       		
+	            	}   	
 	            	if(!isChessOnMe(newBoard)) {
 	            		return false;
-	            	}
-	            	
-	            	
-	            	
-	            }
-	            
-	            
-	            
-	           
-	    	
-            
-            
+	            	}	            	
+	            }	          
     	}
-    	
-    	
-    	
     	return true;
-    	
     }
     
-
-
-
-    //function that move the specific piece 
+    /**
+     * Moves a specific chess piece to the specified new position on the chessboard.
+     *
+     * @param newX The new x-coordinate (column) where the piece is to be moved.
+     * @param newY The new y-coordinate (row) where the piece is to be moved.
+     */
     public void movePiece(int newX, int newY) {
-    	
-    	
     	newXLastOpponent = newX;
     	newYLastOpponent = newY;
-    	int availableToMove=0;
-    	
-    	availableToMove=board.MoveCheck(oldX, oldY, newX, newY);//check if available to move
-    
-        
+    	int availableToMove=0;    	
+    	availableToMove=board.MoveCheck(oldX, oldY, newX, newY);//check if available to move      
     	if(availableToMove == 1) {//available to move the image (EMPTY SPACE)
-    		
     		ChangePiqtureLocation(oldX,oldY,newX, newY);
     		board.setPieceXY(firstPieceSelected, newX, newY);
-    		EatOrNot = "NotEating";
-    		
+    		EatOrNot = "NotEating";	
     	}
     	else if(availableToMove == 2) { // move to black piece (eating)
-    		
     		board.removePiece(newX, newY);
-    		board.setPieceXY(firstPieceSelected, newX, newY);
-    		
+    		board.setPieceXY(firstPieceSelected, newX, newY);	
     		deleteOpponentPicture(secondPieceSelected);
     		ChangePiqtureLocation(oldX,oldY,newX, newY);
-    		EatOrNot = "Eating";
-
-    		
+    		EatOrNot = "Eating";   		
     	}
-    	
-
          for(int j = 0; j < rectangleListOptions.getItems().size(); j++) {
          	rectangleListOptions.getItems().get(j).setFill(null);
          	rectangleListOptions.getItems().get(j).setStroke(null);
          }
-         rectangleListOptions.getItems().clear();
-    	
-         lastChosenPiece = board.getPiece(newX, newY);
+        rectangleListOptions.getItems().clear();
+        lastChosenPiece = board.getPiece(newX, newY);
      	cursorImage=new Image("/player/arm.png");
      	customCursor.setImage(cursorImage);
     }
     
+    /**
+     * Deletes the opponent's chess piece image from the chessboard view and adds it to the appropriate "killed pieces" box.
+     *
+     * @param pieceToRemove The chess piece to be removed from the chessboard.
+     */
     public void deleteOpponentPicture(Piece pieceToRemove) {
     	ImageView pieceImageView = imageViews[pieceToRemove.getX()][pieceToRemove.getY()];
         if (pieceImageView != null) {
@@ -764,24 +746,36 @@ public class GameController implements Initializable {
     	System.out.println("image was deleted");
 	}
 
-	//function that change the piece picture to new location
+    /**
+     * Changes the location of a chess piece image on the chessboard view to a new position.
+     *
+     * @param oldX The old x-coordinate (column) of the piece's current position.
+     * @param oldY The old y-coordinate (row) of the piece's current position.
+     * @param newX The new x-coordinate (column) where the piece is to be moved.
+     * @param newY The new y-coordinate (row) where the piece is to be moved.
+     */   
     public void ChangePiqtureLocation(int oldX, int oldY, int newX, int newY) {
-    	
         imageViews[oldX][oldY].setLayoutX((double)newX * squareSize);
         imageViews[oldX][oldY].setLayoutY((double)newY * squareSize);
         imageViews[newX][newY] = imageViews[oldX][oldY];
         imageViews[newX][newY].toFront();
         imageViews[oldX][oldY]=null;
-        
    }
     
-    
+    /**
+     * Changes the location of an opponent's chess piece on the chessboard view to a new position and handles eating.
+     * If the opponent's piece is eaten, it is removed from the board and the view. If the opponent's piece is promoted
+     * (e.g., a pawn promotes to another piece), its name is changed to a corresponding black piece's name.
+     *
+     * @param oldPiece   The opponent's piece to be moved.
+     * @param newPiece   The new position for the opponent's piece.
+     * @param eatingOrNot The piece being eaten, or null if no piece is eaten.
+     */
     public void ChangePieceLocationForOponent(Piece oldPiece, Piece newPiece, Piece eatingOrNot) {
     	
     	synchronized (board) {
     		Platform.runLater(() -> {
     		try {		
-    			
     			// set the pieces places to the opposite side (for the opponent)
     			oldPiece.setX(7-oldPiece.getX());
     			oldPiece.setY(7-oldPiece.getY());
@@ -800,27 +794,14 @@ public class GameController implements Initializable {
     	        imageViews[newPiece.getX()][newPiece.getY()].toFront();
     	        imageViews[oldPiece.getX()][oldPiece.getY()]=null;
     	        
-    	        
-    	        
     	        // old piece's and new piece's have differenet names only if the player changed his piece from soldier to differenet piece
     	        if(!oldPiece.getname().equals(newPiece.getname())) { 
-    	        	
-    	        	
     	        	board.removePiece(newPiece.getX(),newPiece.getY());
-
     	    		deleteOpponentPicture(newPiece);
-    	    		
     	    		// changing the name to black piece
-    	    		String newPieceNameChangeToBlack = (newPiece.getname()).substring(0, (newPiece.getname()).length() - 1) + "B";
-    	    		
-
+    	    		String newPieceNameChangeToBlack = (newPiece.getname()).substring(0, (newPiece.getname()).length() - 1) + "B";	
     	    		setUpPiece(newPiece.getX(),newPiece.getY(), newPieceNameChangeToBlack, false);
-
-    	        	
-    	        }
-    	        
-    	        
-    	        
+    	        }	        
     		} catch (Exception e) {
     			e.printStackTrace();
     		}
@@ -829,12 +810,16 @@ public class GameController implements Initializable {
   }
 
 
-    //function that showing all possibles moves 
+    /**
+     * Displays all possible move options for a given chess piece by highlighting the available squares on the chessboard.
+     *
+     * @param options The list of possible move options for the chess piece.
+     * @param piece   The chess piece for which move options are displayed.
+     */
     public void MoveOptions(ArrayList<Piece> options , Piece piece) {	
     	rectangleListOptions = new ListView<>();
     	Piece tempPiece;
     	 for( Piece p: options) {
-    		 
     		 tempPiece = board.getPiece(p.getX(), p.getY());
 
     		 // mark a square only if there are no pieces in the square to move or black piece
@@ -844,7 +829,6 @@ public class GameController implements Initializable {
                  squareOption.setFill(Color.TRANSPARENT);
                  squareOption.setStrokeWidth(4.0);
                  SetHighLight(squareOption);
-                 
                  // Attach a click event handler to each square
                  squareOption.setOnMouseClicked(new EventHandler<MouseEvent>() {
                      @Override
@@ -869,6 +853,11 @@ public class GameController implements Initializable {
     	 }
     }
     
+    /**
+     * Sets up a HashMap containing chess pieces and their corresponding move options for the current state of the chessboard.
+     *
+     * @return A HashMap where the keys are chess pieces and the values are ArrayLists of possible move options for each piece.
+     */
     public HashMap<Piece, ArrayList<Piece>> setUpPiecesHasMap() {
         HashMap<Piece, ArrayList<Piece>> piecesInMap = new HashMap<>();
         
@@ -923,6 +912,12 @@ public class GameController implements Initializable {
     	return piecesInMap;
     }
     
+    /**
+     * Checks if the given chessboard state results in a check condition for the white player.
+     *
+     * @param board1 The chessboard state to be checked.
+     * @return True if the white player is in check, false otherwise.
+     */
     public boolean isChess(Board board1) {
 
     	ArrayList<Piece> moveOptions = new ArrayList<>();
@@ -977,40 +972,33 @@ public class GameController implements Initializable {
     	}
     	return false;
     }
-
+    
+    /**
+     * Handles the second click when a player selects a square to move a chess piece to. It processes the move, checks for
+     * check conditions, handles promotion of a soldier to a higher piece, and updates the turn.
+     *
+     * @param squareOption The square that the player has selected to move the chess piece to.
+     */
 	private void handleClickOnMoveToSecond(Rectangle squareOption) {
         int x = (int)squareOption.getX() / squareSize;
         int y =	(int)squareOption.getY() / squareSize;
-        secondPieceSelected = board.getPiece(x,y); // the place to move to
-        
-        		
-        	
-        movePiece(x,y);
-
-        
+        secondPieceSelected = board.getPiece(x,y); // the place to move to    
+        movePiece(x,y); 
         if(isChessOnMe(board)) { //Chess On ME
         	moveBack();
         	cloudImage(true);
         }
         
-
-        
         else {   
-        	
-        	
 	        // if soldier is at the end
 	        Piece soldierPiece = board.getPiece(x,y);
-	        if(soldierPiece != null && soldierPiece.getname().equals("soldierW") && soldierPiece.getY() == 0) {
-	        	
+	        if(soldierPiece != null && soldierPiece.getname().equals("soldierW") && soldierPiece.getY() == 0) {        	
 	        	continueTurn = false;
-	        	hbox.setVisible(true);
-	          
+	        	hbox.setVisible(true);       
 	        }
 	        else {
 	        	TurnContinueAfterMovement();
-	        }
-        	
-
+	        }       	
         }
         
         cursorImage=new Image("/player/arm.png");
@@ -1018,7 +1006,10 @@ public class GameController implements Initializable {
 	}
 	
 	
-
+	/**
+	 * Handles the continuation of the game turn after a player's move. It checks for check conditions, displays alerts, and
+	 * sends information about the move to the server and the opponent.
+	 */
 	public void TurnContinueAfterMovement() {
 		
 		if(lastChosenPiece != null) {
@@ -1032,8 +1023,6 @@ public class GameController implements Initializable {
         	showAutoDisappearAlert("Check", "nice,\nYou did check", Duration.seconds(4));  
         }
      
-
-   
 		// send to the server the piece was changed (old piece and new piece) and if eaten
 		ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
 		updatePieceMoce_arr.add(new Piece(0, 0, "PieceWasMoved", true));
@@ -1042,22 +1031,17 @@ public class GameController implements Initializable {
 		updatePieceMoce_arr.add(lastChosenPiece); // new piece
 		updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
 		ClientUI.chat.accept(updatePieceMoce_arr);
-    	
-    	
-    	 firstPieceSelected=null;
-    	 
-        
-    	
+		
+    	firstPieceSelected=null;
+
     	SendToServerChangePlayerTurn(inCheck);  // send to the opponent also if there is check on him
 	}
 	
-	
-	
-	
-	
-	
-
-
+	/**
+	 * Displays or hides a cloud image over the position of the player's king when the king is in check.
+	 *
+	 * @param use A boolean flag indicating whether to display the cloud image (true) or hide it (false).
+	 */
 	private void cloudImage(boolean use) {
 		if(use) {
 		Piece kingFound =  new Piece(0,0,"KingW",true);
@@ -1071,16 +1055,13 @@ public class GameController implements Initializable {
 						 newPositionX=x;
 						 newPositionY=y;
 					}
-					
 				}
-		
 		 CloudImageView.setLayoutX(newPositionX * squareSize -35);
 		 CloudImageView.setLayoutY(newPositionY *squareSize -30);  
 		 CloudImageView.setVisible(true);
 		 if (!chessboardPane.getChildren().contains(CloudImageView)) { //if the image is not added to parent yet
 			 chessboardPane.getChildren().add(CloudImageView);
-			}
-	    		 
+			}		 
 		}
 	    else {
 	    
@@ -1092,7 +1073,11 @@ public class GameController implements Initializable {
 	    	}
 	 }
 	
-
+	/**
+	 * Reverts a move if it's an invalid move or would result in the player's own king being in check.
+	 * This method is called when the player attempts to make an invalid move.
+	 * It restores the pieces to their previous positions and updates the user interface accordingly.
+	 */
 	private void moveBack() {
 		// firstPieceSelected
 		// piece
@@ -1107,28 +1092,24 @@ public class GameController implements Initializable {
 			
 			ChangePiqtureLocation(lastChosenPiece.getX(),lastChosenPiece.getY(), oldX, oldY);//firstPieceSelected.ggetX..\Y
 			
-			
 	        imageViews[lastChosenPiece.getX()][lastChosenPiece.getY()] = new ImageView();
 	        imageViews[lastChosenPiece.getX()][lastChosenPiece.getY()].setFitWidth(squareSize);
 	        imageViews[lastChosenPiece.getX()][lastChosenPiece.getY()].setFitHeight(squareSize);//
-	             
-	        
+	           
 	        Image image = new Image(getClass().getResourceAsStream("/player/" + secondPieceSelected.getname() + ".png"));
 	        
 	        imageViews[lastChosenPiece.getX()][lastChosenPiece.getY()].setImage(image);
 	        imageViews[lastChosenPiece.getX()][lastChosenPiece.getY()].setLayoutX(lastChosenPiece.getX() * squareSize);
 	        imageViews[lastChosenPiece.getX()][lastChosenPiece.getY()].setLayoutY(lastChosenPiece.getY() * squareSize);
 	        
-	        
 	        chessboardPane.getChildren().add(imageViews[lastChosenPiece.getX()][lastChosenPiece.getY()]);
-	        
-	        
+
 	        board.addPiece(secondPieceSelected);
 	        //pieces.add(secondPieceSelected);
 	        
 	        board.setPieceXY(lastChosenPiece, oldX, oldY);
+	        oppPiecesKilledBox.getChildren().remove((oppPiecesKilledBox.getChildren().size() - 1));
 
-			
         	lastChosenPiece = null;
         	
         	cursorImage=new Image("/player/arm.png");
@@ -1137,15 +1118,16 @@ public class GameController implements Initializable {
 		
 		showAutoDisappearAlert("Unvaliable Move", "You cannot move there", Duration.seconds(2));
     	cursorImage=new Image("/player/arm.png");
-    	customCursor.setImage(cursorImage);
-	
-		
-		
+    	customCursor.setImage(cursorImage);		
 	}
 
-	private boolean isChessOnMe(Board newBoard) {//d
-		
-		
+	/**
+	 * Checks if the current player is in a check (chess) position on their modified board.
+	 *
+	 * @param newBoard The modified chessboard with pieces swapped for the current player.
+	 * @return true if the current player is in check, false otherwise.
+	 */
+	private boolean isChessOnMe(Board newBoard) {
 		ArrayList<Piece> tempPieces = new ArrayList<>();
 		Piece tempPiece;
 		String modifiedString = null;
@@ -1154,10 +1136,9 @@ public class GameController implements Initializable {
 			for(int y = 0; y < 8; y++) {
 				try {			
 					tempPiece = newBoard.getPiece(x, y);
-	
 					if(tempPiece.getname().endsWith("W")) {
-						modifiedString = (tempPiece.getname()).substring(0, (tempPiece.getname()).length() - 1) + "B";
-						
+	                    // Swap white pieces to black
+						modifiedString = (tempPiece.getname()).substring(0, (tempPiece.getname()).length() - 1) + "B";		
 						switch (modifiedString) {
 					        case "soldierB":
 					        	tempPiece = new Soldier(7-x, 7-y, modifiedString, false);
@@ -1184,9 +1165,8 @@ public class GameController implements Initializable {
 					}
 					
 					else if (tempPiece.getname().endsWith("B")){
-						modifiedString = (tempPiece.getname()).substring(0, (tempPiece.getname()).length() - 1) + "W";
-						
-						
+	                    // Swap black pieces to white
+						modifiedString = (tempPiece.getname()).substring(0, (tempPiece.getname()).length() - 1) + "W";										
 						switch (modifiedString) {
 		    				//-------WHITE------
 		    	
@@ -1219,18 +1199,18 @@ public class GameController implements Initializable {
 					
 				}
 			}
-		}
-		
-		
-		Board tempBoard = new Board(8 * squareSize, 8 * squareSize, tempPieces);
-		
-
-		return isChess(tempBoard);
-		
-
+		}		 
+		// Create a temporary board with the modified pieces
+		Board tempBoard = new Board(8 * squareSize, 8 * squareSize, tempPieces);	
+	    // Check if the current player is in check on the modified board
+		return isChess(tempBoard);	
 	}
-
-	// send to the server the current player turn and if the opponent inCheck or not
+	
+	/**
+	 * Sends a message to the server indicating a change in the current player's turn and the opponent's check status.
+	 *
+	 * @param inCheck A boolean indicating whether the opponent is in check.
+	 */
 	public void SendToServerChangePlayerTurn(boolean inCheck) {
 		ArrayList<Player> playerTurnChange_arr = new ArrayList<>();
 		playerTurnChange_arr.add(new Player("ChangePlayerTurn"));
@@ -1244,15 +1224,19 @@ public class GameController implements Initializable {
 		ClientUI.chat.accept(playerTurnChange_arr);
 	}
 	
-	
+	/**
+	 * Changes the current player's turn and updates the user interface accordingly. If the player is in check,
+	 * it displays a check alert and checks for mate. If the player is in checkmate, it sends a message to the
+	 * opponent indicating the game result.
+	 *
+	 * @param newPlayerTurn The player whose turn is changing to.
+	 * @param inCheck A special player used to indicate if the current player is in check ("InCheck") or not ("NotInCheck").
+	 */
 	// inCheck.getplayerId() = "InCheck" / "NotInCheck"
 	public void changePlayerTurn(Player newPlayerTurn, Player inCheck) {
-
 		Platform.runLater(() -> {
-
 			playerTurn = newPlayerTurn;
-			if(playerTurn.getPlayerId().equals(player.getPlayerId())) {
-				
+			if(playerTurn.getPlayerId().equals(player.getPlayerId())) {		
 				lblTurnStatus.setText("Your Turn");
 		     	cursorImage=new Image("/player/arm.png");
 		     	customCursor.setImage(cursorImage);
@@ -1268,12 +1252,7 @@ public class GameController implements Initializable {
 						// *********** looser message HERE *****************
 						sendBackToOpponentIsMate(); // send to the opponent that he won with mate
 						showFinishPopup("You Lost!","Oops! You lost the game.");
-					}
-					
-					
-				
-					
-					
+					}	
 				}
 			}
 			else {
@@ -1286,6 +1265,13 @@ public class GameController implements Initializable {
 
 	}
 	
+	/**
+	 * Displays a custom confirmation dialog to inform the user that the game has finished and provides
+	 * an option to start a new game or exit the application.
+	 *
+	 * @param title The title of the confirmation dialog.
+	 * @param header The header text of the confirmation dialog.
+	 */
 	private void showFinishPopup(String title, String header) {
 		        // Create an Alert with a custom content area
 		        Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -1295,8 +1281,12 @@ public class GameController implements Initializable {
 		        ButtonType yesButton = new ButtonType("YES");
 			    ButtonType noButton = new ButtonType("NO");
 			    alert.getButtonTypes().setAll(yesButton, noButton);
+			    
+			    // Apply custom styles to the dialog
 			    alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 		        alert.getDialogPane().getStyleClass().add("custom-alert");
+		        
+		        // Show the alert and handle the user's response
 			    alert.showAndWait().ifPresent(answer -> {
 			        if (answer == yesButton) {
 			            System.out.println("New game");
@@ -1310,11 +1300,12 @@ public class GameController implements Initializable {
 			        
 			    });
 			    
-//		        // Show the alert
-//		        alert.showAndWait();
 		    }
 	
-
+	/**
+	 * Sends a notification to the opponent that the player has won the game with a checkmate.
+	 * This method is used to inform the opponent about the game result.
+	 */
 	public void sendBackToOpponentIsMate() {
 		ArrayList<Player> mateSend_arr = new ArrayList<>();
 		mateSend_arr.add(new Player("PlayerWonWithMate"));
@@ -1322,21 +1313,24 @@ public class GameController implements Initializable {
 		ClientUI.chat.accept(mateSend_arr);
 	}
 	
-
-	public void getMessageFromOponent(String message) {
-		
-		Platform.runLater(() -> {
-		
-	    	String textInside;
-	    	
-	    	textInside = chatArea.getText();
-	    	
+	/**
+	 * Receives and displays a message from the opponent in the chat area.
+	 * 
+	 * @param message The message received from the opponent.
+	 */
+	public void getMessageFromOponent(String message) {	
+		Platform.runLater(() -> {	
+	    	String textInside;    	
+	    	textInside = chatArea.getText();   	
 	    	chatArea.setText(textInside + "\n(Oponent): " + message);
-    	
 		});
-    	
 	}
 	
+	/**
+	 * Applies a highlight effect to a specified square option (Rectangle) to indicate a valid move.
+	 * 
+	 * @param squareOption The Rectangle representing the square to highlight.
+	 */
 	public void SetHighLight (Rectangle squareOption) {
 		DropShadow dropShadow = new DropShadow();
         dropShadow.setRadius(8.0);
@@ -1346,7 +1340,11 @@ public class GameController implements Initializable {
         squareOption.setEffect(dropShadow);
 	}
 	
-	// alert window - check is on.
+	/**
+	 * Displays a confirmation alert window to notify the user that a check condition is met.
+	 * 
+	 * @param message The message to display in the alert window.
+	 */
 	public void popUpCheck(String string){
 		Alert Check = new Alert(AlertType.CONFIRMATION);
 		Check.setTitle("Check");
@@ -1354,10 +1352,21 @@ public class GameController implements Initializable {
 		Check.getDialogPane().getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 		Check.getDialogPane().getStyleClass().add("custom-alert");
         Check.showAndWait();
-        
-
 	}
 	
+	/**
+	 * Checks if castling is a valid move for the White King and Rook and prompts the user with a confirmation dialog.
+	 * Castling is a special chess move that involves the White King and Rook. This method checks if the conditions
+	 * for castling are met and asks the user if they want to perform castling.
+	 * 
+	 * Conditions for castling:
+	 * - The White King is on its initial position (3, 7).
+	 * - The White Rook is on its initial position (0, 7).
+	 * - The squares between the White King and Rook (1, 7) and (2, 7) are empty.
+	 * 
+	 * If the conditions are met, a confirmation dialog will ask the user if they want to perform castling.
+	 * If the user confirms, the castling move will be executed.
+	 */
 	private void castlingCheck() {
 		try {
 			if(firstPieceSelected.getname().equals("KingW"))
@@ -1369,58 +1378,12 @@ public class GameController implements Initializable {
 		}catch (NullPointerException e) {}
 	}
 	
-	
-    public  void showAutoDisappearAlert(String title, String message, Duration duration) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
-        alert.getDialogPane().getStyleClass().add("custom-alert");
-        Timeline timeline = new Timeline(new KeyFrame(duration, event -> alert.hide()));
-
-        alert.show();
-        timeline.play();
-    }
-    
-    public void moveFirstPiece(int x, int y) {
-    	
-        secondPieceSelected = board.getPiece(x,y); // the place to move to
-        
-        		
-        	
-        movePiece(x,y);
-
-        
-        if(isChessOnMe(board)) { //Chess On ME
-        	moveBack();
-        	cloudImage(true);
-        }
-        
-
-        
-        else {   
-        	
-        	
-	        // if soldier is at the end
-	        Piece soldierPiece = board.getPiece(x,y);
-	        if(soldierPiece != null && soldierPiece.getname().equals("soldierW") && soldierPiece.getY() == 0) {
-	        	
-	        	continueTurn = false;
-	        	hbox.setVisible(true);
-	          
-	        }
-	        else {
-	        	TurnContinueAfterMovement();
-	        }
-        	
-
-        }
-   
-    	
-    	
-    }
-	
+	/**
+	 * Displays a confirmation dialog to inquire whether the player wants to perform castling.
+	 * If the player confirms castling, the method executes the necessary moves for castling.
+	 *
+	 * @param string The title of the confirmation dialog.
+	 */
 	public void popUpCastling (String string) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 	    alert.setTitle(string);
@@ -1435,7 +1398,6 @@ public class GameController implements Initializable {
 	        if (answer == yesButton) {
 	            // User want to do Castling
 	            System.out.println("doing castling...");
-	            
 	            // moving the king
 	            secondPieceSelected = board.getPiece(1,7); // the place to move to     	
 	            movePiece(1,7);          
@@ -1456,8 +1418,7 @@ public class GameController implements Initializable {
 		    		updatePieceMoce_arr.add(lastChosenPiece); // new piece
 		    		updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
 		    		ClientUI.chat.accept(updatePieceMoce_arr);
-	            
-		    		
+	        
 		    		// // moving the Rook
 		            firstPieceSelected = board.getPiece(0, 7); // the RookW
 		            oldX = 0;
@@ -1465,10 +1426,8 @@ public class GameController implements Initializable {
 		            secondPieceSelected = board.getPiece(2,7); // the place to move to    
 		            movePiece(2,7); 
 		          
-		            
 	            }
 	            
-	             
 	            // move the second piece for the opponent
 	            // sending to the server that was and do thing in the client (opponent)
 	    		ArrayList<Piece> updatePieceMoce_arr= new ArrayList<>();
@@ -1479,17 +1438,66 @@ public class GameController implements Initializable {
 	    		updatePieceMoce_arr.add(new Piece(0, 0, player.getPlayerId(), true)); // player (playerId in piece's name)
 	    		ClientUI.chat.accept(updatePieceMoce_arr);
 	            
-
-	    		
 	    		SendToServerChangePlayerTurn(isChess(board));  // send to the opponent also if there is check on him
 				
-	       
-	            
 	        }
 	        else return;
 	    });
 	}
+	
+	/**
+	 * Displays an informational alert with a message that automatically disappears after a specified duration.
+	 * 
+	 * @param title The title of the alert.
+	 * @param message The message to display in the alert.
+	 * @param duration The duration for which the alert will be shown before automatically disappearing.
+	 */
+    public  void showAutoDisappearAlert(String title, String message, Duration duration) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+        alert.getDialogPane().getStyleClass().add("custom-alert");
+        Timeline timeline = new Timeline(new KeyFrame(duration, event -> alert.hide()));
 
+        alert.show();
+        timeline.play();
+    }
+    
+    /**
+     * Moves the first selected chess piece to the specified position (x, y) on the chessboard.
+     * Handles various game scenarios such as checkmate, pawn promotion, and turn continuation.
+     *
+     * @param x The x-coordinate of the target position.
+     * @param y The y-coordinate of the target position.
+     */
+    public void moveFirstPiece(int x, int y) {
+        secondPieceSelected = board.getPiece(x,y); // the place to move to    	
+        movePiece(x,y);      
+        if(isChessOnMe(board)) { //Chess On ME
+        	moveBack();
+        	cloudImage(true);
+        }     
+        else {         	
+	        // if soldier is at the end
+	        Piece soldierPiece = board.getPiece(x,y);
+	        if(soldierPiece != null && soldierPiece.getname().equals("soldierW") && soldierPiece.getY() == 0) {	
+	        	continueTurn = false;
+	        	hbox.setVisible(true);
+	        }
+	        else 
+	        	TurnContinueAfterMovement();
+
+        }
+    }
+	
+    /**
+     * Displays a message to indicate that the player has won the game. This method
+     * updates the user interface to show the winning message, changes the text color
+     * of the turn status label to green, and sets a bold font style. It also displays
+     * a pop-up message to inform the player about their victory.
+     */
 	public void wonTheGameMessage() {
 		
 		Platform.runLater(() -> {
@@ -1499,10 +1507,10 @@ public class GameController implements Initializable {
 			String chickenEmoji = "\uD83D\uDC14";
 			lblTurnStatus.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 25px;");
 			lblTurnStatus.setText("Winner winner chiken dinner! " + chickenEmoji);
-		
-
 		});
 	}
 	
 	
-	 }
+	
+}
+
