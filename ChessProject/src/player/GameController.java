@@ -315,8 +315,8 @@ public class GameController implements Initializable {
      *                  Possible values: 0 for Queen, 1 for Knight, 2 for Bishop, 3 for Rook.
      */
     private void handlePieceClickOnHBOX(int slotIndex) {//Queen knight bishop rook
+    	deleteOpponentPicture(lastChosenPiece);
     	board.removePiece(lastChosenPiece.getX(),lastChosenPiece.getY());
-		deleteOpponentPicture(lastChosenPiece);
     	switch(slotIndex) {
     	case 0:
     		setUpPiece(lastChosenPiece.getX(), lastChosenPiece.getY(), "QueenW", true);
