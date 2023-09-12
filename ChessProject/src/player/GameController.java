@@ -799,10 +799,12 @@ public class GameController implements Initializable {
     	        // old piece's and new piece's have differenet names only if the player changed his piece from soldier to differenet piece
     	        if(!oldPiece.getname().equals(newPiece.getname())) { 
     	        	board.removePiece(newPiece.getX(),newPiece.getY());
-    	    		deleteOpponentPicture(newPiece);
+    	    		//deleteOpponentPicture(newPiece);
     	    		// changing the name to black piece
-    	    		String newPieceNameChangeToBlack = (newPiece.getname()).substring(0, (newPiece.getname()).length() - 1) + "B";	
+    	    		String newPieceNameChangeToBlack = (newPiece.getname()).substring(0, (newPiece.getname()).length() - 1) + "B";
+    	    		deleteOpponentPicture(new Piece(newPiece.getX(),newPiece.getY(), newPieceNameChangeToBlack, false));
     	    		setUpPiece(newPiece.getX(),newPiece.getY(), newPieceNameChangeToBlack, false);
+    	    		
     	        }	        
     		} catch (Exception e) {
     			e.printStackTrace();
