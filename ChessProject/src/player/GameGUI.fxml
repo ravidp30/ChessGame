@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="backGroundPane" prefHeight="700.0" prefWidth="940.0" styleClass="main-pane" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="player.GameController">
+<Pane fx:id="backGroundPane" prefHeight="700.0" prefWidth="940.0" styleClass="main-pane" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="player.GameController">
    <children>
       <ImageView fitHeight="726.0" fitWidth="985.0" layoutX="-10.0" layoutY="-4.0" styleClass="main-pane">
          <image>
@@ -68,7 +68,7 @@
       </Pane>
       <Pane layoutX="18.0" layoutY="292.0" prefHeight="130.0" prefWidth="169.0">
          <children>
-            <Label fx:id="timerLabel" layoutX="80.0" layoutY="47.0" prefHeight="46.0" prefWidth="62.0" text="00 : 00" textFill="#fd0000">
+            <Label fx:id="timerLabel" layoutX="77.0" layoutY="84.0" prefHeight="46.0" prefWidth="62.0" text="00 : 00" textFill="#fd0000">
                <font>
                   <Font size="19.0" />
                </font>
@@ -78,6 +78,11 @@
                   <Image url="@timer.png" />
                </image>
             </ImageView>
+            <Label fx:id="timerOpponentLabel" layoutX="77.0" layoutY="6.0" prefHeight="46.0" prefWidth="62.0" text="00 : 00" textFill="#fd0000">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
          </children>
       </Pane>		   </children>
    <effect>

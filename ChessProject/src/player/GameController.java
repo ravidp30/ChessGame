@@ -158,6 +158,9 @@ public class GameController implements Initializable {
     @FXML
     private Label timerLabel;
     
+    @FXML
+    private Label timerOpponentLabel;
+    
    // @FXML
     //private Label ChessHeadLineLbl;
     @FXML
@@ -230,6 +233,7 @@ public class GameController implements Initializable {
     	board = new Board(8 * squareSize, 8 * squareSize, null);
     	
     	timerLabel.setText("5 : 00");
+    	timerOpponentLabel.setText("5 : 00");
     	
        // ChessHeadLineLbl.setText("Chess Game:\nYou (id: " + player.getPlayerId() + ") VS opponent (id: " + opponent.getPlayerId() + ")");
         //OpponentLbl.
@@ -1526,22 +1530,27 @@ public class GameController implements Initializable {
 			//winnerView.toFront();
 			  //winnerView.setVisible(true); 
 			  showFinishPopup("You Lost!","End Of Time!!!");
-			String cryingEmoji = "\\uD83D\\uDE22";
+			String cryingEmoji = "\uD83D\uDE22";
 			lblTurnStatus.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 25px;");
 			lblTurnStatus.setText("Looser! " + cryingEmoji);
 		});
 	}
 
-	public void updateTimer(String timeRemaining) {
+	public void updateTimer(String timeRemaining, String timeRemainingForOppponent) {
 		
 		Platform.runLater(() -> {
 			
 	        int minutes = Integer.parseInt(timeRemaining) / 60;
 	        int seconds = Integer.parseInt(timeRemaining) % 60;
-
 	        String formattedSeconds = String.format("%02d", seconds);
 	        
 			timerLabel.setText(minutes + " : " + formattedSeconds);
+			
+			int minutesOp = Integer.parseInt(timeRemainingForOppponent) / 60;
+			int secondsOp  = Integer.parseInt(timeRemainingForOppponent) % 60;
+			String formattedOpSeconds = String.format("%02d", secondsOp);
+			
+			timerOpponentLabel.setText(minutesOp + " : " + formattedOpSeconds);
 
 		});
 		

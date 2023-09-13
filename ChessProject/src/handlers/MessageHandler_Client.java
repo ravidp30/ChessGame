@@ -230,9 +230,7 @@ public class MessageHandler_Client {
 	    		break;
 	    		
 			case "lostInGame":
-				System.out.println(1233);
 				GameController.getInstance().lostNoTimeMessage();
-				//GameController.getInstance().showFinishPopup("You Lost!","Oops! You lost the game.");
 				
 				
 				break;
@@ -284,9 +282,10 @@ public class MessageHandler_Client {
 	            case "TimerUpdate":
 	            	// 1 - timerName
 	            	// 2 - time remaining (seconds)
+	            	// 3 - time remaining for the opponent
 	            	try {
 	            		if(GameController.getInstance().getPlayer().getStatus() == 2 && GameController.getInstance().getOpponent().getStatus() == 2)
-	            			GameController.getInstance().updateTimer(arrayListStr.get(2));
+	            			GameController.getInstance().updateTimer(arrayListStr.get(2), arrayListStr.get(3));
 	            	}
 	            	catch (NullPointerException e) {
 	            		
