@@ -1519,6 +1519,18 @@ public class GameController implements Initializable {
 			lblTurnStatus.setText("Winner winner chiken dinner! " + chickenEmoji);
 		});
 	}
+	
+	public void lostNoTimeMessage() {
+		
+		Platform.runLater(() -> {
+			//winnerView.toFront();
+			  //winnerView.setVisible(true); 
+			  showFinishPopup("You Lost!","End Of Time!!!");
+			String cryingEmoji = "\\uD83D\\uDE22";
+			lblTurnStatus.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 25px;");
+			lblTurnStatus.setText("Looser! " + cryingEmoji);
+		});
+	}
 
 	public void updateTimer(String timeRemaining) {
 		

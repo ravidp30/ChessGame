@@ -110,15 +110,7 @@ public class MessageHandler_Client {
 					GameController.exitActiveGame(2); // 2 because the player won automatically
 					
 					
-					break;
-					
-				case "lostInGame":
-					GameController.getInstance().showFinishPopup("You Lost!","Oops! You lost the game.");
-					
-					
-					break;
-					
-					
+					break;				
 					
 	        }
         
@@ -236,6 +228,14 @@ public class MessageHandler_Client {
 	    		GameController.getInstance().wonTheGameMessage();
 	    		
 	    		break;
+	    		
+			case "lostInGame":
+				System.out.println(1233);
+				GameController.getInstance().lostNoTimeMessage();
+				//GameController.getInstance().showFinishPopup("You Lost!","Oops! You lost the game.");
+				
+				
+				break;
 	    		
 	    	}
 	    	
