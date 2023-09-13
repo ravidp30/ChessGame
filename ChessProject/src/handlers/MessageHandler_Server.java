@@ -580,14 +580,14 @@ public class MessageHandler_Server {
 				player1.sendToClient("GameEndedPlayerWon");
             	ArrayList<Player> exitedfromgame_arr = new ArrayList<>();
             	exitedfromgame_arr.add(new Player("lostInGame"));
-				player2.sendToClient("lostInGame");
+				player2.sendToClient(exitedfromgame_arr);
 			}
 			else if(timerName.equals("timer2")){
 				player2.sendToClient("GameEndedPlayerWon");
 				
             	ArrayList<Player> exitedfromgame_arr = new ArrayList<>();
             	exitedfromgame_arr.add(new Player("lostInGame"));
-				player1.sendToClient("lostInGame");
+				player1.sendToClient(exitedfromgame_arr);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
