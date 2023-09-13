@@ -536,7 +536,7 @@ public class MessageHandler_Server {
 		
 	}
 	
-    public static void notifyTimerUpdate(String timerName, int remainingTime) {
+public static void notifyTimerUpdate(String timerName, int remainingTime) {
     	
     	
         // Create a message indicating a timer update and include the remaining time
@@ -557,6 +557,9 @@ public class MessageHandler_Server {
 	        if(gameOn) {
 		        if(timerName.equals("timer1")) {
 					player2.sendToClient(timerUpdateMessage);
+					timerUpdateMessage.set(2, timerUpdateMessage.get(3));
+					timerUpdateMessage.set(3, Integer.toString(remainingTime));
+					player1.sendToClient(timerUpdateMessage);
 					/*if(gameTimerPlayer2.getTime() == 0) {
 						//player2.sendToClient("GameEndedPlayerWon");
 						gameTimerPlayer2.setTime(5);
@@ -565,6 +568,9 @@ public class MessageHandler_Server {
 		        }
 		        else {
 		        	player1.sendToClient(timerUpdateMessage);
+					timerUpdateMessage.set(2, timerUpdateMessage.get(3));
+					timerUpdateMessage.set(3, Integer.toString(remainingTime));
+		        	player2.sendToClient(timerUpdateMessage);
 					/*if(gameTimerPlayer2.getTime() == 0) {
 						player1.sendToClient("GameEndedPlayerWon");
 						gameTimerPlayer2.setTime(5);
@@ -579,7 +585,7 @@ public class MessageHandler_Server {
 		} 
     }
 
-	public static void manageWinsTimerEnded(String timerName) {
+public static void manageWinsTimerEnded(String timerName){
 		try {
 			if(timerName.equals("timer1")) {
 				player1.sendToClient("GameEndedPlayerWon");
@@ -587,13 +593,27 @@ public class MessageHandler_Server {
 			}
 			else if(timerName.equals("timer2")){
 				player2.sendToClient("GameEndedPlayerWon");
-				player2.sendToClient("lostInGame");
+				player1.sendToClient("lostInGame");
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		}	
 	}
-    
+
+	public static void tenSecondsRemaining(String timerName) {
+	  try {
+			if(timerName.equals("timer1")) {
+				player2.sendToClient("tenSecondsRemaining");
+			}
+			else if(timerName.equals("timer2")){
+				player1.sendToClient("tenSecondsRemaining");
+			}
+		}		
+			catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	
+	}
 }

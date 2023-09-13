@@ -39,7 +39,7 @@ public class GameTimer {
     public String toString() {
     	return "" + secondsRemaining + " : " + secondsRemaining/60;
     }
-    
+
     private TimerTask createTimerTask() {
         return new TimerTask() {
             @Override
@@ -48,23 +48,21 @@ public class GameTimer {
                     // Notify the server about the remaining time
                     MessageHandler_Server.notifyTimerUpdate(timerName, secondsRemaining);
                     secondsRemaining--;
+                }else if(secondsRemaining == 10) {
+                	MessageHandler_Server.tenSecondsRemaining(timerName);
                 } else if (secondsRemaining == 0) {
                     stop();
                     // Trigger game over or any other relevant action
                     System.out.println("Time's up!");
-                    
                     MessageHandler_Server.manageWinsTimerEnded(timerName);
-                   
+                	}
                 }
-            }
         };
-    }
-
+       }
 	public void setTime(int i) {
 		secondsRemaining = i;
 		
 	}
-
     
 }
 

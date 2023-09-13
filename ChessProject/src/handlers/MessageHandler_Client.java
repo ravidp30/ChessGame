@@ -231,10 +231,13 @@ public class MessageHandler_Client {
 	    		
 			case "lostInGame":
 				GameController.getInstance().lostNoTimeMessage();
+				break;
 				
+			case "tenSecondsRemaining":
+				
+				GameController.getInstance().tenSecRemain();
 				
 				break;
-	    		
 	    	}
 	    	
     	}catch (Exception e) {

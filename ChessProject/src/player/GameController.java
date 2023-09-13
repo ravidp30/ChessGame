@@ -173,7 +173,8 @@ public class GameController implements Initializable {
     private Pane chessboardPane;
     @FXML
 	private Button exitBtn;
-    
+    @FXML
+  	private ImageView alarm;
    
     
     public GameController() {
@@ -234,12 +235,8 @@ public class GameController implements Initializable {
     	
     	timerLabel.setText("5 : 00");
     	timerOpponentLabel.setText("5 : 00");
-    	
-       // ChessHeadLineLbl.setText("Chess Game:\nYou (id: " + player.getPlayerId() + ") VS opponent (id: " + opponent.getPlayerId() + ")");
-        //OpponentLbl.
-       // ChessHeadLineLbl.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
+    	alarm.setVisible(false);
         backGroundPane.setStyle("-fx-background-color: rgba(0, 0, 0, 1); -fx-border-width: 1px;");
-        //chatArea.setStyle("-fx-text-fill: black; -fx-font-size: 12px;-fx-font-weight: bold;");
         lblTurnStatus.setStyle("-fx-text-fill: #EE101F; -fx-font-weight: bold; -fx-font-size: 20px;");
         winnerImage = new Image("/player/Winner.gif");
         winnerView = new ImageView(winnerImage);
@@ -317,6 +314,7 @@ public class GameController implements Initializable {
         
         
     }
+	
     /**
      * Handles the selection of a new chess piece from a graphical user interface (GUI)
      * component (HBOX) and performs the necessary actions based on the selected piece.
@@ -1505,7 +1503,10 @@ public class GameController implements Initializable {
 
         }
     }
-	
+    public void tenSecRemain() {
+    	alarm.setVisible(true);
+    }
+    
     /**
      * Displays a message to indicate that the player has won the game. This method
      * updates the user interface to show the winning message, changes the text color
