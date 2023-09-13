@@ -1282,7 +1282,7 @@ public class GameController implements Initializable {
 	 * @param title The title of the confirmation dialog.
 	 * @param header The header text of the confirmation dialog.
 	 */
-	private void showFinishPopup(String title, String header) {
+	public void showFinishPopup(String title, String header) {
 		        // Create an Alert with a custom content area
 		        Alert alert = new Alert(AlertType.CONFIRMATION);
 		        alert.setTitle(title);
