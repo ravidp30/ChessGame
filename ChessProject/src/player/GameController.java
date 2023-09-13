@@ -228,6 +228,9 @@ public class GameController implements Initializable {
     	
     	    
     	board = new Board(8 * squareSize, 8 * squareSize, null);
+    	
+    	timerLabel.setText("5 : 00");
+    	
        // ChessHeadLineLbl.setText("Chess Game:\nYou (id: " + player.getPlayerId() + ") VS opponent (id: " + opponent.getPlayerId() + ")");
         //OpponentLbl.
        // ChessHeadLineLbl.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
@@ -1523,9 +1526,11 @@ public class GameController implements Initializable {
 			
 	        int minutes = Integer.parseInt(timeRemaining) / 60;
 	        int seconds = Integer.parseInt(timeRemaining) % 60;
-			
-			timerLabel.setText(minutes + " : " + seconds);
-			
+
+	        String formattedSeconds = String.format("%02d", seconds);
+	        
+			timerLabel.setText(minutes + " : " + formattedSeconds);
+
 		});
 		
 	}

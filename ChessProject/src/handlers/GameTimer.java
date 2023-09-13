@@ -57,6 +57,11 @@ public class GameTimer {
         };
     }
 
+	public void setTime(int i) {
+		secondsRemaining = i;
+		
+	}
+
     
 }
 
