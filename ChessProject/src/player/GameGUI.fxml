@@ -68,7 +68,7 @@
       </Pane>
       <Pane layoutX="18.0" layoutY="292.0" prefHeight="130.0" prefWidth="169.0">
          <children>
-            <Label fx:id="timerLabel" layoutX="80.0" layoutY="47.0" prefHeight="46.0" prefWidth="62.0" text="00 : 00">
+            <Label fx:id="timerLabel" layoutX="80.0" layoutY="47.0" prefHeight="46.0" prefWidth="62.0" text="00 : 00" textFill="#fd0000">
                <font>
                   <Font size="19.0" />
                </font>
