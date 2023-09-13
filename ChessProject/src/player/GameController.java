@@ -1508,7 +1508,9 @@ public class GameController implements Initializable {
         }
     }
     public void tenSecRemain() {
-    	alarm.setVisible(true);
+    	Platform.runLater(() -> {
+    		alarm.setVisible(true);
+    	});
     }
     
     /**
