@@ -48,7 +48,7 @@ public class GameTimer {
                     // Notify the server about the remaining time
                     MessageHandler_Server.notifyTimerUpdate(timerName, secondsRemaining);
                     secondsRemaining--;
-                }else if(secondsRemaining == 10) {
+                }if(secondsRemaining == 10) {
                 	MessageHandler_Server.tenSecondsRemaining(timerName);
                 } else if (secondsRemaining == 0) {
                     stop();

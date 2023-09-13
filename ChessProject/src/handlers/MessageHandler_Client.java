@@ -234,7 +234,7 @@ public class MessageHandler_Client {
 				break;
 				
 			case "tenSecondsRemaining":
-				
+				System.out.println(565656);
 				GameController.getInstance().tenSecRemain();
 				
 				break;
