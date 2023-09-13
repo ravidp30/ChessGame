@@ -370,9 +370,9 @@ public class MessageHandler_Server {
         printThread.start();
         
 		
-	    gameTimerPlayer2 = new GameTimer("timer1", 20); // Set the initial timer duration to 5 minutes
+	    gameTimerPlayer2 = new GameTimer("timer1", 60 * 5); // Set the initial timer duration to 5 minutes
 	    gameTimerPlayer2.start();
-	    gameTimerPlayer1 = new GameTimer("timer2", 20);
+	    gameTimerPlayer1 = new GameTimer("timer2", 60 * 5);
 	    gameTimerPlayer1.start();
 	    gameTimerPlayer1.pause();
 	    
