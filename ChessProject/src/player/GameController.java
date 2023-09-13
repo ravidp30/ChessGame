@@ -1250,6 +1250,8 @@ public class GameController implements Initializable {
 			playerTurn = newPlayerTurn;
 			if(playerTurn.getPlayerId().equals(player.getPlayerId())) {		
 				lblTurnStatus.setText("Your Turn");
+				lblTurnStatus.setLayoutX(14);
+				lblTurnStatus.setLayoutY(493);
 		     	cursorImage=new Image("/player/arm.png");
 		     	customCursor.setImage(cursorImage);
 		     	customCursor.toFront();
@@ -1269,6 +1271,8 @@ public class GameController implements Initializable {
 			}
 			else {
 				lblTurnStatus.setText("Opponent's Turn");
+				lblTurnStatus.setLayoutX(14);
+				lblTurnStatus.setLayoutY(157);
 		     	cursorImage=new Image("/player/X.png");
 		     	customCursor.setImage(cursorImage);
 		     	customCursor.toFront();
