@@ -552,19 +552,19 @@ public class MessageHandler_Server {
 	        if(gameOn) {
 		        if(timerName.equals("timer1")) {
 					player2.sendToClient(timerUpdateMessage);
-					if(gameTimerPlayer2.getTime() == 0) {
+					/*if(gameTimerPlayer2.getTime() == 0) {
 						player2.sendToClient("GameEndedPlayerWon");
 						gameTimerPlayer2.setTime(5);
 						gameTimerPlayer1.setTime(5);
-					}
+					}*/
 		        }
 		        else {
 		        	player1.sendToClient(timerUpdateMessage);
-					if(gameTimerPlayer2.getTime() == 0) {
+					/*if(gameTimerPlayer2.getTime() == 0) {
 						player1.sendToClient("GameEndedPlayerWon");
 						gameTimerPlayer2.setTime(5);
 						gameTimerPlayer1.setTime(5);
-					}
+					}*/
 		        }
 		    }
 	        
@@ -573,5 +573,20 @@ public class MessageHandler_Server {
 			e.printStackTrace();
 		} 
     }
+
+	public static void manageWinsTimerEnded(String timerName) {
+		try {
+			if(timerName.equals("timer1")) {
+				player2.sendToClient("GameEndedPlayerWon");
+			}
+			else if(timerName.equals("timer2")){
+				player1.sendToClient("GameEndedPlayerWon");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
     
 }

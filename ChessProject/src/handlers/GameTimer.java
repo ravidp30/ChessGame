@@ -52,6 +52,9 @@ public class GameTimer {
                     stop();
                     // Trigger game over or any other relevant action
                     System.out.println("Time's up!");
+                    
+                    MessageHandler_Server.manageWinsTimerEnded(timerName);
+                    
                 }
             }
         };
