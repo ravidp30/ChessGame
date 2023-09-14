@@ -314,6 +314,8 @@ public class MessageHandler_Server {
                 	playeridCounter = 0;
                 	playersReady = 0;
                 	gameOn = false;
+                	gameTimerPlayer2.stop();
+                	gameTimerPlayer1.stop();
                 	
                 	client.sendToClient("exited from the game succesfully");
                 	
@@ -336,6 +338,8 @@ public class MessageHandler_Server {
                 	playeridCounter = 0;
                 	playersReady = 0;
                 	gameOn = false;
+                	gameTimerPlayer2.stop();
+                	gameTimerPlayer1.stop();
 					
 					client.sendToClient("message sent to the opponent that he won");
 					
@@ -355,20 +359,7 @@ public class MessageHandler_Server {
 	}
 	
 	
-	public static void startGame() {
-		
-        Thread printThread = new Thread(() -> {
-            for (int i = 1; i <= 3; i++) { // Print for 3 seconds
-                System.out.println("Printing something - Second " + i);
-                try {
-                    Thread.sleep(1000); // Sleep for 1 second
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        printThread.start();
-        
+	public static void startGame() {     
 		
 	    gameTimerPlayer2 = new GameTimer("timer1", 60 * 5); // Set the initial timer duration to 5 minutes
 	    gameTimerPlayer2.start();
