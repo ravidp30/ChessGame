@@ -13,7 +13,7 @@ allowing two players to play chess over a network.
 - Chat functionality for players to communicate during the game.
 - Easy-to-extend codebase for adding additional features or customizations.
 
-![ChessGif2-min](https://github.com/ravidp30/ChessGame/assets/120043799/4accb4e9-3f1a-4182-895b-549e209d55f5)#
+![ChessGif2-min](https://github.com/ravidp30/ChessGame/assets/120043799/2143df0e-3a90-4924-beae-a2ab9c7d5b11)
 
 <table>
   <tr>
