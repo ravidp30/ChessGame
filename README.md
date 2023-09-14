@@ -15,8 +15,8 @@ allowing two players to play chess over a network.
 
 <table>
   <tr>
-    <td><img src="***" alt="Image 1"></td>
-    <td><img src="***" alt="Image 2"></td>
+    <td><img src="https://github.com/ravidp30/ChessGame/blob/master/ChessGif2-min.gif" alt="Image 1"></td>
+    <td><img src="https://github.com/ravidp30/ChessGame/blob/master/ChessGif2-min.gif" alt="Image 2"></td>
   </tr>
 </table>
 
