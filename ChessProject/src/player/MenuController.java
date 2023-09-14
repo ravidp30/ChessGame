@@ -1,24 +1,14 @@
 package player;
 
 import java.io.IOException;
-import javafx.scene.shape.Circle;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
-import javafx.util.StringConverter;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import ClientAndServerLogin.SceneManagment;
 import client.ClientUI;
-import config.ConnectedClient;
 import config.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -28,18 +18,15 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
+
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
+
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
+
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
+
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
+
 import javafx.scene.control.TextField;
 
 public class MenuController implements Initializable{

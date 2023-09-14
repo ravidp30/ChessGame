@@ -7,7 +7,6 @@ import java.util.Map;
 import ClientAndServerLogin.ClientConnectController;
 import config.Piece;
 import config.Player;
-import javafx.scene.Node;
 import player.GameController;
 import player.MenuController;
 

@@ -1,33 +1,18 @@
 package player;
 
 import java.awt.Button;
-import java.awt.image.BufferedImage;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.ResourceBundle;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.shape.Line;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import ClientAndServerLogin.SceneManagment;
 import client.ClientUI;
 import config.Bishop;
@@ -48,31 +33,18 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.image.Image;
-import java.awt.event.MouseAdapter;
 
 
 public class GameController implements Initializable {
-	private boolean opponentFound =false;
     private static Player player;
     private static Player opponent;
     private static Player playerTurn;
@@ -97,7 +69,6 @@ public class GameController implements Initializable {
     //private Piece tempPieceToMove = null;
     private int newXLastOpponent;
     private int newYLastOpponent;
-    private int CountChess;
     private boolean continueTurn = true;
     private Image Cloud ;
     private ImageView CloudImageView ;
@@ -424,9 +395,6 @@ public class GameController implements Initializable {
                 
                
                 square.setFill(color);
-                
-             final int finalX = x; // Create a final variable for x
-               final int finalY = y; // Create a final variable for y
                 
              // Attach a click event handler to each square
                 square.setOnMouseClicked(new EventHandler<MouseEvent>() {
