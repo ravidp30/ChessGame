@@ -1533,6 +1533,7 @@ public class GameController implements Initializable {
 		});
 	}
 	
+	
 	public void lostNoTimeMessage() {
 		
 		Platform.runLater(() -> {
