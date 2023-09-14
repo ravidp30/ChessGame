@@ -13,12 +13,13 @@ allowing two players to play chess over a network.
 - Chat functionality for players to communicate during the game.
 - Easy-to-extend codebase for adding additional features or customizations.
 
-![ChessGif2-min](https://github.com/ravidp30/ChessGame/assets/120043799/2143df0e-3a90-4924-beae-a2ab9c7d5b11)
-
+https://github.com/ravidp30/ChessGame/assets/120043799/2143df0e-3a90-4924-beae-a2ab9c7d5b11
 <table>
   <tr>
-    <td><img src="[ChessGifNadav](https://github.com/ravidp30/ChessGame/assets/118973872/12848b50-c337-469f-bc0d-16ad3436093b)" alt="GIF 1"></td>
-    <td><img src="[ChessGifNadav](https://github.com/ravidp30/ChessGame/assets/118973872/12848b50-c337-469f-bc0d-16ad3436093b)" alt="GIF 2"></td>
+    <td><img src="![Image Alt Text](https://raw.githubusercontent.com/ravidp30/ChessGame/main/assets/120043799/2143df0e-3a90-4924-beae-a2ab9c7d5b11.gif)
+" alt="GIF 1"></td>
+    <td><img src="![Image Alt Text](https://raw.githubusercontent.com/ravidp30/ChessGame/main/assets/120043799/2143df0e-3a90-4924-beae-a2ab9c7d5b11.gif)
+" alt="GIF 2"></td>
   </tr>
 </table>
 
