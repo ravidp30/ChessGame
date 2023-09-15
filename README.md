@@ -12,6 +12,8 @@ allowing two players to play chess over a network.
 - Robust error handling, move validation, and player turn management.
 - Chat functionality for players to communicate during the game.
 - Easy-to-extend codebase for adding additional features or customizations.
+![ChessGameGIFOptRavid](https://github.com/ravidp30/ChessGame/assets/120043799/d1c59e7d-0670-4794-89ac-ab09476b36ab)
+![ChessGameGifOptNadav](https://github.com/ravidp30/ChessGame/assets/120043799/50b08ab5-c6aa-41f4-a185-6a32a088ea86)
 
 <table>
   <tr>
